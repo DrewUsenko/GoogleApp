@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.FacultyInf" table="faculty_inf" catalog="googleschema" optimistic-lock="version">
+        <id name="idFaculty" type="java.lang.Integer">
+            <column name="idFaculty" />
+            <generator class="identity" />
+        </id>
+        <property name="faculty" type="string">
+            <column name="faculty" length="45" not-null="true" />
+        </property>
+        <property name="facultyFull" type="string">
+            <column name="facultyFull" length="45" not-null="true" />
+        </property>
+        <set name="departmentInfs" table="department_inf" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Faculty_inf_idFaculty" not-null="true" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.DepartmentInf" />
+        </set>
+        <set name="specInfs" table="spec_inf" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Faculty_inf_idFaculty" not-null="true" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.SpecInf" />
+        </set>
+    </class>
+</hibernate-mapping>

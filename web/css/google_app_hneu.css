@@ -1,0 +1,1212 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 2, 2016, 10:59:59 PM
+    Author     : Andrey
+*/
+
+.dirSyncLeftContent {
+    float: left;
+    margin-left: 10px;
+    margin-right: 5px;
+    width: 400px;
+}
+.dirSyncRightContent {
+    float: left;
+}
+.itemHeader {
+    font-weight: bold;
+}
+.itemGroup {
+    clear: both;
+    margin: 10px 0;
+    overflow: hidden;
+}
+.helpGroup {
+    clear: both;
+    margin: 3px 0;
+    overflow: hidden;
+    padding-left: 12px;
+}
+.helpLink {
+    float: left;
+    line-height: 16px;
+    margin-left: 5px;
+    width: 275px;
+}
+.migrateItem {
+    clear: both;
+    overflow: hidden;
+    padding-left: 15px;
+}
+.itemText {
+    float: left;
+    margin: 0 3px;
+}
+.itemControl {
+    clear: left;
+    float: left;
+    margin: 0;
+}
+.resultSuccess {
+    background-color: green;
+}
+.resultFailure {
+    background-color: red;
+}
+.resultSkipped {
+    background-color: #ff0;
+}
+.Admin-ErrorPanel {
+    padding: 5px 5px 5px 5px;
+    border: 1px solid #a80f22;
+    display: block;
+    margin-bottom: 10px;
+}
+.Admin-ErrorTextBox {
+    padding: 5px!important;
+    border: 1px solid #a80f22!important;
+    display: block!important;
+    margin: 0 0 10px!important;
+    opacity: 1!important;
+    filter: alpha(opacity=100)!important;
+}
+.Admin-MessagePanel {
+    padding: 5px 5px 5px 5px;
+    border: 1px solid #ed8043;
+    display: block;
+    margin-bottom: 10px;
+}
+textarea.Admin-MessagePanel {
+    padding: 5px!important;
+    border: 1px solid #ed8043!important;
+    display: block!important;
+    margin: 0 0 10px!important;
+    opacity: 1!important;
+    filter: alpha(opacity=100)!important;
+}
+Div.LicensingControl>Div.divider {
+    margin-bottom: 7px;
+    padding-bottom: 14px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #e7e7e7;
+}
+.LicensingControl table {
+    border-spacing: 0;
+    border-width: 0;
+    width: 625px;
+}
+.LicensingControlLastCell {
+    text-align: right;
+    padding-left: 5px;
+    white-space: nowrap;
+}
+.LicensingControlCBCell {
+    width: 8px;
+}
+.LicensingControl td {
+    border-width: 0;
+    vertical-align: text-top;
+}
+.SelectiveLicensingControl {
+    width: 100%}
+.SelectiveLicensingControl td {
+    border-width: 0;
+    vertical-align: text-top;
+}
+.ReportingTab table {
+    border-spacing: 0;
+    border-width: 0;
+}
+.ReportingTab td {
+    border-width: 0;
+    vertical-align: text-top;
+    vertical-align: top;
+}
+.ReportingTab td.ThumbnailChart {
+    padding-bottom: 30px;
+}
+.ReportingTab td.ThumbnailChart img {
+    border: 1px solid #eaecee;
+}
+.ReportingTab td.ThumbnailChart img:hover {
+    border: 1px solid;
+}
+.ReportingMainChartArea {
+    margin-right: 60px;
+    width: 650px;
+}
+.ReportingMainChartArea img {
+    border: 1px solid;
+}
+.ReportingMainChartDescr {
+    margin-top: 18px;
+    margin-bottom: 30px;
+}
+.ReportingThumbnChartTitle {
+    margin-bottom: 8px;
+}
+.ReportingTopFilter {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.ReportingTopFilter table {
+    margin-top: 0;
+}
+.ReportingTopFilter td {
+    width: 130px;
+}
+.ReportingTimeFilter {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.ReportingTimeFilter a {
+    margin-right: 20px;
+    color: #43515b;
+}
+.ReportingTimeFilter a.ReportTimeFilterSelected {
+    font-weight: bold;
+}
+.ReportingUtcLabel {
+    margin-top: 30px;
+    font-size: 11px;
+}
+.ReportingImgCover {
+    position: relative;
+    z-index: 9;
+}
+.ReportingSpinner {
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+    z-index: 10;
+}
+.ReportTable {
+    margin-top: 30px;
+}
+.ReportTable table {
+    margin-top: 15px;
+    table-layout: fixed;
+    width: 100%}
+.ReportTableHeaderRow, .ReportTableHeaderRow th {
+    border-bottom: solid 1px #a3aeaf;
+    border-top: solid 1px #a3aeaf;
+    font-weight: bold;
+    padding-top: 0;
+    padding-right: 15px;
+    padding-bottom: 0;
+    padding-left: 10px;
+    text-align: left;
+    font-size: 11px;
+    line-height: 30px;
+}
+.ReportTableDataRow {
+    line-height: 18px;
+}
+.ReportTableDataCell {
+    overflow: hidden;
+    padding-top: 0;
+    padding-right: 15px;
+    padding-bottom: 0;
+    padding-left: 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+.ReportGrayout {
+    background-color: #fff\9;
+    opacity: .3;
+    filter: alpha(opacity=30);
+    -moz-opacity: .3;
+    -webkit-opacity: .3;
+    -khtml-opacity: .3;
+}
+.ReportTableFooterRow, .ReportTableFooterRow td {
+    border-bottom: 1px solid #a3aeaf;
+    line-height: 100%;
+    height: 6px;
+}
+.ReportTableViewLink {
+    float: right;
+    margin-top: 10px;
+}
+.ExpiredLicenses {
+    letter-spacing: .025em;
+    color: #e70000;
+}
+.LicenseGridNameColumn {
+    width: auto;
+    padding-left: 12px;
+    border-bottom: 1px solid transparent;
+}
+.LicenseGridStatusColumn {
+    width: 90px;
+    padding-left: 5px;
+    border-bottom: 1px solid transparent;
+}
+.LicenseGridContentColumn {
+    width: 90px;
+    padding-left: 5px;
+    border-bottom: 1px solid transparent;
+}
+.LicenseIncomplianceMessage {
+    color: red;
+}
+.LicenseProduct {
+    margin-left: 5px;
+    display: block;
+}
+.LicenseServiceCheckbox {
+    padding-right: 8px;
+}
+.UserTable {
+    margin-top: 12px;
+    width: 100%}
+.UserTable td, .UserTable th {
+    padding-left: 12px;
+    padding-right: 12px;
+    white-space: nowrap;
+    font-size: 9pt;
+    line-height: 12pt;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    border-color: #fff;
+    border-right: solid 1px #fff;
+    border-bottom: solid 1px #fff;
+    width: 5%}
+.UserTable td:first-child, .UserTable th:first-child {
+    border-right-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.UserTable td:first-child {
+    padding-left: 12px;
+}
+.UserTable th {
+    background-color: #b2e6f9;
+    font-size: 10pt;
+    padding-top: 0;
+}
+.UserTable tr.odd>td {
+    background-color: #f7fbfe;
+}
+.UserTable tr.odd+tr>td {
+    background-color: #edf6fd;
+}
+.UserTable td+td+td {
+    white-space: normal;
+    width: 60%}
+.Page-Modern .UserTable tr:first-child {
+    display: none;
+}
+.Page-Modern .UserTable {
+    border-spacing: 0!important;
+}
+.Page-Modern .IconTable th, .Page-Modern .IconTable td, .Page-Modern .UserTable th, .Page-Modern .UserTable td {
+    padding: 5px 12px;
+    white-space: nowrap;
+    font-weight: normal;
+    line-height: 19px;
+    color: inherit;
+}
+.Page-Modern .IconTable th, .Page-Modern .UserTable th {
+    text-transform: uppercase;
+    font-size: 11px;
+}
+.Page-Modern .IconTable td, .Page-Modern .UserTable td {
+    font-size: 12px;
+}
+.Page-Modern .IconTable td {
+    border-right-width: 1px;
+}
+.Page-Modern .IconTable tr.odd>td, .Page-Modern .UserTable tr.odd>td {
+    background-color: transparent;
+}
+.Page-Modern .IconTable tr.odd+tr>td, .Page-Modern .UserTable tr.odd+tr>td {
+    background-color: transparent;
+}
+.IconTable {
+    margin-top: 12px;
+    width: 100%}
+.IconTable td, .IconTable th {
+    padding-left: 12px;
+    padding-right: 12px;
+    white-space: nowrap;
+    font-size: 9pt;
+    color: #43515b;
+    line-height: 12pt;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    border-color: #fff;
+    border-right: solid 1px #fff;
+    border-bottom: solid 1px #fff;
+    width: 5%}
+.IconTable td:first-child, .IconTable th:first-child {
+    border-right-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.Page-Modern .IconTable th:first-child, .Page-Modern .IconTable td:first-child {
+    border-right-width: 1px;
+}
+.IconTable td:first-child {
+    padding-left: 12px;
+}
+.IconTable th {
+    background-color: #b2e6f9;
+    font-size: 10pt;
+    padding-top: 0;
+}
+.IconTable tr.odd>td {
+    background-color: #f7fbfe;
+}
+.IconTable tr.odd+tr>td {
+    background-color: #edf6fd;
+}
+.IconTable td+td+td {
+    white-space: normal;
+    width: 60%}
+.Page-Modern .IconTable tr:first-child {
+    display: none;
+}
+.Page-Modern .IconTable td:first-child {
+    padding-left: 0;
+    text-align: center;
+}
+.Page-Modern .IconTable {
+    border-spacing: 0!important;
+}
+.IconTable tr:first-child>th {
+    border-bottom: solid 0 transparent;
+    padding-bottom: 0;
+}
+.IconTable TH.LeftRoundCorner B, .IconTable TH.LeftRoundCorner I, .IconTable TH.LeftRoundCorner U {
+    line-height: 0;
+    display: block;
+    height: 0;
+    font-size: 1px;
+    color: #b2e6f9;
+    background: #b2e6f9;
+}
+.IconTable TH.LeftRoundCorner B {
+    border-bottom: 1px solid;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+}
+.IconTable TH.LeftRoundCorner I {
+    border-top: 1px solid;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 1px;
+}
+.IconTable TH.LeftRoundCorner U {
+    border-top: 1px solid;
+    margin: 0;
+}
+.IconTable TH.LeftRoundCorner {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: Transparent;
+}
+.UserTable tr:first-child>th {
+    border-bottom: solid 0 transparent;
+    padding-bottom: 0;
+}
+.UserTable TH.LeftRoundCorner B, .UserTable TH.LeftRoundCorner I, .UserTable TH.LeftRoundCorner U {
+    line-height: 0;
+    display: block;
+    height: 0;
+    font-size: 1px;
+    color: #b2e6f9;
+    background: #b2e6f9;
+}
+.UserTable TH.LeftRoundCorner B {
+    border-bottom: 1px solid;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+}
+.UserTable TH.LeftRoundCorner I {
+    border-top: 1px solid;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 1px;
+}
+.UserTable TH.LeftRoundCorner U {
+    border-top: 1px solid;
+    margin: 0;
+}
+.UserTable TH.LeftRoundCorner {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: Transparent;
+}
+.ViewLogContent {
+    font-family: "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+    font-size: 10pt;
+    padding: 8px;
+}
+.UserTableContent {
+    padding-top: 30px;
+    min-width: 800px;
+}
+.tableImportVerify {
+    margin-top: 16px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.tableImportVerify th, 
+.tableImportVerify td {
+    padding: 4px 8px 4px 8px;
+    white-space: nowrap;
+    text-align: left;
+    margin: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+.tableImportVerify, 
+.tableImportVerify th, .tableImportVerify td {
+    border-color: #ccc;
+    border-style: solid;
+}
+
+.requiredField {
+    color: red;
+}
+.userImportTopOfPage {
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.userImportPreviewLabel {
+    float: left;
+    display: block;
+    font-weight: bold;
+}
+.userPropertyTextControl {
+    width: 160px;
+}
+.usersImportedLabel {
+    float: left;
+}
+.usersImportPrintLabel {
+    clear: both;
+}
+.requiredFieldsLabel {
+    float: right;
+}
+.groupPropertyControl {
+    width: 200px;
+}
+.groupDescriptionTextArea {
+    overflow: auto;
+}
+.enableOptions TR {
+    vertical-align: top;
+}
+.enableOptions TD+TD>span {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.enableOptions TD.spacerRow {
+    height: 2px;
+}
+.GM-EditGroupMemberTableCell {
+    vertical-align: top;
+    width: 50%}
+.GM-EditGroup15MemberTableCell {
+    vertical-align: top;
+}
+.GM-EditGroup15LinkButton {
+    margin: 18px 0 12px 0;
+}
+.DirSyncFederation-SubHeader {
+    font-size: 13pt;
+    line-height: normal;
+    color: #43515b;
+    letter-spacing: normal;
+}
+.DirSyncFederation-StepsSpacing {
+    margin-bottom: 30px;
+}
+.DirSyncFederation-StepsNumberingContainer {
+    padding-right: 15px;
+    text-align: right;
+    vertical-align: top;
+    width: 45px;
+}
+.OCS-MainContentTable {
+    width: 100%}
+.OCS-MainContentTable td.MainContentCell {
+    vertical-align: top;
+}
+.OCS-MainContentTable td.LeftContentCell {
+    padding-right: 52px;
+}
+.OCS-MainContentTable td.HelpContentCell {
+    width: 20%}
+.OCS-SettingsRow {
+    height: 25px;
+}
+.OCS-ConfiguableValueStyle {
+    font-weight: bold;
+    margin-left: 15px;
+}
+.OCS-GridContainer {
+    min-width: 500px;
+    width: 70%}
+ul.OCS-FederationSettingsRadioList {
+    list-style: none;
+}
+div.OCS-DeleteDomainsList {
+    border: solid 1px #c6dff3;
+    width: 400px;
+    height: 150px;
+    overflow: auto;
+    margin: 1px;
+    padding: 10px;
+}
+div.OCS-DeleteDomainListContainer {
+    padding: 15px 0;
+}
+.OCS-HiddenButton {
+    display: none;
+}
+div.OCS-UISection {
+    padding: 10px 0;
+}
+.OCS-ConfirmationUserTable {
+    padding-top: 12px;
+    width: 60%}
+.OCS-ConfirmationErrorTable {
+    width: 70%}
+.OCS-LearnMoreLink {
+    padding-left: 10px;
+}
+.OCS-Separator {
+    padding: 0 10px;
+}
+.Users-FieldIndent {
+    padding-left: 25px;
+}
+DIV.AdminWait {
+    text-align: left;
+}
+.bulkRestoreLog {
+    border-spacing: 0;
+    min-width: 760px;
+}
+.bulkRestoreLog th {
+    font-weight: bold;
+}
+.bulkRestoreLog th, .bulkRestoreLog td {
+    padding: 5px 5px 5px 5px;
+    text-align: left;
+    margin: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+.bulkRestoreLog, .bulkRestoreLog th, .bulkRestoreLog td {
+    border-color: #333;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+.upnWatermark {
+    color: #aaa;
+    font-style: italic;
+}
+.lmBuyColumn {
+    padding-right: 20px;
+    border-right: 1px solid #d9d9d9;
+}
+.lmRemoveColumn {
+    padding-left: 20px;
+}
+#deviceDropdownListDiv>#deviceDropdownList {
+    width: 310px;
+}
+.DeviceSelection {
+    float: left;
+    margin-right: 8px;
+}
+#AppDownloadPhoneDiv>#phoneDiv {
+    padding-right: 100px;
+}
+.DeviceSelection>ul {
+    list-style: none outside none;
+    margin-top: 9px;
+    padding-left: 0;
+}
+.DeviceSelection>ul>li {
+    margin-bottom: 15px;
+}
+.DeviceSelection>ul>li>a {
+    font-size: 15px;
+}
+.AppDownloadContent {
+    float: left;
+    margin-right: 8px;
+    margin-top: 20px;
+    padding-right: 50px;
+    width: 300px;
+}
+.AppDownloadContentClearFloat {
+    clear: left;
+}
+.AppDownloadContent>img {
+    float: left;
+    margin-right: 8px;
+    margin-bottom: 10px;
+}
+#contentResponseDiv>#WindowsAppDownloadContainerDiv {
+    margin-top: -18px;
+}
+.InstallControlTable tr td {
+    padding-top: 12px;
+    padding-right: 24px;
+}
+.SubContentDisplayStyle {
+    padding-bottom: 20px;
+    padding-top: 18px;
+}
+.UnsupportedItemAlertTitleStyle {
+    display: block;
+}
+.CFRV2-checkbox-hide {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.CFRV2-checkbox-container {
+    padding-left: 28px;
+    text-indent: -28px;
+}
+.CFRV2-checkbox-wrapper {
+    width: 18px;
+    height: 18px;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+    border: solid 1px #fff;
+    display: inline-block;
+    background: transparent url('../images/ColorCheckBox.png') no-repeat;
+}
+input[type=checkbox].CFRV2-checkbox-input {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+.CFRV2-checkbox-wrapper-focused {
+    border: solid 1px #a4c6fd;
+}
+.CFRV2-checkbox-1859A9 {
+    background-position: 0 0;
+}
+.CFRV2-checkbox-008C47 {
+    background-position: -18px 0;
+}
+.CFRV2-checkbox-F37D22 {
+    background-position: -36px 0;
+}
+.CFRV2-checkbox-ED2D2E {
+    background-position: -54px 0;
+}
+.CFRV2-checkbox-A11D20 {
+    background-position: -72px 0;
+}
+.CFRV2-checkbox-B33893 {
+    background-position: -90px 0;
+}
+.CFRV2-checkbox-7thOrUpCheckbox {
+    background-position: -108px 0;
+}
+.CFRV2-checkbox-1859A9-checked {
+    background-position: 0 -18px;
+}
+.CFRV2-checkbox-008C47-checked {
+    background-position: -18px -18px;
+}
+.CFRV2-checkbox-F37D22-checked {
+    background-position: -36px -18px;
+}
+.CFRV2-checkbox-ED2D2E-checked {
+    background-position: -54px -18px;
+}
+.CFRV2-checkbox-A11D20-checked {
+    background-position: -72px -18px;
+}
+.CFRV2-checkbox-B33893-checked {
+    background-position: -90px -18px;
+}
+.CFRV2-checkbox-7thOrUpCheckbox-checked {
+    background-position: -108px -18px;
+}
+.CFRV2-ReportTitle {
+    font-size: 20px;
+    color: #333;
+}
+.CFRV2-ReportDescription {
+    font-size: 13px;
+    color: #767676;
+}
+#trendingToSnapshotSwitchDiv {
+    display: inline-block;
+    margin-top: 8px;
+}
+.ReportScollDiv {
+    overflow: auto;
+    margin-right: 30px;
+    width: auto;
+    height: 100%;
+    background-color: #fff;
+}
+#CFRV2-highContrastDetector {
+    position: absolute;
+    top: -999px;
+    border-width: 1px;
+    border-style: solid;
+    border-top-color: red;
+    border-right-color: green;
+}
+.CFRV2-checkbox-highContrast-container {
+    position: relative;
+    width: 100px;
+    height: 13px;
+    display: inline-block;
+    overflow: hidden;
+}
+.CFRV2-checkbox-highContrast-000000 {
+    position: relative;
+    top: -36px;
+}
+.CFRV2-checkbox-highContrast-333333 {
+    position: relative;
+    top: -49px;
+}
+.CFRV2-checkbox-highContrast-666666 {
+    position: relative;
+    top: -62px;
+}
+.CFRV2-checkbox-highContrast-767676 {
+    position: relative;
+    top: -75px;
+}
+.CFRV2-checkbox-highContrast-A6A6A6 {
+    position: relative;
+    top: -88px;
+}
+.CFRV2-checkbox-highContrast-C8C8C8 {
+    position: relative;
+    top: -101px;
+}
+.CFRV2-Body {
+    max-width: 1280px;
+    min-width: 960px;
+}
+.CFR-Template {
+    max-width: 960px;
+    min-width: 720px;
+    width: 75%;
+    float: left;
+}
+.CFRV2-table-chart-focused {
+    outline: solid 1px #a4c6fd;
+}
+#ReportControlDiv .ChartDiv {
+    max-width: 960px;
+    min-width: 700px;
+    width: 100%;
+    height: 450px;
+    padding-left: 1px;
+}
+#ReportControlDiv .GroupDiv {
+    max-width: 270px;
+    min-width: 200px;
+    height: 450px;
+    padding-right: 30px;
+    float: right;
+    width: 20%}
+#reporting-contrast-chart {
+    width: 500px;
+    height: 50px;
+    display: inline-block;
+    float: right;
+}
+#timeFilterDiv {
+    display: inline-block;
+    float: left;
+    margin: 8px 20px 0 0;
+    font-size: 12px;
+}
+#timeFilterDiv .timeSelector {
+    border-color: #767676;
+}
+#timeFilterDiv .timeSelectorPressed {
+    border-color: #000;
+}
+#FlyInPage {
+    min-width: 700px;
+    max-width: 800px;
+    padding: 12px;
+}
+#windowNavigation {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #767676;
+}
+.windowNavigationNonempty {
+    margin-right: 55px;
+}
+.windowNavigationNonemptyLeft {
+    margin-left: 55px;
+}
+#windowNavigation a {
+    display: inline-block;
+}
+#reporting-chart-container {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ccc;
+}
+#windowNavigation .ReportNavigationButton {
+    margin: 0 8px 0 8px;
+}
+#ReportControlDiv .GroupDiv .GroupTitle {
+    width: 100%;
+    height: 20px;
+    background-color: #7f7f7f;
+    text-align: center;
+    color: #fff;
+    margin: 0 0 5px 0;
+}
+#ReportControlDiv .GroupDiv .GroupDate {
+    font-size: 17px;
+    text-align: left;
+    color: #767676;
+    margin: 12px 0 12px 0;
+}
+#ReportControlDiv .GroupData {
+    margin-bottom: 12px;
+}
+#ReportTableDiv {
+    width: 100%;
+    margin-top: 24px;
+    padding-left: 1px;
+    overflow-x: hidden;
+    border: 2px solid #ccc;
+}
+.DetailReportListView {
+    border: 2px solid #ccc;
+}
+.CFRV2-table-header {
+    width: 100%;
+    border-bottom: 2px solid #ccc;
+    background-color: #fff;
+}
+.CFR-table-size {
+    width: 100%;
+    height: 320px;
+}
+.CFR-table-size table {
+    background-color: #fff;
+}
+.CFR-table-th {
+    border-left: 1px solid #f2f2f2;
+    padding-left: 9px;
+}
+.CFR-table-td {
+    padding-left: 10px;
+    padding-right: 2px;
+}
+.CFR-table-1st-column {
+    padding-left: 10px;
+    width: 180px;
+}
+.CFR-table-th, .CFR-table-td, .CFR-table-1st-column {
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+.CFR-table-tr {
+    height: 30px;
+}
+.CFR-table-tr-clickable {
+    cursor: pointer;
+}
+.CFR-ReportTooltip {
+    width: 100%;
+    height: 100%;
+    border: 0 0 0 0;
+}
+.CFR-ReportTooltip tr td {
+    text-align: right;
+}
+.CFR-ReportTooltip .middleCell {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.CFR-ReportTooltip .lastCell {
+    font-weight: bold;
+}
+.CFR-table-row-highlight {
+    background-color: #f4f4f4;
+}
+.CFRProgressErrorBarDiv {
+    position: relative;
+}
+.CFRErrorProgressBannerContainer {
+    margin-top: 30px;
+}
+.CFRInitialProgressContainer {
+    margin: 30px 0 0 0;
+}
+.CFRErrorBar {
+    display: none;
+    width: 100%;
+    height: 20px;
+    background-color: #ffe799;
+    position: absolute;
+    z-index: 1000;
+    line-height: 20px;
+    font-size: 10px;
+}
+.CFR-errorProgressBar-shadow {
+    border: none;
+    border-bottom: #909090 1px solid;
+    border-right: #909090 1px solid;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4,  Direction=135,  Color='#000000')";
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    -moz-box-shadow: 2px 2px 10px #909090;
+    -webkit-box-shadow: 2px 2px 10px #909090;
+    box-shadow: 2px 2px 10px #909090;
+}
+.CFR-error-icon {
+    font-size: 15px;
+    padding-top: 0;
+    padding-right: 5px;
+    padding-bottom: 0;
+    padding-left: 10px;
+    line-height: 20px;
+}
+.CFRProgressBarContainer {
+    display: none;
+    width: 100%;
+    background-color: #f2f2f2;
+    position: absolute;
+    z-index: 1000;
+}
+.CFRProgressBarContainerInitialLoading {
+    height: 400px;
+    font-size: 16px;
+}
+.CFRProgressBarContainerBanner {
+    height: 20px;
+    font-size: 10px;
+}
+.CFRProgressBarContent {
+    width: 100%}
+.CFRProgressBarContentBanner {
+    text-align: left;
+}
+.CFRProgressBarContentInitialLoading {
+    text-align: center;
+    display: block;
+    top: 50%;
+    margin-top: -12px;
+    position: absolute;
+}
+.reportingProgressBarImg {
+    vertical-align: middle;
+}
+.reportingProgressBarImgInitialLoading {
+    margin-right: 10px;
+}
+.reportingProgressBarText {
+    vertical-align: middle;
+}
+p#cfrtip {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    left: 5px;
+    font-size: .8em;
+    background-color: #fff;
+    border: 1px solid #a6c9e2;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    z-index: 10000;
+}
+p#cfrtip #cfrtipArrow {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+}
+.FlyinPanel {
+    background: #fff;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20000;
+    pointer-events: auto;
+    overflow: hidden;
+}
+.FlyinPanel_default {
+    width: 0;
+}
+.FlyinPanel_open {
+    width: auto;
+}
+.FlyinPanel_mask {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20000;
+}
+.FlyinPanel_left_shadow {
+    border: none;
+    border-right: #909090 1px solid;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4,  Direction=135,  Color='#000000')";
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    -moz-box-shadow: 2px 2px 10px #909090;
+    -webkit-box-shadow: 2px 2px 10px #909090;
+    box-shadow: 2px 2px 10px #909090;
+}
+a.o365-button-15 {
+    border-color: #0072c6!important;
+    background-color: #0072c6!important;
+    color: #fff!important;
+}
+a.o365-button-15:hover {
+    border-color: #92c0e0!important;
+    background-color: #92c0e0!important;
+    color: #333!important;
+}
+.DetailReporteSearchButtonDiv {
+    padding: 5px 20px 5px 0;
+    background-color: #eaeaea;
+    height: 35px;
+}
+.DetailReportSpan {
+    padding-left: 5px;
+}
+.DetailReportInnerDiv {
+    height: 29px;
+    padding: 5px 5px 0 5px;
+}
+.DetailReportTextBox {
+    width: 220px;
+    height: 18px;
+}
+.DetailReportDropdown {
+    height: 24px;
+    margin: 0;
+    width: 238px;
+}
+.DetailReportControlPanel {
+    background-color: #f4f4f4;
+    overflow: hidden;
+    zoom: 1;
+}
+.DetailReportControlDiv {
+    float: left;
+    padding-left: 15px;
+}
+.FloatRelativeRight {
+    float: right;
+}
+.DetailReportLink {
+    margin: 5px;
+}
+.DownLoadCsvFile {
+    clear: both;
+}
+.DetailReportControlDiv .dateTimePicker .dpDd {
+    z-index: 1001;
+}
+.timePicker {
+    height: 24px;
+}
+.ddBoxTbl {
+    background-color: #fff;
+}
+.ClearFloatBoth {
+    clear: both;
+}
+.DetailReportDatetimeInfo {
+    clear: both;
+    padding-left: 20px;
+    padding-bottom: 2px;
+}
+.beta-tag {
+    left: 15px;
+    height: 15px;
+    padding-right: 5px;
+    background: #107c10;
+    position: relative;
+    display: inline-block;
+    line-height: 15px;
+    font-size: 12px;
+    color: #fff;
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
+.beta-tag:before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    width: 0;
+    height: 5px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid #107c10;
+}
+#btnSave {
+    text-align: left;
+    padding-left: 0;
+    margin-left: 0;
+}
+.RadioButtonListFirstItem {
+    padding-top: 5px;
+}
+.RadioButtonListFirstItem, .RadioButtonListNextItem {
+    padding-left: 40px;
+}
+#ButtonsPanel {
+    text-align: left;
+}
+.red-star {
+    color: red;
+    font-size: 75%}

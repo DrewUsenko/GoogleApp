@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.SpecInf" table="spec_inf" catalog="googleschema" optimistic-lock="version">
+        <id name="idSpec" type="java.lang.Integer">
+            <column name="idSpec" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="facultyInf" class="slGal.LiveEdu.ORM.FacultyInf" fetch="select">
+            <column name="Faculty_inf_idFaculty" not-null="true" />
+        </many-to-one>
+        <property name="spec" type="string">
+            <column name="Spec" length="45" not-null="true" />
+        </property>
+        <property name="numberSpec" type="string">
+            <column name="numberSpec" length="45" not-null="true" />
+        </property>
+        <set name="studentInfs" table="student_inf" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Spec_inf_idSpec" not-null="true" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.StudentInf" />
+        </set>
+    </class>
+</hibernate-mapping>

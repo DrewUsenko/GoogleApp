@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.StuffInf" table="stuff_inf" catalog="googleschema" optimistic-lock="version">
+        <id name="idStuff" type="java.lang.Integer">
+            <column name="idStuff" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentInf" class="slGal.LiveEdu.ORM.DepartmentInf" fetch="select">
+            <column name="Department_inf_idDepartment" not-null="true" />
+        </many-to-one>
+        <many-to-one name="personInf" class="slGal.LiveEdu.ORM.PersonInf" fetch="select">
+            <column name="Person_inf_idPerson" not-null="true" />
+        </many-to-one>
+        <property name="dismiss" type="boolean">
+            <column name="dismiss" not-null="true" />
+        </property>
+        <property name="stuffPost" type="string">
+            <column name="stuff_post" length="45" />
+        </property>
+        <property name="createTime" type="timestamp">
+            <column name="create_time" length="19" />
+        </property>
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

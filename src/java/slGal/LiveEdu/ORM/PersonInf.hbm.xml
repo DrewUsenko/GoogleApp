@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.PersonInf" table="person_inf" catalog="googleschema" optimistic-lock="version">
+        <id name="idPerson" type="java.lang.Integer">
+            <column name="idPerson" />
+            <generator class="identity" />
+        </id>
+        <property name="firstname" type="string">
+            <column name="firstname" length="45" not-null="true" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="lastname" length="45" not-null="true" />
+        </property>
+        <property name="patronymic" type="string">
+            <column name="patronymic" length="45" />
+        </property>
+        <property name="iin" type="string">
+            <column name="iin" length="45" not-null="true" unique="true" />
+        </property>
+        <property name="firstnameEn" type="string">
+            <column name="firstname_en" length="45" />
+        </property>
+        <property name="lastnameEn" type="string">
+            <column name="lastname_en" length="45" />
+        </property>
+        <property name="patronymicEn" type="string">
+            <column name="patronymic_en" length="45" />
+        </property>
+        <property name="emailPersonal" type="string">
+            <column name="email_personal" length="45" />
+        </property>
+        <property name="emailCorporate" type="string">
+            <column name="email_corporate" length="45" />
+        </property>
+        <property name="pdf" type="java.lang.Boolean">
+            <column name="pdf" />
+        </property>
+        <property name="passPersonal" type="string">
+            <column name="pass_personal" length="45" />
+        </property>
+        <property name="passCorporate" type="string">
+            <column name="pass_corporate" length="45" />
+        </property>
+        <set name="personeServicesConsultations" table="persone_services_consultation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPersone" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.PersoneServicesConsultation" />
+        </set>
+        <set name="studentInfs" table="student_inf" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Person_inf_idPerson" not-null="true" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.StudentInf" />
+        </set>
+        <set name="stuffInfs" table="stuff_inf" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Person_inf_idPerson" not-null="true" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.StuffInf" />
+        </set>
+    </class>
+</hibernate-mapping>

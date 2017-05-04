@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.StudentInf" table="student_inf" catalog="googleschema" optimistic-lock="version">
+        <id name="idStudent" type="java.lang.Integer">
+            <column name="idStudent" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="personInf" class="slGal.LiveEdu.ORM.PersonInf" fetch="select">
+            <column name="Person_inf_idPerson" not-null="true" />
+        </many-to-one>
+        <many-to-one name="specInf" class="slGal.LiveEdu.ORM.SpecInf" fetch="select">
+            <column name="Spec_inf_idSpec" not-null="true" />
+        </many-to-one>
+        <property name="ukrainian" type="boolean">
+            <column name="ukrainian" not-null="true" />
+        </property>
+        <property name="studies" type="boolean">
+            <column name="studies" not-null="true">
+                <comment>&#212;&#238;&#240;&#236;&#224;
+                &#238;&#225;&#243;&#247;&#229;&#237;&#232;&#255;(&#196;&#237;&#229;&#226;&#237;&#224;&#255;/&#231;&#224;&#238;&#247;&#237;&#224;&#255;)</comment>
+            </column>
+        </property>
+        <property name="dateLiveReg" type="date">
+            <column name="date_live_reg" length="10" not-null="true">
+                <comment>&#196;&#224;&#242;&#224; &#239;&#238;&#241;&#242;&#243;&#239;&#235;&#229;&#237;&#232;&#255; &#226; &#194;&#211;&#199;</comment>
+            </column>
+        </property>
+        <property name="edbo" type="string">
+            <column name="EDBO" length="45" not-null="true" />
+        </property>
+        <property name="studentCard" type="string">
+            <column name="studentCard" length="45" not-null="true" />
+        </property>
+        <property name="group" type="string">
+            <column name="group" length="25" not-null="true" />
+        </property>
+        <property name="createTime" type="timestamp">
+            <column name="create_time" length="19" />
+        </property>
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

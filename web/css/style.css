@@ -1,0 +1,24 @@
+.teacher-filer-list td{
+    cursor: pointer;
+}
+.buttons:first-child{
+    margin-top: 15px;
+}
+.buttons{
+    margin-bottom: 15px;
+    overflow: hidden;
+    
+}
+.form-top{
+    overflow: hidden;
+}
+.filter-button input{
+    display: block;
+    margin: 15px 0;
+}
+.container{
+    width: 85%;
+}
+.title{
+    margin-left: 25px;
+}

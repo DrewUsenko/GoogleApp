@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class abstract="true" discriminator-value="Person" name="slGal.LiveEdu.ORM.Person" table="persons">
+        <id name="id" type="int">
+            <column name="id_person"/>
+            <generator class="increment"/> 
+<!--            <generator class="native"/>             -->
+        </id>
+        <discriminator column="DSK" length="15" not-null="true" type="string"/>
+        <property name="firstname" column="firstname" type="string"/>
+        <property name="lastname" column="lastname" type="string"/>
+        <property name="patronymic" column="patronymic" type="string"/>
+        <property column="firstname_en" name="firstnameEn" type="string"/>
+        <property name="lastnameEn" column="lastname_en" type="string"/>
+        <property name="patronymicEn" column="patronymic_en" type="string"/>
+        <property column="liveemail" name="email" type="string" unique="true"/>
+        <property column="typeOfEmail" name="typeOfEmail" type="int"/>
+        <property name="dismiss" column="dismiss" type="boolean"/>
+        <property name="password" column="pass" type="string"/>
+        <property name="ukrainian" column="ukrainian" type="boolean"/>
+        <property name="pdf" column="pdf" type="boolean"/>
+        <property name="dateLiveReg" column="date_live_reg" type="calendar_date"/>        
+    </class>
+</hibernate-mapping>

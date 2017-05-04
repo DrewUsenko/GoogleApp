@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="slGal.LiveEdu.ORM.Services" table="services" catalog="googleschema" optimistic-lock="version">
+        <id name="idServices" type="java.lang.Integer">
+            <column name="idServices" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="45" not-null="true" />
+        </property>
+        <property name="serviceUrl" type="string">
+            <column name="service_url" length="45" not-null="true" />
+        </property>
+        <set name="personeServicesConsultations" table="persone_services_consultation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idServices" />
+            </key>
+            <one-to-many class="slGal.LiveEdu.ORM.PersoneServicesConsultation" />
+        </set>
+    </class>
+</hibernate-mapping>

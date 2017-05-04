@@ -1,0 +1,5 @@
+Windows Live – це набір служб Microsoft, які дозволяють студентам листуватися (Hotmail), розмовляти (Mobile), ділитися інформацією та активно діяти в Інтернеті(Messenger).
+Персональна інформація
+ПІБ            %s %s
+Адреса      http://mail.hneu.net
+                  http://live.hneu.net

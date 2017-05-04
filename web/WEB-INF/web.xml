@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+    <!--Allow directory listing-->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>   
+    <context-param>
+        <description>Location to store uploaded file</description>
+        <param-name>file-upload</param-name>
+        <param-value>LiveEdu/file_uploads</param-value>
+    </context-param>
+
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <el-ignored>false</el-ignored>
+            <page-encoding>UTF-8</page-encoding>
+            <scripting-invalid>false</scripting-invalid>
+            <is-xml>false</is-xml>
+            <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group>
+    </jsp-config>
+      
+    <!--Declaretion servlet-->    
+    <!--Allow directory listing-->    
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>    
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>slGal.LiveEdu.UploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/</url-pattern>
+        <!--<url-pattern>/LiveEdu/export/</url-pattern>-->
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditStudent</servlet-name>
+        <servlet-class>slGal.LiveEdu.EditStudent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteStudent</servlet-name>
+        <servlet-class>slGal.LiveEdu.DeleteStudent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Filter</servlet-name>
+        <servlet-class>slGal.LiveEdu.Filter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GroupFilter</servlet-name>
+        <servlet-class>slGal.LiveEdu.CourceFilter</servlet-class>
+    </servlet>
+<!--    <servlet>
+        <servlet-name>PersonServletControler</servlet-name>
+        <servlet-class>slGal.LiveEdu.PersonServletControler</servlet-class>
+    </servlet>-->
+    <servlet>
+        <servlet-name>TeacherServletControler</servlet-name>
+        <servlet-class>slGal.LiveEdu.TeacherServletControler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentServletControler</servlet-name>
+        <servlet-class>slGal.LiveEdu.StudentServletControler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditStudent</servlet-name>
+        <url-pattern>/EditStudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStudent</servlet-name>
+        <url-pattern>/DeleteStudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Filter</servlet-name>
+        <url-pattern>/Filter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupFilter</servlet-name>
+        <url-pattern>/GroupFilter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TeacherServletControler</servlet-name>
+        <url-pattern>/TeacherServletControler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentServletControler</servlet-name>
+        <url-pattern>/StudentServletControler</url-pattern>
+    </servlet-mapping>
+    <!--    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>-->
+    <!--    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>-->
+<!--    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/UploadServlet</url-pattern>
+    </servlet-mapping>-->
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <!-- Define a Security Constraint on this Application -->
+    <!-- NOTE:  None of these roles are present in the default users file -->
+<!--    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>HTML Manager interface (for humans)</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>gapp-user-gui</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>DIGEST</auth-method>
+        <realm-name>HNEU Google App Manager</realm-name>
+    </login-config>
+    <security-role>
+        <description>The role that is required to access the HTML Manager accounts of HNEU Google App</description>
+        <role-name>gapp-user-gui</role-name>
+    </security-role>-->
+    <!--    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>-->
+
+    //    
+<!--    <security-role>
+        <description/>
+        <role-name>admin</role-name>
+    </security-role>-->
+</web-app>
