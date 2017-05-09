@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import slGal.LiveEdu.PasswordGenerator;
 import slGal.LiveEdu.Translate;
 
@@ -18,6 +22,9 @@ import slGal.LiveEdu.Translate;
 public class PersonInf  implements java.io.Serializable {
 
     private static Path nameFileAlphabetic;
+    
+    @OneToMany(mappedBy = "pers", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     
      private Integer idPerson;
      private String firstname;
@@ -195,6 +202,36 @@ public class PersonInf  implements java.io.Serializable {
             return false;
         }
     } 
+    
+    public static void setNameOfAlphabeticFile(Path pRootDir) {
+        nameFileAlphabetic = pRootDir.resolve("res/alphabetic.ini");
+    }
+
+    public static Path getNameOfAlphabeticFile() {
+        return nameFileAlphabetic;
+    }
+    
+    /**
+     * Translate FIO
+     */
+    public void translateFIO() {
+        Translate tr = null;
+        try {
+            //            tr = new Translate(nameFileAlphabetic, "Cp1251");  // Exception FileNotFoundException in nameFileAlphabetic, UnsupportedEncodingException in "Cp1251"
+            tr = new Translate(PersonInf.nameFileAlphabetic.toFile(), "UTF-8"); // Exception FileNotFoundException in nameFileAlphabetic, UnsupportedEncodingException in "Cp1251"
+            if (this.firstnameEn == null) {
+                setFirstnameEn(tr.translating1(firstname, "UTF-8")); // Exception UnsupportedEncodingException in "Cp1251"
+            }
+            if (this.lastnameEn == null) {
+                setLastnameEn(tr.translating1(lastname, "UTF-8")); // Exception UnsupportedEncodingException in "Cp1251"
+            }
+            if (this.patronymicEn == null) {
+                setPatronymicEn(tr.translating1(patronymic, "UTF-8")); // Exception UnsupportedEncodingException in "Cp1251"
+            }
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+            Logger.getLogger(Translate.class.getName()).log(Level.SEVERE, "translateFIO", ex);
+        }
+    }    
     
 }
 

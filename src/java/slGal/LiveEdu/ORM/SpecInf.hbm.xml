@@ -8,7 +8,7 @@
             <column name="idSpec" />
             <generator class="identity" />
         </id>
-        <many-to-one name="facultyInf" class="slGal.LiveEdu.ORM.FacultyInf" fetch="select">
+        <many-to-one name="facultyInf" class="slGal.LiveEdu.ORM.FacultyInf" fetch="join">
             <column name="Faculty_inf_idFaculty" not-null="true" />
         </many-to-one>
         <property name="spec" type="string">
@@ -17,7 +17,7 @@
         <property name="numberSpec" type="string">
             <column name="numberSpec" length="45" not-null="true" />
         </property>
-        <set name="studentInfs" table="student_inf" inverse="true" lazy="true" fetch="select">
+        <set name="studentInfs" table="student_inf" inverse="true" lazy="true" fetch="join">
             <key>
                 <column name="Spec_inf_idSpec" not-null="true" />
             </key>

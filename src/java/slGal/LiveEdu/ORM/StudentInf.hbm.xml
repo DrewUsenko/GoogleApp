@@ -8,10 +8,10 @@
             <column name="idStudent" />
             <generator class="identity" />
         </id>
-        <many-to-one name="personInf" class="slGal.LiveEdu.ORM.PersonInf" fetch="select">
+        <many-to-one name="personInf" class="slGal.LiveEdu.ORM.PersonInf" fetch="join">
             <column name="Person_inf_idPerson" not-null="true" />
         </many-to-one>
-        <many-to-one name="specInf" class="slGal.LiveEdu.ORM.SpecInf" fetch="select">
+        <many-to-one name="specInf" class="slGal.LiveEdu.ORM.SpecInf" fetch="join">
             <column name="Spec_inf_idSpec" not-null="true" />
         </many-to-one>
         <property name="ukrainian" type="boolean">

@@ -14,9 +14,8 @@ import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import slGal.LiveEdu.DB.HibernateUtil;
+import slGal.LiveEdu.DB.*;
 import slGal.LiveEdu.PasswordGenerator;
-import slGal.LiveEdu.DB.DB_0;
 
 // Referenced classes of package slGal.LiveEdu:
 //            Person, Speciality, Translate, Password
@@ -204,7 +203,7 @@ public class Student extends Person {
         Session ses = HibernateUtil.currentSession();
 //        List<Student>  students = new ArrayList<>();
         Criteria cr = ses.createCriteria(Student.class);
-        cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_ID, id));
+        cr = cr.add(Restrictions.eq(DB.Person.COLUM_ID, id));
         List<Student> students = cr.list();
         return ((Student) students.get(0));
     }
@@ -236,25 +235,27 @@ public class Student extends Person {
     }
 
     public static ArrayList<Integer> getAllCources() {
-        Session ses = HibernateUtil.currentSession();
-//        List<Integer> cources = new ArrayList<>();
+        List<Integer> cources = new ArrayList<>();
+        /*Session ses = HibernateUtil.currentSession();
+        
         Criteria cr = ses.createCriteria(Student.class);
-        cr.setProjection(Projections.distinct(Projections.property(DB_0.Persone.COLUM_COURCE)));
-        cr.addOrder(Order.asc(DB_0.Persone.COLUM_COURCE));
+        cr.setProjection(Projections.distinct(Projections.property(DB.Person.COLUM_COURCE)));
+        cr.addOrder(Order.asc(DB.Persone.COLUM_COURCE));
         List<Integer> cources = cr.list();
-        HibernateUtil.closeSession();
+        HibernateUtil.closeSession();*/
         return (ArrayList<Integer>) cources;
     }
 
     public static List<Integer> getCourcesBySpec(String spec) {
-        Session ses = HibernateUtil.currentSession();
-//        List<Integer> cources = new ArrayList<>();
+        List<Integer> cources = new ArrayList<>();
+        /*Session ses = HibernateUtil.currentSession();
+        
         Criteria cr = ses.createCriteria(Student.class);
-        cr.setProjection(Projections.distinct(Projections.property(DB_0.Persone.COLUM_COURCE)));
-        cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_SPEC, spec));
-        cr.addOrder(Order.asc(DB_0.Persone.COLUM_COURCE));
+        cr.setProjection(Projections.distinct(Projections.property(DB.Persone.COLUM_COURCE)));
+        cr = cr.add(Restrictions.eq(DB.Persone.COLUM_SPEC, spec));
+        cr.addOrder(Order.asc(DB.Persone.COLUM_COURCE));
         List<Integer> cources = cr.list();
-        HibernateUtil.closeSession();
+        HibernateUtil.closeSession();*/
         return (ArrayList<Integer>) cources;
     }
 
@@ -272,10 +273,10 @@ public class Student extends Person {
     public static ArrayList<String> getAllFaculty() {
         Session ses = HibernateUtil.currentSession();
         List listFaculty = new ArrayList<Student>();
-        Criteria cr = ses.createCriteria(Student.class);
-        cr.setProjection(Projections.distinct(Projections.property(DB_0.Persone.COLUM_FACULTY)));
-        cr.addOrder(Order.asc(DB_0.Persone.COLUM_FACULTY));
-        listFaculty = cr.list();
+        /*Criteria cr = ses.createCriteria(Student.class);
+        cr.setProjection(Projections.distinct(Projections.property(DB.Persone.COLUM_FACULTY)));
+        cr.addOrder(Order.asc(DB.Persone.COLUM_FACULTY));
+        listFaculty = cr.list();*/
         HibernateUtil.closeSession();
         return (ArrayList<String>) listFaculty;
     }

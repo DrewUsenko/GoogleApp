@@ -40,7 +40,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.HibernateUtil;
-import slGal.LiveEdu.ORM.Student;
+import slGal.LiveEdu.ORM.*;
 import slGal.LiveEdu.ORM.Teacher;
 import static slGal.LiveEdu.PersonServletControler.ACTION_GENERATE_DEFAULT;
 import static slGal.LiveEdu.StudentServletControler.ATTRIBUTE_STUDENT;
@@ -48,7 +48,7 @@ import slGal.LiveEdu.bean.CsvStudentBean;
 import slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter;
 import slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter;
 import slGal.LiveEdu.bean.CsvUploadBean;
-import slGal.LiveEdu.DB.DB_0;
+import slGal.LiveEdu.DB.*;
 
 /**
  *
@@ -107,14 +107,14 @@ public class UploadServlet extends HttpServlet {
 //                uploadStudent(request);
                 forward = "/StudentList_1.jsp";
 
-                List<String> listSpeciality = Student.getAllSpecs();
-                request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, listSpeciality);
+                /*List<String> listSpeciality = StudentInf.getAllSpecs();
+                request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, listSpeciality);*/
 
-                List<String> listGroup = Student.getAllGroups();
+                List<String> listGroup = StudentInf.getAllGroups();
                 request.setAttribute(StudentServletControler.ATTRIBUTE_GROUP_LIST, listGroup);
 
-                List<String> listFaculty = Student.getAllFaculty();
-                request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, listFaculty);
+                /*List<String> listFaculty = Student.getAllFaculty();
+                request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, listFaculty); */
                 response.setContentType("text/html;charset=UTF-8");
                                 
                 break;
@@ -730,9 +730,9 @@ public class UploadServlet extends HttpServlet {
                 forward = "/WEB-INF/jsp/view/validate.jsp";
 //                forward = "/StudentList_1.jsp";
                 
-                request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, Student.getAllSpecs());                
-                request.setAttribute(StudentServletControler.ATTRIBUTE_GROUP_LIST, Student.getAllGroups());
-                request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, Student.getAllFaculty());
+                //request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, Student.getAllSpecs());                
+                request.setAttribute(StudentServletControler.ATTRIBUTE_GROUP_LIST, StudentInf.getAllGroups());
+                //request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, Student.getAllFaculty());
                 
                 response.setContentType("text/html;charset=UTF-8");
                 break;

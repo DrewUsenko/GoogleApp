@@ -3,13 +3,13 @@
   <persistence-unit name="LiveEduPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>slGal.LiveEdu.ORM.DepartmentInf</class>
-    <class>slGal.LiveEdu.ORM.StudentInf</class>
     <class>slGal.LiveEdu.ORM.StuffInf</class>
     <class>slGal.LiveEdu.ORM.FacultyInf</class>
     <class>slGal.LiveEdu.ORM.PersoneServicesConsultation</class>
     <class>slGal.LiveEdu.ORM.PersonInf</class>
     <class>slGal.LiveEdu.ORM.SpecInf</class>
     <class>slGal.LiveEdu.ORM.Services</class>
+    <class>slGal.LiveEdu.ORM.StudentInf</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/googleschema?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true"/>

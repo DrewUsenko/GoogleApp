@@ -15,9 +15,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.HibernateUtil;
-import slGal.LiveEdu.ORM.Person;
-import slGal.LiveEdu.ORM.Student;
-import slGal.LiveEdu.ORM.Teacher;
+import slGal.LiveEdu.ORM.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +31,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import slGal.LiveEdu.DB.DB_0;
+import slGal.LiveEdu.DB.*;
 /**
  *
  * @author Andrey
@@ -576,7 +574,7 @@ public class    TeacherServletControler extends HttpServlet {
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
 
-        List<Person> listStudent = ses.createCriteria(Teacher.class)
+        List<PersonInf> listStudent = ses.createCriteria(Teacher.class)
 //                .add(Restrictions.isNull(DB.Persone.COLUM_FIRST_NAME_EN))
 //                .add(Restrictions.isNull(DB.Persone.COLUM_LAST_NAME_EN))
                 .add(Restrictions.isNotNull(DB_0.Persone.COLUM_EMAIL))
@@ -601,7 +599,7 @@ public class    TeacherServletControler extends HttpServlet {
         if (arrayID != null) {        
             Session ses = HibernateUtil.currentSession();
 
-            List<Person> listStudent = ses.createCriteria(Teacher.class)
+            List<PersonInf> listStudent = ses.createCriteria(Teacher.class)
                     .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
                     .list();
 
@@ -620,7 +618,7 @@ public class    TeacherServletControler extends HttpServlet {
             
         if (arrayID != null) {
             Session ses = HibernateUtil.currentSession();
-            List<Person> listStudent = ses.createCriteria(Teacher.class)
+            List<PersonInf> listStudent = ses.createCriteria(Teacher.class)
             .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
             .list();
             HibernateUtil.closeSession();        

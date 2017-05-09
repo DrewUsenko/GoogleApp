@@ -72,6 +72,14 @@ Contributor(s):
     <property name="connection.autoReconnect">true</property>
     <property name="connection.autoReconnectForPools">true</property>
     <property name="connection.is-connection-validation-required">true</property>
+    <property name="current_session_context_class">thread</property> 
+    <property name="hibernate.enable_lazy_load_no_trans">true</property> 
+    
+    <!--<property name="jpaProperties">
+        <props>
+            <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+        </props>
+    </property>-->
     
     <!-- Mappings -->
     <mapping resource="slGal/LiveEdu/ORM/PersonInf.hbm.xml"/>
