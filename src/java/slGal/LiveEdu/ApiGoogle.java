@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import slGal.LiveEdu.ORM.Person;
+import slGal.LiveEdu.ORM.PersonInf;
 
 /**
  *
@@ -85,7 +85,7 @@ public class ApiGoogle {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
-    public static void CreateUser(Path path, String[][] info, int size) throws Exception {
+    public static void CreateUser(Path path, List<PersonInf> listPerson) throws Exception {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
 
@@ -93,16 +93,17 @@ public class ApiGoogle {
 
         Directory directory =
                 new Directory.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-                        "DirectoryCommandLine").build();
-        for (int i = 0; i < size; i++) {
+                        "DirectoryCommandLine").build();       
+        
+        for (PersonInf person : listPerson) {
             User user = new User();
             // populate are the required fields only
             UserName name = new UserName();
-            name.setFamilyName(info[i][0]);
-            name.setGivenName(info[i][1]);
+            name.setFamilyName(person.getFirstnameEn());
+            name.setGivenName(person.getLastnameEn());
             user.setName(name);
-            user.setPassword(info[i][3]);
-            user.setPrimaryEmail(info[i][2]);
+            user.setPassword(person.getPassCorporate());
+            user.setPrimaryEmail(person.getEmailCorporate());
 
             // requires DirectoryScopes.ADMIN_DIRECTORY_USER scope
             

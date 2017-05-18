@@ -18,7 +18,7 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
+            <title>Студенты</title>
             <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -54,16 +54,6 @@
                         <div id="filter">
                             <div class="col-md-6 teacher-list">
                                 <div class="col-md-4">
-                                    <label for="${teacherConst.PARAMETER_FACULTY}">Специальность</label>
-                                    <select class="form-control" data-live-search="true" name="<%=StudentServletControler.PARAMETER_SPESIALITY%>">
-                                        <option selected></option>
-                                        <c:forEach var="speciality" items="${requestScope.ATTRIBUTE_SPECIALITY_LIST}">
-                                            <option<c:if test="${speciality eq ps}"> selected</c:if>>${speciality}</option>
-                                        </c:forEach>          
-                                    </select>
-                                </div>  
-
-                                <div class="col-md-4">
                                     <label for="${teacherConst.PARAMETER_FACULTY}">Факультет</label>                     
                                     <select class="form-control" data-live-search="true" name="<%=StudentServletControler.PARAMETER_FACULTY%>">
                                         <option selected></option>
@@ -72,6 +62,15 @@
                                         </c:forEach>
                                     </select>
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="${teacherConst.PARAMETER_FACULTY}">Специальность</label>
+                                    <select class="form-control" data-live-search="true" name="<%=StudentServletControler.PARAMETER_SPESIALITY%>">
+                                        <option selected></option>
+                                        <c:forEach var="speciality" items="${requestScope.ATTRIBUTE_SPECIALITY_LIST}">
+                                            <option<c:if test="${speciality eq ps}"> selected</c:if>>${speciality}</option>
+                                        </c:forEach>          
+                                    </select>
+                                </div>                                  
                                 <div class="col-md-4">
                                     <label for="${teacherConst.PARAMETER_FACULTY}">Группа</label>                                                  
                                     <select class="form-control" data-live-search="true" name="<%=StudentServletControler.PARAMETER_GROUP%>" style="width: 150px;">
@@ -122,11 +121,11 @@
                                                    }">
                                 </td>                 
                                 <td>id</td>
-                                <td>Фамилие</td>
                                 <td>Имя</td>
+                                <td>Фамилие</td>
                                 <td>Отчество</td>
-                                <td>Фамилие Eng</td>
                                 <td>Имя Eng</td>
+                                <td>Фамилие Eng</td>
                                 <td>Отчество Eng</td>
                                 <td>Email</td>
                                 <td>Email_1</td>

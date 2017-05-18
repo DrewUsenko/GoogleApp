@@ -171,6 +171,65 @@ public class CsvWriterOffice365 {
             Logger.getLogger(CsvWriterOffice365.class.getName()).log(Level.SEVERE, "message");
         }
         return new ArrayList<>(Arrays.asList(str.split("\n")));
-    }                                 
+    }       
+    public static List<String> writeWithCsvMapWriterStud(List<StudentInf> listStudent){
+
+        final String[] header = new String[]{
+            "User Name", 
+            "First Name", "Last Name", "Display Name",
+            "Job Title", "Department", "Office Number",
+            "Office Phone", "Mobile Phone", "Fax",
+            "Address", "City", "State or Province", "ZIP or Postal Code", "Country or Region",             
+            "Password"
+        };
+        
+        String str = "";
+        try(StringWriter sw = new StringWriter();
+            ICsvMapWriter mapWriter = new CsvMapWriter(sw, CsvPreference.STANDARD_PREFERENCE);) {
+            
+            final CellProcessor[] processors = getProcessors();
+
+            // write the header
+            mapWriter.writeHeader(header);
+            
+            // create the customer Maps (using the header elements for the column keys)
+            final Map<String, Object> mapItem = new HashMap<>();
+            for (StudentInf item : listStudent) {                
+                int i;
+                mapItem.put(header[i=0], item.getPersonInf().getEmailCorporate().replace("hneu.net", "m.hneu.edu.ua"));
+                mapItem.put(header[++i], item.getPersonInf().getFirstname());
+                mapItem.put(header[++i], item.getPersonInf().getLastname());
+                mapItem.put(header[++i], item.getPersonInf().getFirstname() + " " + item.getPersonInf().getLastname());
+                
+               /*????????????????????????????????*/ 
+                
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], (item instanceof StudentInf) ? ((StudentInf)item).getGroup() : null);
+
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], null);
+                mapItem.put(header[++i], "Ukraine");                
+                
+                mapItem.put(header[++i], item.getPersonInf().getPassCorporate());
+                // write the customer maps
+                mapWriter.write(mapItem, header, processors);                
+                
+                mapItem.clear();
+            }
+            mapWriter.flush();
+            sw.flush();
+            str =  sw.toString();
+        } catch (IOException ex) {
+            Logger.getLogger(CsvWriterOffice365.class.getName()).log(Level.SEVERE, "message");
+        }
+        return new ArrayList<>(Arrays.asList(str.split("\n")));
+    }
 }
 

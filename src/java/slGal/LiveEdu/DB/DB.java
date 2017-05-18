@@ -15,7 +15,7 @@ public interface DB {
 
     public interface Person {
         
-        public final String TABEL_NAME = "Person_inf";
+        public final String TABEL_NAME = "person_inf";
         
         public final String COLUM_ID = "idPerson";
         public final String COLUM_FIRST_NAME = "firstname";

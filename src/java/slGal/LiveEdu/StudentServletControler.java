@@ -26,9 +26,11 @@ import net.hneu.googleapp.parser.CsvWriterGmail;
 import net.hneu.googleapp.parser.CsvWriterMsdn;
 import net.hneu.googleapp.parser.CsvWriterOffice365;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.*;
 import slGal.LiveEdu.ORM.*;
@@ -38,14 +40,13 @@ import slGal.LiveEdu.ORM.Student;
 import slGal.LiveEdu.ORM.Teacher;
 import java.io.*;
 import slGal.LiveEdu.DB.DB_0;*/
-
 /**
  *
  * @author Andrey
  */
 public class StudentServletControler extends PersonServletControler {
+
     public static final String ACTION_CLEAR_MSDN = "ACTION_CLEAR_MSDN";
-    public static final String ACTION_CREATE_GMAIL = "ACTION_CREATE_GMAIL";
     public static final String ACTION_GENERATE_MSDN_IMPORT = "ACTION_GENERATE_MSDN_IMPORT";
     public static final String ACTION_GENERATE_OFFICE365_IMPORT = "ACTION_GENERATE_OFFICE365_IMPORT";
 
@@ -93,7 +94,7 @@ public class StudentServletControler extends PersonServletControler {
                 .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
 
-        Person.setNameOfAlphabeticFile(ROOT_PATH_SITE);
+        PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
@@ -120,18 +121,18 @@ public class StudentServletControler extends PersonServletControler {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        
+
         List<StudentInf> listStudent = ses.createCriteria(StudentInf.class)
                 .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
 
-        Person.setNameOfAlphabeticFile(ROOT_PATH_SITE);
+        PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 student.getPersonInf().setLastnameEn(null);
                 student.getPersonInf().setFirstnameEn(null);
-                student.getPersonInf().setPatronymicEn(null);               
+                student.getPersonInf().setPatronymicEn(null);
                 student.getPersonInf().setEmailCorporate(null);
                 student.getPersonInf().setPassCorporate(null);
                 student.getPersonInf().setPdf(Boolean.FALSE);
@@ -157,20 +158,23 @@ public class StudentServletControler extends PersonServletControler {
         Session ses = HibernateUtil.currentSession();
         List<StudentInf> listStudent = new ArrayList<>();
 
-        listStudent = ses.createCriteria(StudentInf.class)
-                .add(Restrictions.isNull(DB.Person.COLUM_FIRST_NAME_EN))
-                .add(Restrictions.isNull(DB.Person.COLUM_LAST_NAME_EN))
-                .add(Restrictions.isNull(DB.Person.COLUM_EMAIL_CORPORATE))
-                .add(Restrictions.isNull(DB.Person.COLUM_PASS_CORPORATE))                   
-                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
-                .list();      
+        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        crStudent.createAlias("st.personInf", "person");
+        crStudent.add(Restrictions.isNull("person.firstnameEn"))
+                .add(Restrictions.isNull("person.lastnameEn"))
+                .add(Restrictions.isNull("person.emailCorporate"))
+                .add(Restrictions.isNull("person.passCorporate"))
+                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+
+        System.out.println(crStudent);
+        listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         PersonInf persone = new PersonInf();
         for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
-                persone.translateFIO();
+                student.getPersonInf().translateFIO();
                 ses.update(student);
                 tx.commit();
             } catch (Exception exp) {
@@ -185,119 +189,77 @@ public class StudentServletControler extends PersonServletControler {
     }
 
     private void batchGeneratePassword(HttpServletRequest request) throws HibernateException {
-         String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID != null) {
             Logger.getLogger(TeacherServletControler.class.getName()).log(Level.INFO, "check : {0}", Arrays.toString(arrayID));
 
             Session ses = HibernateUtil.currentSession();
 
-            List<Person> personList = ses.createCriteria(Student.class)
-                    .add(Restrictions.isNotNull(DB_0.Persone.COLUM_FIRST_NAME_EN))
-                    .add(Restrictions.isNotNull(DB_0.Persone.COLUM_LAST_NAME_EN))
-                    .add(Restrictions.isNotNull(DB_0.Persone.COLUM_EMAIL))
-                    .add(Restrictions.isNotNull(DB_0.Persone.COLUM_PASSWORD))
-                    .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
-                    .list();
-                        
-            for (Person person : personList) {
+            List<StudentInf> listStudent = new ArrayList<>();
+
+            Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+            crStudent.createAlias("st.personInf", "person");
+            crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
+                    .add(Restrictions.isNotNull("person.lastnameEn"))
+                    .add(Restrictions.isNotNull("person.emailCorporate"))
+                    .add(Restrictions.isNotNull("person.passCorporate"))
+                    .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+
+            for (StudentInf student : listStudent) {
                 Transaction tx = ses.beginTransaction();
                 try {
-                    person.clearPassword();
-                    person.generatePassword();
-                    
-                    person.setPdf(Boolean.FALSE);
-                   
-                    ses.update(person);                    
+                    student.getPersonInf().clearPassword();
+                    student.getPersonInf().generatePassword();
+                    student.getPersonInf().setPdf(Boolean.FALSE);
+                    ses.update(student);
                     tx.commit();
                 } catch (Exception exp) {
                     tx.rollback();
                     HibernateUtil.closeSession();
-                    
                     Logger.getLogger(TeacherServletControler.class.getName()).log(Level.SEVERE, "MEss", exp);
-                    
-                    ses =  HibernateUtil.currentSession();                    
+                    ses = HibernateUtil.currentSession();
                 } finally {
                 }
             }
             HibernateUtil.closeSession();
-            request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, personList);
+            request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, listStudent);
         }
-    }
-
-    private void bachGmailImport(HttpServletRequest request) throws HibernateException {
-        /*  String[] arrayID = request.getParameterValues("check");
-        if (arrayID == null) {
-            return;
-        }
-        
-        Session ses = HibernateUtil.currentSession();
-
-        List<Person> listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
-                .list();
-        
-        
-        
-        List<String> msdnInport = CsvWriterGmail.readWithCsvBeanReader(listStudent);
-        
-        String[][] create = new String[msdnInport.size()-1][4];
-        for (int i = 0; i < msdnInport.size()-1; i++) {
-            String info[] = new String[17];
-            info = msdnInport.get(i+1).toString().split(",");
-            for (int j = 0; j < 4; j++)
-            {
-                create[i][j] = info[j];
-            }
-	}
-        
-        try {
-            ApiGoogle.CreateUser(ROOT_PATH_SITE, create, listStudent.size());
-        }catch(GoogleJsonResponseException ex) {
-            
-            Logger.getLogger(StudentServletControler.class.getName()).log(Level.SEVERE, ex.getDetails().getMessage().toString(), ex);
-            
-        }catch (Exception ex) {
-            Logger.getLogger(StudentServletControler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);    */  
     }
 
     private void bachMSDNInport(HttpServletRequest request) throws HibernateException {
-        /*String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
 
-        List<Person> listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
+        List<StudentInf> listStudent = ses.createCriteria(StudentInf.class)
+                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
-        
-        List<String> msdnInport = CsvWriterMsdn.readWithCsvBeanReader(listStudent);
+
+        List<String> msdnInport = CsvWriterMsdn.readWithCsvBeanReaderStud(listStudent);
 
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_CSV_IMPORT, msdnInport);*/
+        request.setAttribute(ATTRIBUTE_CSV_IMPORT, msdnInport);
     }
 
     private void bachOffice365Inport(HttpServletRequest request) throws HibernateException {
-        /*  String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
 
-        List<Person> listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
+        List<StudentInf> listStudent = ses.createCriteria(StudentInf.class)
+                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
-        
-        List<String> office365Inport = CsvWriterOffice365.writeWithCsvMapWriter(listStudent);
+
+        List<String> office365Inport = CsvWriterOffice365.writeWithCsvMapWriterStud(listStudent);
 
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_CSV_IMPORT, office365Inport);*/
+        request.setAttribute(ATTRIBUTE_CSV_IMPORT, office365Inport);
     }
 
     private void bachSetMSDN(HttpServletRequest request, boolean flagMsdn) throws HibernateException {
@@ -307,17 +269,18 @@ public class StudentServletControler extends PersonServletControler {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<PersonInf> listPerson = new ArrayList<>();
 
-        listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
+        listPerson = ses.createCriteria(Student.class)
+                .add(Restrictions.in(DB.Person.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
 
         Person.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (PersonInf person : listPerson) {
             Transaction tx = ses.beginTransaction();
             try {
-                student.setMsdnaa(flagMsdn);
+                
+                person.setPersoneServicesConsultations(person.getIdPerson(), );
                 ses.update(student);
                 tx.commit();
             } catch (Exception exp) {
@@ -360,7 +323,6 @@ public class StudentServletControler extends PersonServletControler {
     }
 
     private void batchGenerateEmail(HttpServletRequest request) throws HibernateException {
-        /*  //boolean ukr = Boolean.parseBoolean(request.getParameter(PARAMETER_UKRAINIAN));
         String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
@@ -368,45 +330,47 @@ public class StudentServletControler extends PersonServletControler {
         System.out.println(Arrays.toString(arrayID));
 
         Session ses = HibernateUtil.currentSession();
-        List<Student> listStudent = new ArrayList<>();
-        Criteria cr = ses.createCriteria(Student.class);
+        List<StudentInf> listStudent = new ArrayList<>();
+        Criteria cr = ses.createCriteria(StudentInf.class);
         Transaction tx = null;
 
-//                List<Integer> listInvalidEmail = new ArrayList<>();
-        cr = ses.createCriteria(Student.class);
-        listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.isNotNull(DB_0.Persone.COLUM_FIRST_NAME_EN))
-                .add(Restrictions.isNotNull(DB_0.Persone.COLUM_LAST_NAME_EN))
-                .add(Restrictions.isNull(DB_0.Persone.COLUM_EMAIL))
-                .add(Restrictions.isNull(DB_0.Persone.COLUM_PASSWORD))
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
+        cr = ses.createCriteria(StudentInf.class);
+        listStudent = ses.createCriteria(StudentInf.class, "st")
+                .createAlias("st.personInf", "person")
+                .add(Restrictions.isNotNull("person.firstnameEn"))
+                .add(Restrictions.isNotNull("person.lastnameEn"))
+                .add(Restrictions.isNull("person.emailCorporate"))
+                .add(Restrictions.isNull("person.passCorporate"))
+                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
 
-        for (Student student : listStudent) {
+        for (StudentInf student : listStudent) {
             List<String> listStudenEmail = null;
             List<Teacher> listTeacherEmail = null;
             for (int i = 1; i <= 4; i++) {
-                student.generateEmail(i);
-                String email = student.getEmail();
-                cr = ses.createCriteria(Student.class);
-                listStudenEmail = ses.createCriteria(Student.class)
-                        .add(Restrictions.eq(DB_0.Persone.COLUM_EMAIL, email))
+                student.getPersonInf().generateEmail(i);
+                String email = student.getPersonInf().getEmailCorporate();
+                cr = ses.createCriteria(StudentInf.class);
+                listStudenEmail = ses.createCriteria(StuffInf.class, "st")
+                        .createAlias("st.personInf", "person")
+                        .add(Restrictions.eq("person.emailCorporate", email))
                         .list();
 
-                cr = ses.createCriteria(Teacher.class);
-                listTeacherEmail = ses.createCriteria(Teacher.class)
-                        .add(Restrictions.eq(DB_0.Persone.COLUM_EMAIL, email))
+                cr = ses.createCriteria(StuffInf.class);
+                listTeacherEmail = ses.createCriteria(StuffInf.class, "st")
+                        .createAlias("st.personInf", "person")
+                        .add(Restrictions.eq("person.emailCorporate", email))
                         .list();
 
                 if (listStudenEmail.isEmpty() && listTeacherEmail.isEmpty()) {
                     break;
                 }
-                student.clearEmail();
+                student.getPersonInf().clearEmail();
             }
             if (listStudenEmail.isEmpty()) {
                 tx = ses.beginTransaction();
                 try {
-                    student.generatePassword();
+                    student .getPersonInf().generatePassword();
                     ses.update(student);
                     tx.commit();
                 } catch (Exception exp) {
@@ -418,67 +382,52 @@ public class StudentServletControler extends PersonServletControler {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);*/
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
     }
 
     private void batchGeneratePDF(HttpServletRequest request) throws IOException, HibernateException {
-        /*   String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-
+        
         @SuppressWarnings("UnusedAssignment")
-        Criteria cr = ses.createCriteria(Student.class);
-        List<Student> listStudent = cr.add(Restrictions.isNotNull(DB_0.Persone.COLUM_FIRST_NAME))
-                .add(Restrictions.isNotNull(DB_0.Persone.COLUM_LAST_NAME))
-                .add(Restrictions.isNotNull(DB_0.Persone.COLUM_EMAIL))
-                .add(Restrictions.isNotNull(DB_0.Persone.COLUM_PASSWORD))
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
-                //                .add(Restrictions.eq(DB.Persone.COLUM_UKRAINIAN, ukr))
+        Criteria cr = ses.createCriteria(StudentInf.class, "st");
+        List<StudentInf> listStudent = cr.createAlias("st.personInf", "person")
+                .add(Restrictions.isNotNull("person.firstname"))
+                .add(Restrictions.isNotNull("person.lastname"))
+                .add(Restrictions.isNotNull("person.emailCorporate"))
+                .add(Restrictions.isNotNull("person.passCorporate"))
+                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
         HibernateUtil.closeSession();
-        //String pathExportDir = "." +  request.getContextPath() + "/export/";
 
         Date date = new Date();
         String pathExportDir = ROOT_PATH_SITE + "export/Student/";
-//        pathExportDir = ROOT_PATH_SITE + date.getTime() + "/";
-
-        // создаем несколько директорий
-//        (new File(pathExportDir)).mkdirs();
-//        LiveManager.CreateFile(pathExportDir + "Student-" + date.getTime() + ".csv", listStudent);
 
         List<Integer> listID = new ArrayList<>();
-        for (Student student : listStudent) {
-            //Student student = (Student) object;
-
-//            String root = pathExportDir
-//                    + String.valueOf(student.getFaculty()) + "/"
-//                    //+ String.valueOf(teacher.getDepartment()) + "/";
-//                    + String.valueOf(student.getSpec()) + "/"
-//                    //            + String.valueOf(student.getKurs()) + "/"
-//                    + String.valueOf(student.getGroupa());
-
+        for (StudentInf student : listStudent) {
             Path pathOfGroup = ROOT_PATH_SITE
                     .resolve("export/Student")
-                    .resolve(student.getFaculty())
-                    .resolve(student.getSpec())
-                    .resolve(student.getGroupa());
+                    .resolve(student.getSpecInf().getFacultyInf().getFaculty())
+                    .resolve(student.getSpecInf().getSpec())
+                    .resolve(student.getGroup());
             
             pathOfGroup.toFile().mkdirs();
             PDFManager.setResurce(ROOT_PATH_SITE.resolve("res"));
 
             try {
-                PDFManager.createPDF_New(student, pathOfGroup, student.isMsdnaa(), student.isOffice365());
+                PDFManager.createPDF_New(student, pathOfGroup, student.getPersonInf().isMsdnaa(), student.getPersonInf().isOffice365());
                 ses = HibernateUtil.currentSession();
                 Transaction tr = ses.beginTransaction();
                 try {
-                    student.setPdf(true);
+                    student.getPersonInf().setPdf(true);
                     ses.update(student);
                     tr.commit();
                     // 
-                    listID.add(student.getId());
+                    listID.add(student.getIdStudent());
                 } catch (HibernateException ex) {
                     if (tr != null) {
                         tr.rollback();
@@ -504,7 +453,7 @@ public class StudentServletControler extends PersonServletControler {
                 //                .add(Restrictions.eq(DB.Persone.COLUM_UKRAINIAN, ukr))
                 .list();
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);*/
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
     }
 
     /**
@@ -600,12 +549,6 @@ public class StudentServletControler extends PersonServletControler {
                 bachMSDNInport(request);
                 forwardPage = "/WEB-INF/jsp/view/rawCsv.jsp";
                 break;
-
-            case ACTION_CREATE_GMAIL:
-                bachGmailImport(request);
-                //forwardPage = "/WEB-INF/jsp/view/rawCsv.jsp";
-                break;
-
             case ACTION_GENERATE_OFFICE365_IMPORT:
                 bachOffice365Inport(request);
                 forwardPage = "/WEB-INF/jsp/view/rawCsv.jsp";
@@ -619,13 +562,13 @@ public class StudentServletControler extends PersonServletControler {
 
         List<String> listSpeciality = StudentInf.getAllSpecs();
         request.setAttribute(ATTRIBUTE_SPECIALITY_LIST, listSpeciality);
-        
+
         List<String> listGroup = StudentInf.getAllGroups();
         request.setAttribute(ATTRIBUTE_GROUP_LIST, listGroup);
 
         List<String> listFaculty = StudentInf.getAllFaculty();
         request.setAttribute(ATTRIBUTE_FACULTY_LIST, listFaculty);
-        
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwardPage);
         dispatcher.forward(request, response);
     }
@@ -635,46 +578,39 @@ public class StudentServletControler extends PersonServletControler {
         Session ses = HibernateUtil.currentSession();
         @SuppressWarnings("UnusedAssignment")
         List<StudentInf> listStudent = new ArrayList<>();
-        Criteria cr = ses.createCriteria(StudentInf.class);
+        Criteria cr = ses.createCriteria(StudentInf.class, "st");
 
         // Creteria restictions
-        /*String str = request.getParameter(PARAMETER_FACULTY);
+        String str = request.getParameter(PARAMETER_FACULTY);
         if (str != null && !str.equals("")) {
-            cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_FACULTY, str));
+            cr = cr.createAlias("st.specInf", "sp")
+                    .createAlias("sp.facultyInf", "fc")
+                    .add(Restrictions.eq("fc.faculty", str));
         }
-        
-        String paramCourseStart = request.getParameter(PARAMETER_COURSE_START);        
-        if (paramCourseStart != null && !paramCourseStart.equals("")) {
-                       
-            String paramCourseEnd = request.getParameter(PARAMETER_COURSE_END);
-            if (paramCourseEnd != null && !paramCourseStart.equals("")) {
-                cr = cr.add(Restrictions.ge(DB_0.Persone.COLUM_COURCE, Integer.valueOf(paramCourseStart)));
-                cr = cr.add(Restrictions.le(DB_0.Persone.COLUM_COURCE, Integer.valueOf(paramCourseEnd)));
-            }else {
-                cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_COURCE, Integer.valueOf(paramCourseStart)));
-            }
-        }*/
         
         String strGroup = request.getParameter(PARAMETER_GROUP);
         if (strGroup != null && !strGroup.equals("")) {
-            cr = cr.add(Restrictions.eq(DB.Student.COLUM_GROUP, strGroup));                        
+            cr = cr.add(Restrictions.eq(DB.Student.COLUM_GROUP, strGroup));
         }
 
-        /*str = request.getParameter(PARAMETER_SPESIALITY);
+        str = request.getParameter(PARAMETER_SPESIALITY);
         if (str != null && !str.equals("")) {
-            cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_SPEC, str));
+            cr = cr.add(Restrictions.eq("sp.spec", str));
         }
+        
         boolean paramUkr = Boolean.parseBoolean(request.getParameter(PARAMETER_UKRAINIAN));
-        cr = cr.add(Restrictions.eq(DB_0.Persone.COLUM_UKRAINIAN, paramUkr));
+        cr = cr.add(Restrictions.eq(DB.Student.COLUM_UKRAINIAN, paramUkr));
         
         String paramEmailStr = request.getParameter(PARAMETER_EMAIL);
         if (paramEmailStr != null && !paramEmailStr.equals("")) {
             if (Boolean.parseBoolean(paramEmailStr)) {
-                cr = cr.add(Restrictions.isNotNull(DB_0.Persone.COLUM_EMAIL));
+                cr = cr.createAlias("st.personInf", "pr")
+                        .add(Restrictions.isNotNull("pr.emailCorporate"));
             } else {
-                cr = cr.add(Restrictions.isNull(DB_0.Persone.COLUM_EMAIL));
+                cr = cr.createAlias("st.personInf", "pr")
+                        .add(Restrictions.isNull("pr.emailCorporate"));
             }
-        }*/
+        }
         listStudent = cr.list();
 
         HibernateUtil.closeSession();

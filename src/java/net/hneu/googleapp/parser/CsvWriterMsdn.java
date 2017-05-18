@@ -19,54 +19,65 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import slGal.LiveEdu.ORM.PersonInf;
+import slGal.LiveEdu.ORM.StudentInf;
 
 /**
  *
  * @author Andrey
  */
 public class CsvWriterMsdn {
+
     private static final Charset UTF = Charset.forName("UTF-8");
-       
+
     private static CellProcessor[] getProcessors() {
         final CellProcessor[] processors;
         processors = new CellProcessor[]{
-            // Presone
-            new NotNull(),  // email
+            new NotNull(), // email
         };
         return processors;
     }
-   
-    public static List<String> readWithCsvBeanReader(List<PersonInf> personList) {
-//        public static String readWithCsvBeanReader(List<Person> personList) {
-        //final String[] header = new String[] { "First Name", "Last Name", "Birthday"};
-        final String[] fieldMapping = new String[] {"email"};
+
+    public static List<String> readWithCsvBeanReader(List<PersonInf> listPerson) {
+        final String[] fieldMapping = new String[]{"email"};
         final CellProcessor[] processors = getProcessors();
-        
+
         ICsvBeanWriter beanWriter = null;
         StringWriter sw = new StringWriter();
         List<String> list = new ArrayList<>();
         try {
             beanWriter = new CsvBeanWriter(sw,
-                        //new FileWriter("target/writeWithCsvBeanWriter.csv"),
-                          CsvPreference.STANDARD_PREFERENCE);
-                
-            // write the header
-//                beanWriter.writeHeader(header);
-                
+                    CsvPreference.STANDARD_PREFERENCE);
+
             // write the beans
-            for( final PersonInf person : personList ) {
-                beanWriter.write(person, fieldMapping , processors);
-//                beanWriter.flush();
-//                list.add(sw.toString());
-//                sw.flush();
-//                sb.append(sw.toString());
+            for (final PersonInf person : listPerson) {
+                beanWriter.write(person, fieldMapping, processors);
             }
-            beanWriter.close();            
-        }catch(IOException ex){
+            beanWriter.close();
+        } catch (IOException ex) {
             Logger.getLogger(CsvWriterMsdn.class.getName()).log(Level.SEVERE, null, ex);
-        }         
-        
+        }
+
         return new ArrayList<>(Arrays.asList(sw.toString().split("\n")));
-//        return sw.toString();
+    }
+    
+    public static List<String> readWithCsvBeanReaderStud(List<StudentInf> listStudent) {
+        final String[] fieldMapping = new String[]{"email"};
+        final CellProcessor[] processors = getProcessors();
+
+        ICsvBeanWriter beanWriter = null;
+        StringWriter sw = new StringWriter();
+        try {
+            beanWriter = new CsvBeanWriter(sw, CsvPreference.STANDARD_PREFERENCE);
+
+            // write the beans
+            for (final StudentInf student : listStudent) {
+                beanWriter.write(student, fieldMapping, processors);
+            }
+            beanWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(CsvWriterMsdn.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new ArrayList<>(Arrays.asList(sw.toString().split("\n")));
     }
 }

@@ -6,7 +6,8 @@
     <class name="slGal.LiveEdu.ORM.PersoneServicesConsultation" table="persone_services_consultation" catalog="googleschema" optimistic-lock="version">
         <id name="id" type="byte">
             <column name="id" />
-            <generator class="assigned" />
+            <!--<generator class="assigned" />-->
+            <generator class="identity" />
         </id>
         <many-to-one name="personInf" class="slGal.LiveEdu.ORM.PersonInf" fetch="select">
             <column name="idPersone" />

@@ -20,8 +20,8 @@ public class PersoneServicesConsultation  implements java.io.Serializable {
     public PersoneServicesConsultation(byte id) {
         this.id = id;
     }
-    public PersoneServicesConsultation(byte id, PersonInf personInf, Services services) {
-       this.id = id;
+    public PersoneServicesConsultation(PersonInf personInf, Services services) {
+       //this.id = id;
        this.personInf = personInf;
        this.services = services;
     }
