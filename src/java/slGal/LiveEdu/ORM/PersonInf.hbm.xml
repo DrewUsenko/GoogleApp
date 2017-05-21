@@ -44,11 +44,11 @@
         <property name="passCorporate" type="string">
             <column name="pass_corporate" length="45" />
         </property>
-        <set name="servicess" table="service_person" fetch="select" cascade="all">
+        <set name="services" table="service_person" fetch="join" cascade="all">
             <key> 
-                <column name="idPersone" /> 
+                <column name="person_id" /> 
             </key>
-            <many-to-many class="slGal.LiveEdu.ORM.Services" column="idServices"/>
+            <many-to-many class="slGal.LiveEdu.ORM.Services" column="service_id"/>
         </set>
         <set name="studentInfs" table="student_inf" inverse="true" lazy="false" fetch="join">
             <key>

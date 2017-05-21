@@ -10,6 +10,8 @@
     <class>slGal.LiveEdu.ORM.SpecInf</class>
     <class>slGal.LiveEdu.ORM.Services</class>
     <class>slGal.LiveEdu.ORM.StudentInf</class>
+    <class>slGal.LiveEdu.ORM.ServicePerson</class>
+    <class>slGal.LiveEdu.ORM.PersonInf_1</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/googleschema?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true"/>

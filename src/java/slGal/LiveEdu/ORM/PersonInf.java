@@ -28,8 +28,8 @@ public class PersonInf  implements java.io.Serializable {
 
     private static Path nameFileAlphabetic;
     
-    @OneToMany(mappedBy = "pers", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@OneToMany(mappedBy = "pers", cascade = CascadeType.ALL)
+   // @LazyCollection(LazyCollectionOption.FALSE)
     
      private Integer idPerson;
      private String firstname;
@@ -44,14 +44,13 @@ public class PersonInf  implements java.io.Serializable {
      private Boolean pdf;
      private String passPersonal;
      private String passCorporate;
-     private Set<Services> servicess = new HashSet<Services>(0);
+     private Set<Services> services = new HashSet<Services>(0);
      private Set<StudentInf> studentInfs = new HashSet<StudentInf>(0);
-     private Set<StuffInf> stuffInfs = new HashSet<StuffInf>(0);
+     private Set<StuffInf> stuffInfs;
 
     public PersonInf() {
     }
-
-	
+    	
     public PersonInf(String firstname, String lastname, String iin) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -70,7 +69,7 @@ public class PersonInf  implements java.io.Serializable {
        this.pdf = pdf;
        this.passPersonal = passPersonal;
        this.passCorporate = passCorporate;
-       this.servicess = service;
+       this.services = service;
        this.studentInfs = studentInfs;
        this.stuffInfs = stuffInfs;
     }
@@ -168,11 +167,11 @@ public class PersonInf  implements java.io.Serializable {
     }
     
     public Set<Services> getServices() {
-        return this.servicess;
+        return this.services;
     }
     
     public void setServices(Set<Services> service) {
-        this.servicess = service;
+        this.services = service;
     }
     public Set<StudentInf> getStudentInfs() {
         return this.studentInfs;

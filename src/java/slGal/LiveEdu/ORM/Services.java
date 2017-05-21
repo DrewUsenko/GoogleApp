@@ -2,8 +2,18 @@ package slGal.LiveEdu.ORM;
 // Generated 04.05.2017 21:56:35 by Hibernate Tools 4.3.1
 
 
+import edu.hneu.googleapp.utill.StringExt;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import slGal.LiveEdu.DB.DB;
+import slGal.LiveEdu.DB.HibernateUtil;
 import slGal.LiveEdu.ORM.PersonInf;
 
 /**
@@ -52,12 +62,21 @@ public class Services  implements java.io.Serializable {
     public void setServiceUrl(String serviceUrl) {
         this.serviceUrl = serviceUrl;
     }
-    public Set<PersonInf> getPerson() {
+    public Set<PersonInf> getPersones() {
         return this.persones;
     }
     
-    public void setPerson(Set<PersonInf> person) {
+    public void setPersones(Set<PersonInf> person) {
         this.persones = person;
+    }
+    
+    public static List<Services> getAllServices()
+    {
+        Session ses = HibernateUtil.currentSession();
+        List<Services> listServ ;
+
+        listServ = ses.createCriteria(Services.class).list();
+        return listServ;
     }
 
 

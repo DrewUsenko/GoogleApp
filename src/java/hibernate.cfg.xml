@@ -87,7 +87,6 @@ Contributor(s):
     
     <!-- Mappings -->
     <mapping resource="slGal/LiveEdu/ORM/PersonInf.hbm.xml"/>
-    <mapping resource="slGal/LiveEdu/ORM/PersoneServicesConsultation.hbm.xml"/>
     <mapping resource="slGal/LiveEdu/ORM/StuffInf.hbm.xml"/>
     <mapping resource="slGal/LiveEdu/ORM/DepartmentInf.hbm.xml"/>
     <mapping resource="slGal/LiveEdu/ORM/Services.hbm.xml"/>

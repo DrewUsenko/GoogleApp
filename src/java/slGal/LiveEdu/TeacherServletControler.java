@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import slGal.LiveEdu.DB.DB;
+import slGal.LiveEdu.ORM.StudentInf;
 
 /**
  *
@@ -241,12 +242,12 @@ public class TeacherServletControler extends HttpServlet {
 
             for (StuffInf teacher : listTeachers) {
                 List<String> listStudenEmail = null;
-                List<StuffInf> listTeacherEmail;
+                List<StuffInf> listTeacherEmail = null;
                 for (int i = 1; i <= 4; i++) {
                     teacher.getPersonInf().generateEmail(i);
                     String email = teacher.getPersonInf().getEmailCorporate();
-
-                    listStudenEmail = ses.createCriteria(PersonInf.class, "st")
+                    
+                    listStudenEmail = ses.createCriteria(StudentInf.class, "st")
                             .createAlias("st.personInf", "person")
                             .add(Restrictions.eq("person.emailCorporate", email))
                             .list();
@@ -261,7 +262,7 @@ public class TeacherServletControler extends HttpServlet {
                     }
                     teacher.getPersonInf().clearEmail();
                 }
-                if (listStudenEmail != null && listStudenEmail.isEmpty()) {
+                if (listTeacherEmail.isEmpty()) {
                     Transaction tx = ses.beginTransaction();
                     try {
                         teacher.getPersonInf().generatePassword();

@@ -14,11 +14,11 @@
         <property name="serviceUrl" type="string">
             <column name="service_url" length="45" not-null="true" />
         </property>
-        <set name="persones" table="service_person" fetch="select" cascade="all">
+<!--        <set name="persones" table="service_person" fetch="join" cascade="all">
             <key> 
-                <column name="idServices" /> 
+                <column name="service_id" /> 
             </key>
-            <many-to-many class="slGal.LiveEdu.ORM.PersonInf" column="idPerson"/>
-        </set>
+            <many-to-many class="slGal.LiveEdu.ORM.PersonInf" column="person_id"/>
+        </set>-->
     </class>
 </hibernate-mapping>

@@ -108,11 +108,10 @@ public interface DB {
     
     public interface Persone_Services {
         
-        public final String TABEL_NAME = "persone_services_consultation"; 
-        
-        public final String COLUM_ID = "id";
-        public final String COLUM_ID_PERSONE = "idPersone";
-        public final String COLUM_ID_SERVICES = "idServices";
+        public final String TABEL_NAME = "service_person"; 
+                
+        public final String COLUM_ID_PERSONE = "person_id";
+        public final String COLUM_ID_SERVICES = "service_id";
         
     }
 

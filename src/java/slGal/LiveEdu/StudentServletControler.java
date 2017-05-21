@@ -32,6 +32,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.*;
@@ -274,7 +275,7 @@ public class StudentServletControler extends HttpServlet {
     }
 
     private void bachSetMSDN(HttpServletRequest request, boolean flagMsdn) throws HibernateException {
-        /*String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
         }
@@ -289,13 +290,15 @@ public class StudentServletControler extends HttpServlet {
         /*Set<Services> services = new HashSet<Services>(); 
         services.*/
 
-        /*PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
+        PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
-            try {
-                
-                student.getPersonInf().getServices();
-                ses.update(listStudent);
+            Services serv = (Services) ses.get(Services.class, 1);  
+            try { 
+                Set<Services> serv_l = student.getPersonInf().getServices();
+                serv_l.add(serv);
+                student.getPersonInf().setServices(serv_l);
+                ses.saveOrUpdate(listStudent);
                 tx.commit();
             } catch (Exception exp) {
                 tx.rollback();
@@ -304,7 +307,7 @@ public class StudentServletControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);*/
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
     }
 
     private void bachSetOffice365(HttpServletRequest request, boolean falgOffice365) throws HibernateException {
@@ -365,7 +368,7 @@ public class StudentServletControler extends HttpServlet {
                 student.getPersonInf().generateEmail(i);
                 String email = student.getPersonInf().getEmailCorporate();
                 cr = ses.createCriteria(StudentInf.class);
-                listStudenEmail = ses.createCriteria(StuffInf.class, "st")
+                listStudenEmail = ses.createCriteria(StudentInf.class, "st")
                         .createAlias("st.personInf", "person")
                         .add(Restrictions.eq("person.emailCorporate", email))
                         .list();
@@ -607,14 +610,18 @@ public class StudentServletControler extends HttpServlet {
         Session ses = HibernateUtil.currentSession();
         @SuppressWarnings("UnusedAssignment")
         List<StudentInf> listStudent = new ArrayList<>();
-        Criteria cr = ses.createCriteria(StudentInf.class, "st");
+        Criteria cr = ses.createCriteria(StudentInf.class, "st")
+                .createAlias("st.specInf", "sp")
+//                .setFetchMode("st.personeInf.services", FetchMode.SELECT)
+//                .setProjection( Projections.projectionList()
+//                        .add( Projections.property("st.") )
+//                )
+                .createAlias("sp.facultyInf", "fc");
 
         // Creteria restictions
         String str = request.getParameter(PARAMETER_FACULTY);
         if (str != null && !str.equals("")) {
-            cr = cr.createAlias("st.specInf", "sp")
-                    .createAlias("sp.facultyInf", "fc")
-                    .add(Restrictions.eq("fc.faculty", str));
+            cr = cr.add(Restrictions.eq("fc.faculty", str));
         }
 
         String strGroup = request.getParameter(PARAMETER_GROUP);
