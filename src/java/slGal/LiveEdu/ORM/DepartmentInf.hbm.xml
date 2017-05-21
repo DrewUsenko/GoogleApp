@@ -8,7 +8,7 @@
             <column name="idDepartment" />
             <generator class="identity" />
         </id>
-        <many-to-one name="facultyInf" class="slGal.LiveEdu.ORM.FacultyInf" fetch="select">
+        <many-to-one name="facultyInf" class="slGal.LiveEdu.ORM.FacultyInf" fetch="join">
             <column name="Faculty_inf_idFaculty" not-null="true" />
         </many-to-one>
         <property name="department" type="string">

@@ -20,6 +20,7 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import slGal.LiveEdu.ORM.PersonInf;
 import slGal.LiveEdu.ORM.StudentInf;
+import slGal.LiveEdu.ORM.StuffInf;
 
 /**
  *
@@ -36,21 +37,20 @@ public class CsvWriterMsdn {
         };
         return processors;
     }
-
-    public static List<String> readWithCsvBeanReader(List<PersonInf> listPerson) {
+    
+    public static List<String> readWithCsvBeanReader(List<StuffInf> listStuff) {
         final String[] fieldMapping = new String[]{"email"};
         final CellProcessor[] processors = getProcessors();
 
         ICsvBeanWriter beanWriter = null;
         StringWriter sw = new StringWriter();
-        List<String> list = new ArrayList<>();
         try {
             beanWriter = new CsvBeanWriter(sw,
                     CsvPreference.STANDARD_PREFERENCE);
 
             // write the beans
-            for (final PersonInf person : listPerson) {
-                beanWriter.write(person, fieldMapping, processors);
+            for (final StuffInf stuff : listStuff) {
+                beanWriter.write(stuff, fieldMapping, processors);
             }
             beanWriter.close();
         } catch (IOException ex) {

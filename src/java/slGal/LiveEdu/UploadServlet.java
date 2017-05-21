@@ -40,15 +40,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.HibernateUtil;
-import slGal.LiveEdu.ORM.*;
-import slGal.LiveEdu.ORM.Teacher;
 import static slGal.LiveEdu.PersonServletControler.ACTION_GENERATE_DEFAULT;
 import static slGal.LiveEdu.StudentServletControler.ATTRIBUTE_STUDENT;
 import slGal.LiveEdu.bean.CsvStudentBean;
 import slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter;
 import slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter;
 import slGal.LiveEdu.bean.CsvUploadBean;
-import slGal.LiveEdu.DB.*;
+import slGal.LiveEdu.DB.DB;
+import slGal.LiveEdu.ORM.StudentInf;
+import slGal.LiveEdu.ORM.StuffInf;
 
 /**
  *
@@ -104,26 +104,17 @@ public class UploadServlet extends HttpServlet {
         switch (action) {
             case ACTION_UPLOAD_STUDENT_CSV:
                 validateStudent(request);
-//                uploadStudent(request);
                 forward = "/StudentList_1.jsp";
-
-                /*List<String> listSpeciality = StudentInf.getAllSpecs();
-                request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, listSpeciality);*/
-
                 List<String> listGroup = StudentInf.getAllGroups();
                 request.setAttribute(StudentServletControler.ATTRIBUTE_GROUP_LIST, listGroup);
-
-                /*List<String> listFaculty = Student.getAllFaculty();
-                request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, listFaculty); */
                 response.setContentType("text/html;charset=UTF-8");
                                 
                 break;
             case ACTION_UPLOAD_TEACHER_CSV:
                 uploadTeachers(request);
                 forward = "/TeacherList.jsp";
-
-                request.setAttribute(TeacherConst.ATTRIBUTE_DEPARTMENT_LIST, Teacher.getAllDepartment());
-                request.setAttribute(TeacherConst.ATTRIBUTE_FACULTY_LIST, Teacher.getAllFaculty());
+                request.setAttribute(TeacherConst.ATTRIBUTE_DEPARTMENT_LIST, StuffInf.getAllDepartment());
+                request.setAttribute(TeacherConst.ATTRIBUTE_FACULTY_LIST, StuffInf.getAllFaculty());
                 
                 response.setContentType("text/html;charset=UTF-8");
                 break;
@@ -172,7 +163,7 @@ public class UploadServlet extends HttpServlet {
             if (studentList.isEmpty()) {
                 request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
             } else {
-                List<Student> listStud = new ArrayList<>();
+                List<StudentInf> listStud = new ArrayList<>();
                 for (CsvReaderStudent.CSVBean csvBean : studentList){                    
                     if (!csvBean.getList().isEmpty()) {                        
                         //SuperCsvCellProcessorException ex = csvBean.getList().get(0);
@@ -186,34 +177,6 @@ public class UploadServlet extends HttpServlet {
                     
                     Logger.getLogger(CsvReaderStudent.class.getName()).log(Level.INFO, stringBuilder.toString());
                 }                   
-//                Session ses = HibernateUtil.currentSession();
-//                try {
-//                for (Student st : studentList) {
-//                    Transaction tx = ses.beginTransaction();
-//                    try {
-////                        Integer id = (Integer) ses.save(st);
-//                        ses.save(st);
-////                        st.setId(id);
-//                        tx.commit();
-//                    } catch (HibernateException ex) {
-//                        if (tx != null)
-//                            tx.rollback();
-//                        listInvalidInport.add(st);
-//                        Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                        throw ex;
-//                    }                                       
-//                }}catch(HibernateException ex){
-//                        Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                finally {
-//                        HibernateUtil.closeSession();
-//                    }
-//                
-//                if (!listInvalidInport.isEmpty()) {
-//                    Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, listInvalidInport);
-//                }
-
-                //request.setAttribute(PARAMETER_VALUE_STUDENT_CSV, parserCsvStudent.getErrorList());
                 request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, studentList);
                 }
             }
@@ -242,12 +205,9 @@ public class UploadServlet extends HttpServlet {
                 try{
                     final int[] idx = { 0 };
                     csvUploadBean.getBodyOfTable()
-                            //.stream()
-                            //.filter(csvStudentBean -> csvStudentBean instanceof CsvStudentBean)
-                            //.map(studentBean -> (CsvStudentBean)studentBean)
                             .forEach(x -> {                        
-                        Student student = (Student) ses.createCriteria(Student.class)
-                            .add(Restrictions.eq(DB_0.Persone.COLUM_EDBO, x.getEdbo()))
+                        StudentInf student = (StudentInf) ses.createCriteria(StudentInf.class)
+                            .add(Restrictions.eq(DB.Student.COLUM_EDBO, x.getEdbo()))
                             .uniqueResult();
                         if (student != null)
                             csvUploadBean.getErrorOfRecords().get(idx[0]).add("Exist in DB");                        
@@ -271,7 +231,7 @@ public class UploadServlet extends HttpServlet {
         
         
         Session ses1 = HibernateUtil.currentSession();
-        String queryFrom = "SELECT id_person FROM   persons WHERE  id_person=(SELECT MAX(id_person) FROM persons)";
+        String queryFrom = "SELECT idPerson FROM person_inf WHERE idPerson=(SELECT MAX(idPerson) FROM person_inf)";
         List<String> list = null;
         from = ses1.createSQLQuery(queryFrom).list().toString();
         HibernateUtil.closeSession();
@@ -281,8 +241,8 @@ public class UploadServlet extends HttpServlet {
         
         final int[] idx = { 0 };
         csvUploadBean.getBodyOfTable().forEach((CsvStudentBean x)->{
-            Student student = (Student) ses.createCriteria(Student.class)
-                .add(Restrictions.eq(DB_0.Persone.COLUM_EDBO, x.getEdbo()))
+            StudentInf student = (StudentInf) ses.createCriteria(StudentInf.class)
+                .add(Restrictions.eq(DB.Student.COLUM_EDBO, x.getEdbo()))
                 .uniqueResult();
             if (student != null)
                 csvUploadBean.getErrorOfRecords().get(idx[0]).add("Exist in DB");
@@ -305,45 +265,6 @@ public class UploadServlet extends HttpServlet {
         
         HibernateUtil.closeSession();      
         request.getSession().setAttribute(UploadServlet.ATTRIBUTE_CSV_UPLOAD_BEAN, csvUploadBean);
-        
-////        listStudent = ses.createCriteria(Student.class)
-////                .add(Restrictions.in(DB.Persone.COLUM_ID, StringExt.toInt(arrayID)))
-////                .list();
-//
-//        if (csvUploadBean.getstudentList.isEmpty()) {
-//            request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
-//        } else {
-////                Session ses = HibernateUtil.currentSession();
-////                try {
-////                for (Student st : studentList) {
-////                    Transaction tx = ses.beginTransaction();
-////                    try {
-//////                        Integer id = (Integer) ses.save(st);
-////                        ses.save(st);
-//////                        st.setId(id);
-////                        tx.commit();
-////                    } catch (HibernateException ex) {
-////                        if (tx != null)
-////                            tx.rollback();
-////                        listInvalidInport.add(st);
-////                        Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-////                        throw ex;
-////                    }                                       
-////                }}catch(HibernateException ex){
-////                        Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-////                        }
-////                finally {
-////                        HibernateUtil.closeSession();
-////                    }
-////                
-////                if (!listInvalidInport.isEmpty()) {
-////                    Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, listInvalidInport);
-////                }
-//
-//                //request.setAttribute(PARAMETER_VALUE_STUDENT_CSV, parserCsvStudent.getErrorList());
-//                //request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, studentList);
-//                }
-//            }
         }
     
     
@@ -354,7 +275,7 @@ public class UploadServlet extends HttpServlet {
         if (csvFile != null) {
             // Parse Student
             CsvReaderStudent parserCsvStudent = new CsvReaderStudent(csvFile);
-            List<Student> studentList = new ArrayList<>(0);
+            List<StudentInf> studentList = new ArrayList<>(0);
             try {
                 studentList = parserCsvStudent.readWithCsvBeanReader(csvFile);
             } catch (FileNotFoundException ex) {
@@ -364,10 +285,10 @@ public class UploadServlet extends HttpServlet {
             if (studentList.isEmpty()) {
                 request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
             } else {
-                List<Student> listInvalidInport = new ArrayList<>();
+                List<StudentInf> listInvalidInport = new ArrayList<>();
                 Session ses = HibernateUtil.currentSession();
                 try {
-                for (Student st : studentList) {
+                for (StudentInf st : studentList) {
                     Transaction tx = ses.beginTransaction();
                     try {
 //                        Integer id = (Integer) ses.save(st);
@@ -403,7 +324,7 @@ public class UploadServlet extends HttpServlet {
         if (csvFile != null) {
             // Parse
             CsvReaderTeacher parserCsvStudent = new CsvReaderTeacher(csvFile);
-            List<Teacher> teacherList = new ArrayList<>(0);
+            List<StuffInf> teacherList = new ArrayList<>(0);
             try {
                 teacherList = parserCsvStudent.readWithCsvBeanReader(csvFile);
             } catch (FileNotFoundException ex) {
@@ -413,25 +334,24 @@ public class UploadServlet extends HttpServlet {
             if (teacherList.isEmpty()) {
                 request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
             } else {
-                List<Teacher> listInvalidInport = new ArrayList<>();
+                List<StuffInf> listInvalidInport = new ArrayList<>();
                 Session ses = HibernateUtil.currentSession();
                 
                 Transaction tx;
                 
-                for (ListIterator<Teacher> iterator = teacherList.listIterator(); iterator.hasNext();){
-                    Teacher item = iterator.next();
-                    Teacher teacher = (Teacher)ses.createCriteria(Teacher.class)
-                            .add(Restrictions.eq(DB_0.Persone.COLUM_IIN, item.getIin()))
-                            //.setProjection(Projections.distinct(Projections.property(DB.Persone.COLUM_IIN)))
-                            //.addOrder(Order.asc(DB.Persone.COLUM_IIN))
+                for (ListIterator<StuffInf> iterator = teacherList.listIterator(); iterator.hasNext();){
+                    StuffInf item = iterator.next();
+                    StuffInf teacher = (StuffInf)ses.createCriteria(StuffInf.class, "sf")
+                            .createAlias("sf.personInf", "person")
+                            .add(Restrictions.eq("person.iin", item.getPersonInf().getIin()))
                             .uniqueResult();                
 
                     if (teacher != null){
                                                
-                        if (item.getFirstname() != null)
-                            teacher.setFirstname(item.getFirstname());
+                        if (item.getPersonInf().getFirstname() != null)
+                            teacher.getPersonInf().setFirstname(item.getPersonInf().getFirstname());
                         
-                        if (item.getDepartment() != null)
+                        /*if (item.getDepartment() != null)
                             teacher.setDepartment(item.getDepartment());
                         
                         if (item.getDepartmentFull() != null)
@@ -441,13 +361,13 @@ public class UploadServlet extends HttpServlet {
                             teacher.setFaculty(item.getFaculty());
                         
                         if (item.getFacultyFull() != null)
-                            teacher.setFacultyFull(item.getFacultyFull());
+                            teacher.setFacultyFull(item.getFacultyFull());*/
                         
-                        if (item.getIin()!=null)
-                            teacher.setIin(item.getIin());
+                        if (item.getPersonInf().getIin()!=null)
+                            teacher.getPersonInf().setIin(item.getPersonInf().getIin());
                         
-                        if (item.getStaffPost() != null)
-                            teacher.setStaffPost(item.getStaffPost());  
+                        if (item.getStuffPost() != null)
+                            teacher.setStuffPost(item.getStuffPost());  
                         
                         iterator.set(teacher);
                         
@@ -485,7 +405,7 @@ public class UploadServlet extends HttpServlet {
         if (csvFile != null) {
             // Parse Student
             CsvReaderTeacher parserCsvStudent = new CsvReaderTeacher(csvFile);
-            List<Teacher> teacherList = new ArrayList<>(0);
+            List<StuffInf> teacherList = new ArrayList<>(0);
             try {
                 teacherList = parserCsvStudent.readWithCsvBeanReader(csvFile);
             } catch (FileNotFoundException ex) {
@@ -495,25 +415,26 @@ public class UploadServlet extends HttpServlet {
             if (teacherList.isEmpty()) {
                 request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
             } else {
-                List<Teacher> listInvalidInport = new ArrayList<>();
+                List<StuffInf> listInvalidInport = new ArrayList<>();
                 Session ses = HibernateUtil.currentSession();
                 
                 Transaction tx;
                 
-                for (ListIterator<Teacher> iterator = teacherList.listIterator(); iterator.hasNext();){
-                    Teacher item = iterator.next();
-                    Teacher teacher = (Teacher)ses.createCriteria(Teacher.class)
-                            .add(Restrictions.eq(DB_0.Persone.COLUM_IIN, item.getIin()))
+                for (ListIterator<StuffInf> iterator = teacherList.listIterator(); iterator.hasNext();){
+                    StuffInf item = iterator.next();
+                    StuffInf teacher = (StuffInf)ses.createCriteria(StuffInf.class, "sf")
+                            .createAlias("sf.personInf", "person")
+                            .add(Restrictions.eq("person.iin", item.getPersonInf().getIin()))
                             //.setProjection(Projections.distinct(Projections.property(DB.Persone.COLUM_IIN)))
                             //.addOrder(Order.asc(DB.Persone.COLUM_IIN))
                             .uniqueResult();                
 
                     if (teacher != null){
                                                
-                        if (item.getFirstname() != null)
-                            teacher.setFirstname(item.getFirstname());
+                        if (item.getPersonInf().getFirstname() != null)
+                            teacher.getPersonInf().setFirstname(item.getPersonInf().getFirstname());
                         
-                        if (item.getDepartment() != null)
+                        /*if (item.getDepartment() != null)
                             teacher.setDepartment(item.getDepartment());
                         
                         if (item.getDepartmentFull() != null)
@@ -523,13 +444,13 @@ public class UploadServlet extends HttpServlet {
                             teacher.setFaculty(item.getFaculty());
                         
                         if (item.getFacultyFull() != null)
-                            teacher.setFacultyFull(item.getFacultyFull());
+                            teacher.setFacultyFull(item.getFacultyFull());*/
                         
-                        if (item.getIin()!=null)
-                            teacher.setIin(item.getIin());
+                        if (item.getPersonInf().getIin()!=null)
+                            teacher.getPersonInf().setIin(item.getPersonInf().getIin());
                         
-                        if (item.getStaffPost() != null)
-                            teacher.setStaffPost(item.getStaffPost());  
+                        if (item.getStuffPost() != null)
+                            teacher.setStuffPost(item.getStuffPost());  
                         
                         iterator.set(teacher);
                         
@@ -740,8 +661,8 @@ public class UploadServlet extends HttpServlet {
                 uploadTeachers(request);
                 forward = "/TeacherList.jsp";
 
-                request.setAttribute(TeacherConst.ATTRIBUTE_DEPARTMENT_LIST, Teacher.getAllDepartment());
-                request.setAttribute(TeacherConst.ATTRIBUTE_FACULTY_LIST, Teacher.getAllFaculty());
+                request.setAttribute(TeacherConst.ATTRIBUTE_DEPARTMENT_LIST, StuffInf.getAllDepartment());
+                request.setAttribute(TeacherConst.ATTRIBUTE_FACULTY_LIST, StuffInf.getAllFaculty());
                 
                 response.setContentType("text/html;charset=UTF-8");
                 break;                
@@ -780,10 +701,10 @@ public class UploadServlet extends HttpServlet {
         }
         
         Session ses = HibernateUtil.currentSession();                     
-        List<Student> listStudent = new ArrayList<>();
+        List<StudentInf> listStudent = new ArrayList<>();
 
-        listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
+        listStudent = ses.createCriteria(StudentInf.class)
+                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
         
         HibernateUtil.closeSession();

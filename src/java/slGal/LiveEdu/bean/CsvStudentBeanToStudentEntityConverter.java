@@ -7,32 +7,28 @@ package slGal.LiveEdu.bean;
 
 import net.hneu.googleapp.parser.CsvReaderStudent;
 import org.supercsv.io.CsvBeanReader;
-import slGal.LiveEdu.ORM.Student;
+import slGal.LiveEdu.ORM.StudentInf;
 
 /**
  *
  * @author Andrey
  */
-public class CsvStudentBeanToStudentEntityConverter implements Converter<CsvStudentBean, Student>{
+public class CsvStudentBeanToStudentEntityConverter implements Converter<CsvStudentBean, StudentInf>{
 
     @Override
-    public Student convert(CsvStudentBean source) {
-        Student destination = new Student();        
-        destination.setCard(source.getCard());
-        destination.setCourse(source.getCourse());
+    public StudentInf convert(CsvStudentBean source) {
+        StudentInf destination = new StudentInf();        
+        destination.setStudentCard(source.getCard());
         destination.setDateLiveReg(source.getDateLiveReg());
-        destination.setDismiss(source.getDismiss());
-        destination.setStudies(source.getExtramuralStudent());
+        destination.setStudies(Boolean.valueOf(source.getExtramuralStudent()));
         destination.setEdbo(source.getEdbo());
-        destination.setFaculty(source.getFaculty());
-        destination.setFacultyFull(source.getFacultyFull());
-        destination.setFirstname(source.getFirstName());
-        destination.setGroupa(source.getGroupa());
-        destination.setLastname(source.getLastName());
-        destination.setPatronymic(source.getPatronymic());
+        //destination.setFaculty(source.getFaculty());
+        destination.getPersonInf().setFirstname(source.getFirstName());
+        destination.setGroup(source.getGroupa());
+        destination.getPersonInf().setLastname(source.getLastName());
+        destination.getPersonInf().setPatronymic(source.getPatronymic());
         //destination.setSpecialityName(source.getSpecialityName());
-        destination.setNumberSpec(source.getSpecialityCode());
-        destination.setSpec(source.getSpecialityNumber());                
+        //destination.setSpec(source.getSpecialityNumber());                
         destination.setUkrainian(source.isUkrainian());
         return destination;
     }

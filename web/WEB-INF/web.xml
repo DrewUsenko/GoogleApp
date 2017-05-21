@@ -71,10 +71,15 @@
         <servlet-name>TeacherServletControler</servlet-name>
         <servlet-class>slGal.LiveEdu.TeacherServletControler</servlet-class>
     </servlet>
+    <!--<servlet>
+        <servlet-name>StudentLDAPControler</servlet-name>
+        <servlet-class>slGal.LiveEdu.StudentLDAPControler</servlet-class>
+    </servlet>-->
     <servlet>
         <servlet-name>StudentServletControler</servlet-name>
         <servlet-class>slGal.LiveEdu.StudentServletControler</servlet-class>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>EditStudent</servlet-name>
         <url-pattern>/EditStudent</url-pattern>
@@ -99,6 +104,11 @@
         <servlet-name>StudentServletControler</servlet-name>
         <url-pattern>/StudentServletControler</url-pattern>
     </servlet-mapping>
+    <!--<servlet-mapping>
+        <servlet-name>StudentLDAPControler</servlet-name>
+        <url-pattern>/StudentLDAPControler</url-pattern>
+    </servlet-mapping>-->
+    
     <!--    <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

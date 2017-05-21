@@ -44,11 +44,11 @@
         <property name="passCorporate" type="string">
             <column name="pass_corporate" length="45" />
         </property>
-        <set name="personeServicesConsultations" table="persone_services_consultation" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="idPersone" />
+        <set name="servicess" table="service_person" fetch="select" cascade="all">
+            <key> 
+                <column name="idPersone" /> 
             </key>
-            <one-to-many class="slGal.LiveEdu.ORM.PersoneServicesConsultation" />
+            <many-to-many class="slGal.LiveEdu.ORM.Services" column="idServices"/>
         </set>
         <set name="studentInfs" table="student_inf" inverse="true" lazy="false" fetch="join">
             <key>
@@ -56,7 +56,7 @@
             </key>
             <one-to-many class="slGal.LiveEdu.ORM.StudentInf" />
         </set>
-        <set name="stuffInfs" table="stuff_inf" inverse="true" lazy="true" fetch="select">
+        <set name="stuffInfs" table="stuff_inf" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="Person_inf_idPerson" not-null="true" />
             </key>

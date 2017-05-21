@@ -45,7 +45,7 @@ Contributor(s):
   <table-filter match-name="department_inf"/>
   <table-filter match-name="spec_inf"/>
   <table-filter match-name="student_inf"/>
-  <table-filter match-name="persone_services_consultation"/>
+  
   <table-filter match-name="services"/>
   <table-filter match-name="stuff_inf"/>
   <table-filter match-name="faculty_inf"/>

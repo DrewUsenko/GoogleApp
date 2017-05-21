@@ -22,7 +22,7 @@
             <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
             <script type="text/javascript" src="scripts/jquery-ui-1.8.16.custom.min.js"></script>      
             <script type="text/javascript" src="scripts/myFunction.js"></script>
-            <link rel="stylesheet" type="text/css" href="css/style.css" >
+            <link rel="stylesheet" type="text/css" href="css/style.css" >            
             <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.16.custom.css" >
             <!-- Latest compiled and minified CSS -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -32,6 +32,7 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         </head>
         <body>
+
             <script type="text/javascript">
                 $(document).ready(function () {
                     $.getJSON('GroupFilter?spec=401', function (data) {
@@ -43,8 +44,7 @@
                     });
                 });
             </script>
-            <div class="container">               
-
+            <div class="container">             
                 <nav class="navbar navbar-default navbar-static">
                     <div class="container-fluid">
                         <div class="navbar-header">                            
@@ -152,13 +152,13 @@
                                 <td>Имя</td>
                                 <td>Фамилие</td>
                                 <td>Отчество</td>
-                                <td>Email</td>
-                                <td>Email_1</td>
-                                <td>Украинец</td>
-                                <td>ИИН</td>
-                                <td>Группа</td>
-                                <td>Специальность</td>
-                                <td>Факультет</td>                                
+                                <td>Имя Eng</td>
+                                <td>Фамилие Eng</td>
+                                <td>Отчество Eng</td>
+                                <td>Email</td>        
+                                <td>PDF</td> 
+                                <td>MSDNA</td> 
+                                <td>Office365</td> 
                             </tr>
                         </thead>
                         <c:forEach var="student" items="${ATTRIBUTE_PERSON}">
@@ -168,24 +168,77 @@
                                 <td><c:out value="${student.personInf.firstname}" default="null" /></td>
                                 <td><c:out value="${student.personInf.lastname}" default="null"/></td>
                                 <td><c:out value="${student.personInf.patronymic}" default="null" /></td> 
+                                <td><c:out value="${student.personInf.firstnameEn}" default="null" /></td>
+                                <td><c:out value="${student.personInf.lastnameEn}" default="null"/></td>
+                                <td><c:out value="${student.personInf.patronymicEn}" default="null" /></td>
                                 <td><c:out value="${student.personInf.emailCorporate}" default="null" /></td>
-                                <td><c:out value="${student.personInf.emailPersonal}" default="null" /></td>
-                                <td><c:out value="${student.ukrainian}" default="null" /></td>
-                                <td><c:out value="${student.personInf.iin}" default="null" /></td>
-                                <td><c:out value="${student.group}" default="null"/></td>
-                                <td><c:out value="${student.specInf.spec}" default="null"/></td>
-                                <td><c:out value="${student.specInf.facultyInf.faculty}" default="null"/></td>                                
+                                <td><c:out value="${student.personInf.pdf}" default="null"/></td>
+                                <td><c:out value="${student.personInf.pdf}" default="null"/></td>
+                                <td><c:out value="${student.personInf.pdf}" default="null"/></td>                                
                             </tr>
-                        </c:forEach>
+                        </c:forEach>                        
+
                         <div class="buttons">
-                            <div class="buttons col-md-12">
-                                <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_CHANGE%>" title="Изменить">Изменить</button>  
-                            </div>
+
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                                Редактировать личные данные</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_CLEAR_FIO_AND_EMAIL%>" title="Очистить ФИО">Очистить ФИО</button>  
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_FIO%>" title="Сгенерировать ФИО">Сгенерировать ФИО</button> 
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_CLEAR_EMAIL%>" title="Очистить EMAIL">Очиститить EMAIL</button>       
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_EMAIL%>" title="Создать EMAIL">Создать EMAIL</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_PASSWORD%>" title="Перегенерировать password">Перегенерировать password</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                                Включение и выключение сервисов</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse2" class="panel-collapse collapse">
+                                        <div class="panel-body">                                            
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_SET_MSDN%>" title="Установить MSDN">Установить MSDN</button> 
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_CLEAR_MSDN%>" title="Снять MSDN">Снять MSDN</button>                                   
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_SET_OFFICE365%>" title="Установить OFFICE365">Установить OFFICE</button> 
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_CLEAR_OFFICE365%>" title="Clear OFFICE365">Clear OFFICE365</button> 
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                                Импорт сервисов и создание PDF</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_PDF%>" title="Создать PDF">Создать PDF</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_MSDN_IMPORT%>" title="Сгенерировать MSDN IMPORT">Сгенерировать MSDN IMPORT</button>                        
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=StudentServletControler.ACTION_GENERATE_OFFICE365_IMPORT%>" title="Сгенерировать Office365 IMPORT">Сгенерировать Office365 IMPORT</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>               
                         </div>
+
                         <a href="#" onclick="if (markAllRows('resultsForm'))
                                     return false;">Отметить все</a>
                         <a href="#" onclick="if (unMarkAllRows('resultsForm'))
                                     return false;">Снять выделение</a>
+
                 </form>
             </c:if>
 

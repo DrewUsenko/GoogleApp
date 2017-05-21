@@ -22,7 +22,7 @@ import org.supercsv.exception.SuperCsvCellProcessorException;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-import slGal.LiveEdu.ORM.Teacher;
+import slGal.LiveEdu.ORM.StuffInf;
 
 /**
  *
@@ -84,22 +84,22 @@ public class CsvReaderTeacher {
         return processors;
     }
 
-    public List<Teacher> readWithCsvBeanReader(File fileCsv) throws FileNotFoundException {
+    public List<StuffInf> readWithCsvBeanReader(File fileCsv) throws FileNotFoundException {
         return readWithCsvBeanReader(new InputStreamReader(new FileInputStream(fileCsv), UTF));
     }
 
-    public List<Teacher> readWithCsvBeanReader(String fileName) throws FileNotFoundException {
+    public List<StuffInf> readWithCsvBeanReader(String fileName) throws FileNotFoundException {
         return readWithCsvBeanReader(new File(fileName));
     }
 
-    private List<Teacher> readWithCsvBeanReader() throws FileNotFoundException {
+    private List<StuffInf> readWithCsvBeanReader() throws FileNotFoundException {
         return readWithCsvBeanReader(fileCSV);
     }
     
     //private List<Pair<Teacher, List<CsvError>> readWithCsvBeanReader(Reader readerCSV) {
-    private List<Teacher> readWithCsvBeanReader(Reader readerCSV) {
+    private List<StuffInf> readWithCsvBeanReader(Reader readerCSV) {
         errorList.clear();
-        List<Teacher> teacherList = new ArrayList<>();        
+        List<StuffInf> teacherList = new ArrayList<>();        
         try (ICsvBeanReader beanReader = new CsvBeanReader(readerCSV, CsvPreference.STANDARD_PREFERENCE);) {
             // ensures that this method is only called when reading the first line (as that's where the header is meant to be)
             //final String[] header = beanReader.getHeader(true);
@@ -114,9 +114,9 @@ public class CsvReaderTeacher {
                 "lastname", "firstname"};
             final CellProcessor[] processors = getProcessors();
 
-            Teacher teacher;
+            StuffInf teacher;
             do {
-                teacher = beanReader.read(Teacher.class, mapPropeties, processors);
+                teacher = beanReader.read(StuffInf.class, mapPropeties, processors);
                 if (!SuppressException.SUPPRESSED_EXCEPTIONS.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("Suppressed exceptions for row "
                             + beanReader.getRowNumber() + ":");

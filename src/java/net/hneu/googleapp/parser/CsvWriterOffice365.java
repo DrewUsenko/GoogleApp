@@ -24,6 +24,7 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 import slGal.LiveEdu.ORM.PersonInf;
+import slGal.LiveEdu.ORM.StuffInf;
 import slGal.LiveEdu.ORM.StudentInf;
 
 /**
@@ -113,7 +114,7 @@ public class CsvWriterOffice365 {
         return new ArrayList<>(Arrays.asList(str.split("\n")));
     }
     
-    public static List<String> writeWithCsvMapWriter(List<PersonInf> personList){
+    public static List<String> writeWithCsvMapWriter(List<StuffInf> personList){
 
         final String[] header = new String[]{
             "User Name", 
@@ -135,18 +136,18 @@ public class CsvWriterOffice365 {
             
             // create the customer Maps (using the header elements for the column keys)
             final Map<String, Object> mapItem = new HashMap<>();
-            for (PersonInf item : personList) {                
+            for (StuffInf item : personList) {                
                 int i;
-                mapItem.put(header[i=0], item.getEmailCorporate().replace("hneu.net", "m.hneu.edu.ua"));
-                mapItem.put(header[++i], item.getFirstname());
-                mapItem.put(header[++i], item.getLastname());
-                mapItem.put(header[++i], item.getFirstname() + " " + item.getLastname());
+                mapItem.put(header[i=0], item.getPersonInf().getEmailCorporate().replace("hneu.net", "m.hneu.edu.ua"));
+                mapItem.put(header[++i], item.getPersonInf().getFirstname());
+                mapItem.put(header[++i], item.getPersonInf().getLastname());
+                mapItem.put(header[++i], item.getPersonInf().getFirstname() + " " + item.getPersonInf().getLastname());
                 
                /*????????????????????????????????*/ 
                 
                 mapItem.put(header[++i], null);
                 mapItem.put(header[++i], null);
-                mapItem.put(header[++i], (item instanceof PersonInf) ? ((PersonInf)item).getStudentInfs() : null);
+                mapItem.put(header[++i], null);
 
                 mapItem.put(header[++i], null);
                 mapItem.put(header[++i], null);
@@ -158,7 +159,7 @@ public class CsvWriterOffice365 {
                 mapItem.put(header[++i], null);
                 mapItem.put(header[++i], "Ukraine");                
                 
-                mapItem.put(header[++i], item.getPassCorporate());
+                mapItem.put(header[++i], item.getPersonInf().getPassCorporate());
                 // write the customer maps
                 mapWriter.write(mapItem, header, processors);                
                 

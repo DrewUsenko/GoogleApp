@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import slGal.LiveEdu.ORM.Person;
+import slGal.LiveEdu.ORM.PersonInf;
 import slGal.LiveEdu.ORM.*;
 
 // Referenced classes of package slGal.LiveEdu:
@@ -36,7 +36,7 @@ public class PDFManager {
         RESOURCE = rootPath;
     }
 
-    public static void createPDF_New(Person person, Path pathDir, boolean msdnFlag, boolean office365Flag) {
+    public static void createPDF_New(StuffInf stuff, Path pathDir, boolean msdnFlag, boolean office365Flag) {
         Document document;
         if (msdnFlag && office365Flag) {
             document = new Document(PageSize.A4, 15F, 15F, 15F, 15F);
@@ -48,9 +48,9 @@ public class PDFManager {
 
         try {
             String fileName = (new StringBuilder())
-                    .append(person.getLastname())
+                    .append(stuff.getPersonInf().getLastname())
                     .append("_")
-                    .append(person.getFirstname())
+                    .append(stuff.getPersonInf().getFirstname())
                     .append(".pdf")
                     .toString();
 
@@ -61,18 +61,18 @@ public class PDFManager {
             PdfPTable table = new PdfPTable(numberCol);
 
             table.getDefaultCell().setBorder(0);
-            table.addCell(liveEdu(person));
+            table.addCell(liveEdu(stuff));
 
             if (office365Flag) {
-                table.addCell(office365(person));
+                table.addCell(office365(stuff));
             }
 
             if (msdnFlag) {
-                table.addCell(msdnAA(person));
+                table.addCell(msdnAA(stuff));
             }
 
             if (msdnFlag && office365Flag) {
-                table.addCell(empty(person));
+                table.addCell(empty(stuff));
             }
 
 //            table.setWidthPercentage((msdnFlag || office365Flag) ? 100F : 50F);
@@ -85,7 +85,7 @@ public class PDFManager {
         }
     }
 
-    private static PdfPTable liveEdu(Person person) throws BadElementException, IOException, DocumentException {
+    private static PdfPTable liveEdu(StuffInf person) throws BadElementException, IOException, DocumentException {
         BaseFont fontNormal = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION).toString(), "Identity-H", false);
         BaseFont fontBold = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION_BOLD).toString(), "Identity-H", false);
 
@@ -112,7 +112,7 @@ public class PDFManager {
         tableLiveEdu.addCell(cell);
 
         // line 2
-        String line2 = String.format(br.readLine(), new Object[]{person.getFirstname(), person.getPatronymic(), person.getLastname()});
+        String line2 = String.format(br.readLine(), new Object[]{person.getPersonInf().getFirstname(), person.getPersonInf().getPatronymic(), person.getPersonInf().getLastname()});
         PdfPCell cell2 = new PdfPCell(new Paragraph(line2, fontBold12));
         cell2.setHorizontalAlignment(1);
         cell2.setBorder(0);
@@ -137,7 +137,7 @@ public class PDFManager {
 
 //        tableLiveEdu.addCell(new Paragraph(br.readLine(), fontNormal12));
         // line 5
-        String line5 = String.format(br.readLine(), new Object[]{person.getEmail()});
+        String line5 = String.format(br.readLine(), new Object[]{person.getPersonInf().getEmailCorporate()});
         PdfPCell cell5 = new PdfPCell(new Paragraph(line5, fontBold12));
         //cell.setLeading(15F, 0.0F);
         cell5.setHorizontalAlignment(1);
@@ -153,7 +153,7 @@ public class PDFManager {
         tableLiveEdu.addCell(cell6);
 
         // line 7
-        String line7 = String.format(br.readLine(), new Object[]{person.getEmail().replaceAll(Person.EMAIL_DOMEN, "")});
+        String line7 = String.format(br.readLine(), new Object[]{person.getPersonInf().getEmailCorporate().replaceAll(PersonInf.EMAIL_DOMEN, "")});
         PdfPCell cell7 = new PdfPCell(new Paragraph(line7, fontBold12));
         //cell.setLeading(15F, 0.0F);
         cell7.setHorizontalAlignment(1);
@@ -182,7 +182,7 @@ public class PDFManager {
         tableLiveEdu.addCell(cell10);
 
         //line 11
-        String line11 = String.format(br.readLine(), new Object[]{person.getPassword()});
+        String line11 = String.format(br.readLine(), new Object[]{person.getPersonInf().getPassCorporate()});
         PdfPCell cell11 = new PdfPCell(new Paragraph(line11, fontBold12));
         cell11.setBorder(0);
         cell11.setHorizontalAlignment(1);
@@ -192,7 +192,7 @@ public class PDFManager {
         return tableLiveEdu;
     }
 
-    private static PdfPTable msdnAA(Person person) throws FileNotFoundException, IOException {
+    private static PdfPTable msdnAA(StuffInf person) throws FileNotFoundException, IOException {
         Font font = new Font();
         Font font2 = new Font();
         try {
@@ -228,7 +228,7 @@ public class PDFManager {
         cell3.setLeading(15F, 0.0F);
         tableMSDNAA.addCell(cell3);
 
-        PdfPCell cell4 = new PdfPCell(new Paragraph(person.getEmail(), font2));
+        PdfPCell cell4 = new PdfPCell(new Paragraph(person.getPersonInf().getEmailCorporate(), font2));
         cell4.setBorder(0);
         cell4.setHorizontalAlignment(1);
         tableMSDNAA.addCell(cell4);
@@ -253,7 +253,7 @@ public class PDFManager {
         return tableMSDNAA;
     }
 
-    private static PdfPTable office365(Person person) throws FileNotFoundException, IOException {
+    private static PdfPTable office365(StuffInf person) throws FileNotFoundException, IOException {
         Font font = new Font();
         Font font2 = new Font();
         try {
@@ -291,14 +291,14 @@ public class PDFManager {
 //        cell3.setLeading(15F, 0.0F);
         tableOffice365.addCell(cell2);
 
-        String line3 = String.format(br.readLine(), new Object[]{person.getEmail().replaceAll(Person.EMAIL_DOMEN, "")});
+        String line3 = String.format(br.readLine(), new Object[]{person.getPersonInf().getEmailCorporate().replaceAll(PersonInf.EMAIL_DOMEN, "")});
         PdfPCell cell3 = new PdfPCell(new Paragraph(line3, font2));
         cell3.setBorder(0);
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
 //        cell3.setLeading(15F, 0.0F);
         tableOffice365.addCell(cell3);
 
-        String line4 = String.format(br.readLine(), new Object[]{person.getPassword()});
+        String line4 = String.format(br.readLine(), new Object[]{person.getPersonInf().getPassCorporate()});
         PdfPCell cell4 = new PdfPCell(new Paragraph(line4, font2));
 //        PdfPCell cell4 = new PdfPCell(new Paragraph(person.getEmail(), font2));
         cell4.setBorder(0);
@@ -325,7 +325,7 @@ public class PDFManager {
         return tableOffice365;
     }
 
-    private static PdfPTable empty(Person person) throws FileNotFoundException, IOException {
+    private static PdfPTable empty(StuffInf person) throws FileNotFoundException, IOException {
         Font font = new Font();
         Font font2 = new Font();
         try {
@@ -533,7 +533,7 @@ public class PDFManager {
         tableLiveEdu.addCell(cell6);
 
         // line 7
-        String line7 = String.format(br.readLine(), new Object[]{student.getPersonInf().getEmailCorporate().replaceAll(Person.EMAIL_DOMEN, "")});
+        String line7 = String.format(br.readLine(), new Object[]{student.getPersonInf().getEmailCorporate().replaceAll(PersonInf.EMAIL_DOMEN, "")});
         PdfPCell cell7 = new PdfPCell(new Paragraph(line7, fontBold12));
         //cell.setLeading(15F, 0.0F);
         cell7.setHorizontalAlignment(1);
@@ -671,7 +671,7 @@ public class PDFManager {
 //        cell3.setLeading(15F, 0.0F);
         tableOffice365.addCell(cell2);
 
-        String line3 = String.format(br.readLine(), new Object[]{student.getPersonInf().getEmailCorporate().replaceAll(Person.EMAIL_DOMEN, "")});
+        String line3 = String.format(br.readLine(), new Object[]{student.getPersonInf().getEmailCorporate().replaceAll(PersonInf.EMAIL_DOMEN, "")});
         PdfPCell cell3 = new PdfPCell(new Paragraph(line3, font2));
         cell3.setBorder(0);
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);

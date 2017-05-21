@@ -28,8 +28,8 @@ import org.supercsv.exception.SuperCsvCellProcessorException;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-import slGal.LiveEdu.DB.DB_0.Persone;
-import slGal.LiveEdu.ORM.Student;
+import slGal.LiveEdu.DB.DB.Person;
+import slGal.LiveEdu.ORM.StudentInf;
 
 /**
  *
@@ -77,21 +77,21 @@ public class CsvReaderStudent extends AbstarctCsvReader{
         return processors;
     }
 
-    public List<Student> readWithCsvBeanReader(File fileCsv) throws FileNotFoundException {
+    public List<StudentInf> readWithCsvBeanReader(File fileCsv) throws FileNotFoundException {
         return readWithCsvBeanReader(new InputStreamReader(new FileInputStream(fileCsv), UTF));
     }
 
-    public List<Student> readWithCsvBeanReader(String fileName) throws FileNotFoundException {
+    public List<StudentInf> readWithCsvBeanReader(String fileName) throws FileNotFoundException {
         return readWithCsvBeanReader(new File(fileName));
     }
    
-    private List<Student> readWithCsvBeanReader() throws FileNotFoundException {
+    private List<StudentInf> readWithCsvBeanReader() throws FileNotFoundException {
         return readWithCsvBeanReader(fileCSV);
     }
     
-    private List<Student> readWithCsvBeanReader(Reader readerCSV) {
+    private List<StudentInf> readWithCsvBeanReader(Reader readerCSV) {
         errorList.clear();
-        List<Student> studentList = new ArrayList<>();        
+        List<StudentInf> studentList = new ArrayList<>();        
         try (ICsvBeanReader beanReader = new CsvBeanReader(readerCSV, CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);) {
             // ensures that this method is only called when reading the first line (as that's where the header is meant to be)
             //final String[] header = beanReader.getHeader(true);
@@ -100,9 +100,9 @@ public class CsvReaderStudent extends AbstarctCsvReader{
                 "course", null, null, "groupa", "facultyFull", "faculty", null, "spec", "numberSpec", "card", "edbo"};
             final CellProcessor[] processors = getProcessors();
             
-            Student student = null;
+            StudentInf student = null;
             do {
-                student = beanReader.read(Student.class, mapPropeties, processors);
+                student = beanReader.read(StudentInf.class, mapPropeties, processors);
                 if (!SuppressException.SUPPRESSED_EXCEPTIONS.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("Suppressed exceptions for row "
                             + beanReader.getRowNumber() + ":");
@@ -142,18 +142,18 @@ public class CsvReaderStudent extends AbstarctCsvReader{
 
     public static class Validate{
         List<SuppressException> listError;
-        Persone persone;
+        Person persone;
     }
     
     public static class CSVBean{
-        private Student bean;
+        private StudentInf bean;
         private List<SuperCsvCellProcessorException> list;
 
-        public Student getBean() {
+        public StudentInf getBean() {
             return bean;
         }
 
-        public void setBean(Student bean) {
+        public void setBean(StudentInf bean) {
             this.bean = bean;
         }
 
@@ -184,9 +184,9 @@ public class CsvReaderStudent extends AbstarctCsvReader{
                 "course", null, null, "groupa", "facultyFull", "faculty", null, "spec", "numberSpec", "card", "edbo"};
             final CellProcessor[] processors = getProcessors();
             
-            Student student = null;            
+            StudentInf student = null;            
             do {                
-                student = beanReader.read(Student.class, mapPropeties, processors);
+                student = beanReader.read(StudentInf.class, mapPropeties, processors);
                                
                 CSVBean csvBean = new CSVBean();
                 csvBean.setBean(student);

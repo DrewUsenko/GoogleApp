@@ -76,7 +76,7 @@ public class PersonServletControler extends HttpServlet {
 
             Session ses = HibernateUtil.currentSession();
 
-            List<PersonInf> personList = ses.createCriteria(Student.class)
+            List<PersonInf> personList = ses.createCriteria(StudentInf.class)
                     .add(Restrictions.isNotNull(DB.Person.COLUM_FIRST_NAME_EN))
                     .add(Restrictions.isNotNull(DB.Person.COLUM_LAST_NAME_EN))
                     .add(Restrictions.isNotNull(DB.Person.COLUM_EMAIL_CORPORATE))
@@ -126,41 +126,5 @@ public class PersonServletControler extends HttpServlet {
 
         HibernateUtil.closeSession();
         request.setAttribute(ATTRIBUTE_CSV_IMPORT, msdnInport);
-    }
-
-    private void bachMSDNInport(HttpServletRequest request) throws HibernateException {
-        String[] arrayID = request.getParameterValues("check");
-        if (arrayID == null) {
-            return;
-        }
-        //System.out.println(Arrays.toString(arrayID));
-        Session ses = HibernateUtil.currentSession();
-
-        List<PersonInf> listStudent = ses.createCriteria(StudentInf.class)
-                .add(Restrictions.in(DB.Person.COLUM_ID, StringExt.toInt(arrayID)))
-                .list();
-
-        List<String> msdnInport = CsvWriterMsdn.readWithCsvBeanReader(listStudent);
-
-        HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_CSV_IMPORT, msdnInport);
-    }
-
-    private void bachOffice365Inport(HttpServletRequest request) throws HibernateException {
-        String[] arrayID = request.getParameterValues("check");
-        if (arrayID == null) {
-            return;
-        }
-        System.out.println(Arrays.toString(arrayID));
-        Session ses = HibernateUtil.currentSession();
-
-        List<PersonInf> listStudent = ses.createCriteria(StudentInf.class)
-                .add(Restrictions.in(DB.Person.COLUM_ID, StringExt.toInt(arrayID)))
-                .list();
-
-        List<String> office365Inport = CsvWriterOffice365.writeWithCsvMapWriter(listStudent);
-
-        HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_CSV_IMPORT, office365Inport);
-    }
+    }    
 }
