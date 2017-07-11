@@ -9,8 +9,6 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,8 +45,6 @@ public class CsvReaderStudent extends AbstarctCsvReader{
     }
    
     private CellProcessor[] getProcessors() {
-//        final String emailRegex = "[a-z0-9\\._]+@[a-z0-9\\.]+"; // just an example, not very robust!
-//        StrRegEx.registerMessage(emailRegex, "must be a valid email address");
         final String groupRegex = "\\d(?:\\.\\d\\d){4}";    //   Группа.специальность.код -> Student.specialityName             
         StrRegEx.registerMessage(groupRegex, "must be a valid format 9.99.99.99.99 (\"\\d(?:\\.\\d\\d){4}\")");
 
@@ -174,11 +170,8 @@ public class CsvReaderStudent extends AbstarctCsvReader{
     
     private List<CSVBean> readWithCsvBeanReader_validate(Reader readerCSV, CsvPreference csvPreference) {
         errorList.clear();
-        //List<Student> studentList = new ArrayList<>();
         List<CSVBean> _studentList = new ArrayList<>();
         try (ICsvBeanReader beanReader = new CsvBeanReader(readerCSV, csvPreference);) {
-            // ensures that this method is only called when reading the first line (as that's where the header is meant to be)
-            //final String[] header = beanReader.getHeader(true);
             beanReader.getHeader(true);
             final String[] mapPropeties = {"lastname", "firstName", "patronymic", "ukrainian", "dateLiveReg",
                 "course", null, null, "groupa", "facultyFull", "faculty", null, "spec", "numberSpec", "card", "edbo"};
@@ -209,7 +202,6 @@ public class CsvReaderStudent extends AbstarctCsvReader{
 
                         SuppressException.SUPPRESSED_EXCEPTIONS.clear();
                     } else {                        
-                    //if(student != null) studentList.add(csvBean);
                         Logger.getLogger(CsvReaderStudent.class.getName()).log(Level.INFO,
                             String.format("lineNo=%s, rowNo=%s, customer=%s", 
                                    beanReader.getLineNumber(), beanReader.getRowNumber(), student));
@@ -221,7 +213,6 @@ public class CsvReaderStudent extends AbstarctCsvReader{
             Logger.getLogger(CsvReaderStudent.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
         }
-        //return (errorList.isEmpty())? studentList : new ArrayList<>(0);
         return _studentList;
     }
             

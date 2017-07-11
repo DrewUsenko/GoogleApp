@@ -52,10 +52,7 @@ public class TranslateSymbols {
     }
 
     public void readData(BufferedReader in) {
-//        final byte buf[] = {59, 0}; //         
         try {
-            //final byte buf[] = ";".getBytes();
-            
             String s = in.readLine(); // Exception IOExeption
             String separator = ";";
             StringTokenizer t = new StringTokenizer(s, separator);

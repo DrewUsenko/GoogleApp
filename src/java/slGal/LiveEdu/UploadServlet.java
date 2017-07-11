@@ -5,14 +5,12 @@
  */
 package slGal.LiveEdu;
 
-import edu.hneu.googleapp.utill.StringExt;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -26,7 +24,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.hneu.googleapp.parser.CsvEntity;
 import net.hneu.googleapp.parser.CsvReaderStudent;
 import net.hneu.googleapp.parser.CsvReaderTeacher;
 import org.apache.commons.fileupload.FileItem;
@@ -40,8 +37,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.HibernateUtil;
-import static slGal.LiveEdu.PersonServletControler.ACTION_GENERATE_DEFAULT;
-import static slGal.LiveEdu.StudentServletControler.ATTRIBUTE_STUDENT;
 import slGal.LiveEdu.bean.CsvStudentBean;
 import slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter;
 import slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter;
@@ -97,8 +92,6 @@ public class UploadServlet extends HttpServlet {
             uploadFile(request);
         }
 
-//        parameterToAtribute(request);
-//        String action = (request.getParameter(PARAMERET_ACTION) != null) ? request.getParameter(PARAMERET_ACTION) : ACTION_DEFAULT;
         String action = getParam(request, PARAMERET_ACTION, ACTION_DEFAULT);
         String forward = "/index.html";
         switch (action) {
@@ -134,7 +127,6 @@ public class UploadServlet extends HttpServlet {
         } else {
             return def;
         }
-//            return (((Map<String, Object>)request.getAttribute(PARAM_IN_ATRIBUTE)).get(name) != null) ? def.getClass().cast(request.getAttribute(PARAM_IN_ATRIBUTE)) : def;        
     }
 
     private <T> T getParam(HttpServletRequest request, String name, Class<T> clazz) {
@@ -147,14 +139,12 @@ public class UploadServlet extends HttpServlet {
     }
 
     private void validateStudent(HttpServletRequest request) {
-//        File csvFile = uploadFile(request);         
         File csvFile = getParam(request, PARAMETER_FILE, File.class);
         if (csvFile != null) {
             // Parse Student
             CsvReaderStudent parserCsvStudent = new CsvReaderStudent(csvFile);
             List<CsvReaderStudent.CSVBean> studentList = new ArrayList<>();
             try {
-//                studentList = parserCsvStudent.readWithCsvBeanReader(csvFile);
                 studentList = parserCsvStudent.readWithCsvBeanReaderValidate(csvFile);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,10 +153,8 @@ public class UploadServlet extends HttpServlet {
             if (studentList.isEmpty()) {
                 request.setAttribute(PARAMETER_ERROR_STUDENT_CSV, parserCsvStudent.getErrorList());
             } else {
-                List<StudentInf> listStud = new ArrayList<>();
                 for (CsvReaderStudent.CSVBean csvBean : studentList){                    
                     if (!csvBean.getList().isEmpty()) {                        
-                        //SuperCsvCellProcessorException ex = csvBean.getList().get(0);
                     
                         StringBuilder stringBuilder = new StringBuilder("row "
                             + csvBean.getList().get(0).getCsvContext().getRowNumber() + ":");
@@ -228,15 +216,7 @@ public class UploadServlet extends HttpServlet {
     private void csvToDB(HttpServletRequest request){        
         CsvUploadBean csvUploadBean = (CsvUploadBean) request.getSession().getAttribute(UploadServlet.ATTRIBUTE_CSV_UPLOAD_BEAN);
         CsvStudentBeanToStudentEntityConverter csvStudentBeanToStudentEntityConverter = new CsvStudentBeanToStudentEntityConverter();
-        
-        
-        Session ses1 = HibernateUtil.currentSession();
-        String queryFrom = "SELECT idPerson FROM person_inf WHERE idPerson=(SELECT MAX(idPerson) FROM person_inf)";
-        List<String> list = null;
-        from = ses1.createSQLQuery(queryFrom).list().toString();
-        HibernateUtil.closeSession();
-        
-        
+                              
         Session ses = HibernateUtil.currentSession();       
         
         final int[] idx = { 0 };
@@ -246,19 +226,11 @@ public class UploadServlet extends HttpServlet {
                 .uniqueResult();
             if (student != null)
                 csvUploadBean.getErrorOfRecords().get(idx[0]).add("Exist in DB");
-            else {
-                try{                                        
+            else {        
                     ses.beginTransaction();   
                     ses.saveOrUpdate(csvStudentBeanToStudentEntityConverter.convert(x));
-                    ses.getTransaction().commit();
-                    
+                    ses.getTransaction().commit();                    
                     csvUploadBean.getErrorOfRecords().get(idx[0]).add("Added to DB");
-                } catch (HibernateException ex){
-                    if (ses.getTransaction() != null){
-                         ses.getTransaction().rollback();
-                    }                                        
-                    Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
             idx[0]++;
         });               
@@ -270,7 +242,6 @@ public class UploadServlet extends HttpServlet {
     
     
     private void uploadStudent(HttpServletRequest request) {
-//        File csvFile = uploadFile(request);         
         File csvFile = getParam(request, PARAMETER_FILE, File.class);
         if (csvFile != null) {
             // Parse Student
@@ -291,9 +262,7 @@ public class UploadServlet extends HttpServlet {
                 for (StudentInf st : studentList) {
                     Transaction tx = ses.beginTransaction();
                     try {
-//                        Integer id = (Integer) ses.save(st);
                         ses.save(st);
-//                        st.setId(id);
                         tx.commit();
                     } catch (HibernateException ex) {
                         if (tx != null)
@@ -312,8 +281,6 @@ public class UploadServlet extends HttpServlet {
                 if (!listInvalidInport.isEmpty()) {
                     Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, listInvalidInport);
                 }
-
-                //request.setAttribute(PARAMETER_VALUE_STUDENT_CSV, parserCsvStudent.getErrorList());
                 request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, studentList);
             }
         }
@@ -322,7 +289,6 @@ public class UploadServlet extends HttpServlet {
     private void validateTeachers(HttpServletRequest request) {       
         File csvFile = getParam(request, PARAMETER_FILE, File.class);
         if (csvFile != null) {
-            // Parse
             CsvReaderTeacher parserCsvStudent = new CsvReaderTeacher(csvFile);
             List<StuffInf> teacherList = new ArrayList<>(0);
             try {
@@ -350,18 +316,6 @@ public class UploadServlet extends HttpServlet {
                                                
                         if (item.getPersonInf().getFirstname() != null)
                             teacher.getPersonInf().setFirstname(item.getPersonInf().getFirstname());
-                        
-                        /*if (item.getDepartment() != null)
-                            teacher.setDepartment(item.getDepartment());
-                        
-                        if (item.getDepartmentFull() != null)
-                            teacher.setDepartmentFull(item.getDepartmentFull());
-                        
-                        if (item.getFaculty() != null)
-                            teacher.setFaculty(item.getFaculty());
-                        
-                        if (item.getFacultyFull() != null)
-                            teacher.setFacultyFull(item.getFacultyFull());*/
                         
                         if (item.getPersonInf().getIin()!=null)
                             teacher.getPersonInf().setIin(item.getPersonInf().getIin());
@@ -425,27 +379,13 @@ public class UploadServlet extends HttpServlet {
                     StuffInf teacher = (StuffInf)ses.createCriteria(StuffInf.class, "sf")
                             .createAlias("sf.personInf", "person")
                             .add(Restrictions.eq("person.iin", item.getPersonInf().getIin()))
-                            //.setProjection(Projections.distinct(Projections.property(DB.Persone.COLUM_IIN)))
-                            //.addOrder(Order.asc(DB.Persone.COLUM_IIN))
                             .uniqueResult();                
 
                     if (teacher != null){
                                                
                         if (item.getPersonInf().getFirstname() != null)
                             teacher.getPersonInf().setFirstname(item.getPersonInf().getFirstname());
-                        
-                        /*if (item.getDepartment() != null)
-                            teacher.setDepartment(item.getDepartment());
-                        
-                        if (item.getDepartmentFull() != null)
-                            teacher.setDepartmentFull(item.getDepartmentFull());
-                        
-                        if (item.getFaculty() != null)
-                            teacher.setFaculty(item.getFaculty());
-                        
-                        if (item.getFacultyFull() != null)
-                            teacher.setFacultyFull(item.getFacultyFull());*/
-                        
+                                                
                         if (item.getPersonInf().getIin()!=null)
                             teacher.getPersonInf().setIin(item.getPersonInf().getIin());
                         
@@ -489,7 +429,6 @@ public class UploadServlet extends HttpServlet {
         Path relavantPath = Paths.get(context.getInitParameter("file-upload"));
         Path tempDir = ROOT_PATH_SITE.resolve(relavantPath);
         Map<String, Object> parameterRequest = new HashMap<>();
-//        try {                  
         // Verify the content type
         String contentType = request.getContentType();
         if ((contentType.contains("multipart/form-data"))) {
@@ -509,20 +448,14 @@ public class UploadServlet extends HttpServlet {
 
                 for (FileItem fileItem : fileItems) {
                     // Process the uploaded file items
-//                Iterator i = fileItems.iterator();
                     if (fileItem.isFormField()) {
                         // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
                         String fieldName = fileItem.getFieldName();
                         String fieldValue = fileItem.getString();
                         parameterRequest.put(fieldName, fieldValue);
                     } else {
-                        // Process form file field (input type="file").
-                        String fieldName = fileItem.getFieldName();
                         String fileName = FilenameUtils.getName(fileItem.getName());
-//                            InputStream fileContent = fileItem.getInputStream();
-                        boolean isInMemory = fileItem.isInMemory();
-                        long sizeInBytes = fileItem.getSize();
-
+                        
                         // ... (do your job here)   
                         // Write the file
                         file = tempDir.resolve(fileName).toFile();
@@ -537,50 +470,9 @@ public class UploadServlet extends HttpServlet {
                 Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-//        }
         return file;
     }
 
-//    private void parameterToAtribute(HttpServletRequest request) {
-////        String contentType = request.getContentType();
-//        if ((request.getContentType().contains("multipart/form-data"))) {
-//
-////            DiskFileItemFactory factory = new DiskFileItemFactory();            
-////            ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
-//            try {
-//                // Create a new file upload handler
-//                // Parse the request to get file items.
-//                List<FileItem> fileItems = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-//
-//                for (FileItem fileItem : fileItems) {
-//                    // Process the uploaded file items
-//                    if (fileItem.isFormField()) {
-//                        // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
-//                        String fieldName = fileItem.getFieldName();
-//                        String fieldValue = fileItem.getString();
-//                        request.setAttribute(fieldName, fieldValue);
-//                        // ... (do your job here)
-//                    }
-//                }else {
-//                        // Process form file field (input type="file").
-//                        String fieldName = fileItem.getFieldName();
-//                        String fileName = FilenameUtils.getName(fileItem.getName());
-////                            InputStream fileContent = fileItem.getInputStream();
-//                        boolean isInMemory = fileItem.isInMemory();
-//                        long sizeInBytes = fileItem.getSize();
-//
-//                        // ... (do your job here)   
-//                        // Write the file
-//                        file = tempDir.resolve(fileName).toFile();
-//                        fileItem.write(file);
-//                    }
-//            } catch (FileUploadException ex) {
-//                Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -645,15 +537,11 @@ public class UploadServlet extends HttpServlet {
         String forward = "/index.html";
         switch (action) {
             case ACTION_UPLOAD_STUDENT_CSV:
-//                uploadStudent(request);
                 validateStudent1(request);                
                 
                 forward = "/WEB-INF/jsp/view/validate.jsp";
-//                forward = "/StudentList_1.jsp";
-                
-                //request.setAttribute(StudentServletControler.ATTRIBUTE_SPECIALITY_LIST, Student.getAllSpecs());                
+                              
                 request.setAttribute(StudentServletControler.ATTRIBUTE_GROUP_LIST, StudentInf.getAllGroups());
-                //request.setAttribute(StudentServletControler.ATTRIBUTE_FACULTY_LIST, Student.getAllFaculty());
                 
                 response.setContentType("text/html;charset=UTF-8");
                 break;
@@ -684,7 +572,7 @@ public class UploadServlet extends HttpServlet {
     private void csvCont(HttpServletRequest request) {
         
         Session ses1 = HibernateUtil.currentSession();
-        String queryTo = "SELECT id_person FROM persons WHERE  id_person=(SELECT MAX(id_person) FROM persons)";
+        String queryTo = "SELECT idStudent FROM student_inf WHERE  idStudent=(SELECT MAX(idStudent) FROM student_inf)";
         String to = "";
         to = ses1.createSQLQuery(queryTo).list().toString();
         HibernateUtil.closeSession();
@@ -698,16 +586,8 @@ public class UploadServlet extends HttpServlet {
         for (int i = from + 1; i < _to+1; i++) {
             arrayID[count] = Integer.toString(i);
             count++;
-        }
+        }      
         
-        Session ses = HibernateUtil.currentSession();                     
-        List<StudentInf> listStudent = new ArrayList<>();
-
-        listStudent = ses.createCriteria(StudentInf.class)
-                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
-                .list();
-        
-        HibernateUtil.closeSession();
         //request.setAttribute(ATTRIBUTE_STUDENT, listStudent);.
         StudentServletControler.TryLast(request, arrayID);
     }

@@ -10,8 +10,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// Referenced classes of package slGal.LiveEdu:
-//            TranslateSymbols, TranslateCompHigh
 public class Translate {
 
     private List<TranslateSymbols> alph;
@@ -22,14 +20,11 @@ public class Translate {
         this.charset = charset;
 
         ArrayList alphArray = new ArrayList();
-        //File file = new File(fileName);
         FileInputStream inFile = new FileInputStream(fileName);
         BufferedReader in = new BufferedReader(new InputStreamReader(inFile, charset));
         int size = 0;
         try {
             String str = in.readLine();
-//            char cc = str.charAt(0);
-//            System.out.println(cc);
             size = Integer.parseInt(str); // Exception NumberFormatException
             alph = alphArray;
             for (int i = 0; i < size; i++) {
@@ -57,31 +52,7 @@ public class Translate {
             }
         }
     }
-
-//    public String translating1(String str, String charset)
-//            throws UnsupportedEncodingException {
-//        
-//        assert (str != null);
-//        assert (charset != null);        
-//        
-//        String rez = new String(str.getBytes(charset), this.charset);
-//        for (int i = 0; i < alph.size(); i++) {
-//            TranslateSymbols t = (TranslateSymbols) alph.get(i);
-//            String symbol = t.getSymbols();
-//            String translate = t.getTranslate();
-//            if (rez.contains(symbol)) {
-//                if (translate.length() > 1) {
-//                    translate = (new StringBuilder()).append(translate.substring(0, 1)).append(translate.substring(1).toLowerCase()).toString();
-//                }
-//                rez = rez.replaceAll(symbol, translate);
-//                rez = rez.replaceAll(symbol.toLowerCase(), translate.toLowerCase());
-//            } else {
-//                rez = rez.replaceAll(symbol.toLowerCase(), translate.toLowerCase());
-//            }
-//        }
-//
-//        return rez;
-//    }
+    
     public String translating(String pTranslateString, String pCharset)
             throws UnsupportedEncodingException {
 

@@ -128,14 +128,6 @@
                             </div>
                         </div>
                     </form>
-                    <!--<div class="row col-md-6">
-                        <div class="col-md-4">
-                            <form action="TeacherServletControler" method="GET">
-                                <input class="btn btn-primary" type="submit" value="Новый преподаватель" />
-                                <input class="btn btn-primary" type="hidden" name="action" value="<%=TeacherServletControler.ACTION_ADD_NEW_TEACHER%>">       
-                            </form>
-                        </div>
-                    </div>   --> 
                 </div> 
             </div>
             <c:if test="${requestScope[teacherConst.ATTRIBUTE_TEACHERS] != null}">
@@ -161,15 +153,14 @@
                                 <td>id</td>
                                 <td>Имя</td>
                                 <td>Фамилие</td>                    
-                                <td>Отчество</td>             
-                                <td>Email 1</td>
-                                <td>Email 2</td>                                
-                                <td>ИИН</td>
-                                <td>Должность</td>
-                                <td>Кафедра</td>
-                                <td>Факультет</td>
+                                <td>Отчество</td>
+                                <td>Имя En</td>
+                                <td>Фамилие EN</td>                                  
                                 <td>Уволен</td>
-
+                                <td>Email 1</td>
+                                <td>PDF</td>
+                                <td>MSDN</td>
+                                <td>Office 365</td>
                             </tr>
                         </thead>
 
@@ -180,20 +171,71 @@
                                 <td>${teacher.personInf.firstname}</td>
                                 <td>${teacher.personInf.lastname}</td>
                                 <td>${teacher.personInf.patronymic}</td>
-                                <td>${teacher.personInf.emailCorporate}</td>
-                                <td>${teacher.personInf.emailPersonal}</td>
-                                 <td>${teacher.personInf.iin}</td>
-                                <td>${teacher.stuffPost}</td>                                
-                                <td>${teacher.departmentInf.department}</td>
-                                <td>${teacher.departmentInf.facultyInf.faculty}</td>
+                                <td>${teacher.personInf.firstnameEn}</td>
+                                <td>${teacher.personInf.lastnameEn}</td>                                
                                 <td>${teacher.dismiss}</td>
+                                <td>${teacher.personInf.emailCorporate}</td>
+                                <td>${teacher.personInf.pdf}</td>
+                                <td>${teacher.personInf.msdn}</td>                                
+                                <td>${teacher.personInf.office}</td>
                             </tr>
                         </c:forEach>
                         <div class="buttons">
-                            <div class="buttons col-md-12">
-                                <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CHANGE%>" title="Изменить">Изменить</button>  
 
-                            </div>
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                                Редактировать личные данные</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CLEAR_FIO_AND_EMAIL%>" title="Очистить ФИО">Очистить ФИО</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CLEAR_EMAIL%>" title="Очиститить EMAIL">Очиститить EMAIL</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_FIO%>" title="Сгенерировать ФИО">Сгенерировать ФИО</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_EMAIL%>" title="Создать EMAIL">Создать EMAIL</button>
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_PASSWORD%>" title="Перегенерировать password">Перегенерировать password</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_SET_DISMISS%>" title="Уволить">Уволить</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CLEAR_DISMISS%>" title="Востановить">Востановить</button>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                                Включение и выключение сервисов</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse2" class="panel-collapse collapse">
+                                        <div class="panel-body">                                            
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_SET_MSDN%>" title="Установить MSDN">Установить MSDN</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CLEAR_MSDN%>" title="Clear MSDN">Clear MSDN</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_SET_OFFICE365%>" title="Установить OFFICE365">Установить OFFICE365</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CLEAR_OFFICE365%>" title="Clear OFFICE365">Clear OFFICE365</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                                Импорт сервисов и создание PDF</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_PDF%>" title="Создать PDF">Создать PDF</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_MSDN_IMPORT%>" title="Сгенерировать MSDN IMPORT">Сгенерировать MSDN IMPORT</button>
+                                            <button type="submit" class="btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_GENERATE_OFFICE365_IMPORT%>" title="Сгенерировать Office365 IMPORT">Сгенерировать Office365 IMPORT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                           
 
                         </div>
                         <a href="#" onclick="if (markAllRows('resultsForm'))

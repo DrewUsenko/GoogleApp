@@ -34,16 +34,10 @@ public class PasswordGenerator {
         mapSymbols.put(SYMBOLS_ZNAKI, "!;%:?*()_+=-~/\\<>,.[]{}");        
     }
     
-//    private static String lowerAlphabetic = "abcdefghijklmnopqrstuvwxyz";
-//    private static String upperApphabetic = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
-//    private static String digit = "1234567890";
-//    private static String znaki = "!;%:?*()_+=-~/\\<>,.[]{}";
-
     static Random random ;
     static {
         try {
-//                random = SecureRandom.getInstanceStrong();
-                random = SecureRandom.getInstance("SHA1PRNG");                
+            random = SecureRandom.getInstance("SHA1PRNG");                
             Logger.getLogger(PasswordGenerator.class.getName()).log(Level.SEVERE, "Generate => random: ", random);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(PasswordGenerator.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,16 +86,10 @@ public class PasswordGenerator {
         }                 
     }
 
-    public PasswordGenerator() {
-        //this.random = SecureRandom.getInstanceStrong();        
+    public PasswordGenerator() {  
     }
 
     private PasswordGenerator(List<Mask> maskList){
-//        try {
-//            this.random = SecureRandom.getInstanceStrong();
-//        } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(PasswordGenerator.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         this.maskList = maskList;
     }   
     
@@ -117,14 +105,10 @@ public class PasswordGenerator {
             int indexRandom = random.nextInt(mask.symbols.length());
             psw.append(mask.symbols.charAt(indexRandom));
         }
-//        Stream.concat(StringBuilder::new, null);
         return psw.toString();
     }
         
     private int getLength(){
-//        return maskList.stream()
-//                .mapToInt(z -> z.length)
-//                .sum();
         return maskList.stream()
                 .collect(Collectors.summingInt(z -> z.length));                
     }

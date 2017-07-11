@@ -2,7 +2,7 @@
 <%@page import="slGal.LiveEdu.UploadServlet"%>
 <%@page import="java.io.File"%>
 <%@page errorPage="WEB-INF/jsp/ErrorPage.jsp"%>
-<%@page import="slGal.LiveEdu.TeacherServletControler"%>
+<%@page import="slGal.LiveEdu.TeacherLDAPController"%>
 <%@page import="slGal.LiveEdu.TeacherConst"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -75,20 +75,18 @@
                     <div class="collapse navbar-collapse js-navbar">
                         <ul class="nav navbar-nav">
                             <li><a href="index.jsp">Главная</a></li>
-                            <li class="active"><a href="TeacherServletControler">Преподаватели</a></li>
+                            <li><a href="TeacherServletControler">Преподаватели</a></li>
                             <li><a href="StudentServletControler">Студенты</a></li> 
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">LDAP
                                     <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu active">
                                     <li><a href="TeacherLDAPController">Преподаватели</a></li>
                                     <li><a href="StudentLDAPControler">Студенты</a></li>
                                 </ul>
                             </li>                                
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="AddTeacher.jsp">Новый преподаватель</a></li>
-                            <li><a href="UploadServlet?<%=UploadServlet.PARAMERET_ACTION%>=<%=UploadServlet.ACTION_UPLOAD_TEACHER_CSV%>">Добавить преподавателей из CSV</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         </ul>
                     </div>
@@ -98,7 +96,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="title">Фильтр преподаватели</h1>
-                    <form class="form-top" action="TeacherServletControler">
+                    <form class="form-top" action="TeacherLDAPController">
                         <input type="hidden" name="action" value="${teacherConst.ACTION_FILTER}" >
                         <div id="filter">
                             <div class="col-md-6 teacher-list">
@@ -128,18 +126,10 @@
                             </div>
                         </div>
                     </form>
-                    <!--<div class="row col-md-6">
-                        <div class="col-md-4">
-                            <form action="TeacherServletControler" method="GET">
-                                <input class="btn btn-primary" type="submit" value="Новый преподаватель" />
-                                <input class="btn btn-primary" type="hidden" name="action" value="<%=TeacherServletControler.ACTION_ADD_NEW_TEACHER%>">       
-                            </form>
-                        </div>
-                    </div>   --> 
                 </div> 
             </div>
             <c:if test="${requestScope[teacherConst.ATTRIBUTE_TEACHERS] != null}">
-                <form action="TeacherServletControler" method="post" name="resultsForm" id="resultsForm">
+                <form action="TeacherLDAPController" method="post" name="resultsForm" id="resultsForm">
                     <input type="hidden" name="<%= TeacherConst.PARAMETER_FACULTY%>" value="${pf}">
                     <input type="hidden" name="<%= TeacherConst.PARAMETER_DEPARTMENT%>" value="${pd}">
                     <table width="100%" class="table table-striped table-hover teacher-filer-list">
@@ -155,45 +145,52 @@
                                                        $('#checkAll').removeAttr('checked');
                                                        if (unMarkAllRows('resultsForm'))
                                                            return false;
-                                                   }"></td>
-
-
+                                                   }"></td>                                            
                                 <td>id</td>
                                 <td>Имя</td>
-                                <td>Фамилие</td>                    
-                                <td>Отчество</td>             
-                                <td>Email 1</td>
-                                <td>Email 2</td>                                
-                                <td>ИИН</td>
-                                <td>Должность</td>
-                                <td>Кафедра</td>
-                                <td>Факультет</td>
-                                <td>Уволен</td>
-
+                                <td>Фамилие</td>                                
+                                <td>Имя Eng</td>
+                                <td>Фамилие Eng</td>
+                                <td>Email</td>       
+                                <td>Exist</td>  
+                                <td>Moodle</td>
+                                <td>GitLab</td>
                             </tr>
                         </thead>
 
                         <c:forEach var="teacher" items="${requestScope[teacherConst.ATTRIBUTE_TEACHERS]}">
                             <tr>
-                                <td><input type="checkbox" name="check" value="${teacher.idStuff}"></td>
-                                <td>${teacher.idStuff}</td>
-                                <td>${teacher.personInf.firstname}</td>
-                                <td>${teacher.personInf.lastname}</td>
-                                <td>${teacher.personInf.patronymic}</td>
-                                <td>${teacher.personInf.emailCorporate}</td>
-                                <td>${teacher.personInf.emailPersonal}</td>
-                                 <td>${teacher.personInf.iin}</td>
-                                <td>${teacher.stuffPost}</td>                                
-                                <td>${teacher.departmentInf.department}</td>
-                                <td>${teacher.departmentInf.facultyInf.faculty}</td>
-                                <td>${teacher.dismiss}</td>
+                                <td><input type="checkbox" name="check" value="${teacher.idStuff}"></td>                        
+                                <td><c:out value="${teacher.idStuff}" default="null" /> </td>
+                                <td><c:out value="${teacher.personInf.firstname}" default="null" /></td>
+                                <td><c:out value="${teacher.personInf.lastname}" default="null"/></td>
+                                <td><c:out value="${teacher.personInf.firstnameEn}" default="null" /></td>
+                                <td><c:out value="${teacher.personInf.lastnameEn}" default="null"/></td>
+                                <td><c:out value="${teacher.personInf.emailCorporate}" default="null" /></td>
+                                <td><c:out value="${teacher.personInf.exist}" default="null"/></td>
+                                <td><c:out value="${teacher.personInf.moodle}" default="null"/></td>
+                                <td><c:out value="${teacher.personInf.gitlab}" default="null"/></td> 
                             </tr>
                         </c:forEach>
                         <div class="buttons">
-                            <div class="buttons col-md-12">
-                                <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherServletControler.ACTION_CHANGE%>" title="Изменить">Изменить</button>  
 
-                            </div>
+                            <div class="buttons col-md-12">   
+                                <div class="btn-group-vertical">
+                                    <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherLDAPController.ACTION_CREATE_ACCOUNT%>" title="Создать аккаунт">Создать аккаунт</button> 
+                                    <button type="submit" class=" btn btn-warning" name="action" value="<%=TeacherLDAPController.ACTION_DELETE_ACCOUNT%>" title="Удалить аккаунт">Удалить аккаунт</button> 
+                                </div>
+                                <div class="btn-group-vertical">
+                                    <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherLDAPController.ACTION_SET_MOODLE%>" title="Подключить Moodle">Подключить Moodle</button>                                   
+                                    <button type="submit" class=" btn btn-warning" name="action" value="<%=TeacherLDAPController.ACTION_DOWN_MOODLE%>" title="отключить Moodle">Отключить Moodle</button> 
+                                </div>
+                                <div class="btn-group-vertical">
+                                    <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherLDAPController.ACTION_SET_GITLAB%>" title="Подключить GitLab">Подключить GitLab</button> 
+                                    <button type="submit" class=" btn btn-warning" name="action" value="<%=TeacherLDAPController.ACTION_DOWN_GITLAB%>" title="отключить GitLab">Отключить GitLab</button> 
+                                </div>
+
+                                <button type="submit" class=" btn btn-info" name="action" value="<%=TeacherLDAPController.ACTION_MAKE_PDF%>" title="Clear OFFICE365">Сгенерировать PDF</button> 
+                            </div> 
+                                                          
 
                         </div>
                         <a href="#" onclick="if (markAllRows('resultsForm'))

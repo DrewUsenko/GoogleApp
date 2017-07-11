@@ -7,9 +7,6 @@ package slGal.LiveEdu;
 
 import java.util.Comparator;
 
-// Referenced classes of package slGal.LiveEdu:
-//            TranslateSymbols
-
 class TranslateCompHigh
     implements Comparator
 {

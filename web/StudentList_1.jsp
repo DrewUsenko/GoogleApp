@@ -59,7 +59,7 @@
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">LDAP
                                         <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Преподаватели</a></li>
+                                        <li><a href="TeacherLDAPController">Преподаватели</a></li>
                                         <li><a href="StudentLDAPControler">Студенты</a></li>
                                     </ul>
                                 </li>                                
@@ -116,7 +116,7 @@
                                         </select>                        
                                     </div>                        
                                     <div class="col-md-12 filter-button">
-                                        <input class="btn btn-danger" type="submit" value="Фильтр" />
+                                        <input class="btn btn-success" type="submit" value="Фильтр" />
                                     </div>                                    
                                 </div>
 
@@ -125,7 +125,7 @@
                     </div> 
                 </div>
 
-            <c:if test="${ATTRIBUTE_PERSON != null}">
+            <c:if test="${ATTRIBUTE_STUDENT != null}">
                 <form action="StudentServletControler" method="post"  name="resultsForm" id="resultsForm">
                     <input type="hidden" name="<%= StudentServletControler.PARAMETER_COURSE_START%>" value="${pCourseStart}">
                     <input type="hidden" name="<%= StudentServletControler.PARAMETER_COURSE_END%>" value="${pCourseEnd}">
@@ -161,7 +161,7 @@
                                 <td>Факультет</td>                                
                             </tr>
                         </thead>
-                        <c:forEach var="student" items="${ATTRIBUTE_PERSON}">
+                        <c:forEach var="student" items="${ATTRIBUTE_STUDENT}">
                             <tr>
                                 <td><input type="checkbox" name="check" value="${student.idStudent}"></td>                        
                                 <td><c:out value="${student.idStudent}" default="null" /> </td>

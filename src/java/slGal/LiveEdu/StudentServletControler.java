@@ -4,19 +4,14 @@
  */
 package slGal.LiveEdu;
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import edu.hneu.googleapp.utill.StringExt;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -24,28 +19,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.hneu.googleapp.parser.CsvWriterGmail;
 import net.hneu.googleapp.parser.CsvWriterMsdn;
 import net.hneu.googleapp.parser.CsvWriterOffice365;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import slGal.LiveEdu.DB.*;
+import slGal.LiveEdu.DB.DB;
+import slGal.LiveEdu.DB.HibernateUtil;
 import slGal.LiveEdu.ORM.StudentInf;
 import slGal.LiveEdu.ORM.PersonInf;
 import slGal.LiveEdu.ORM.Services;
 import slGal.LiveEdu.ORM.StuffInf;
 
-/*import slGal.LiveEdu.ORM.Person;
-import slGal.LiveEdu.ORM.Student;
-import slGal.LiveEdu.ORM.Teacher;
-import java.io.*;
-import slGal.LiveEdu.DB.DB_0;*/
 /**
  *
  * @author Andrey
@@ -82,7 +69,7 @@ public class StudentServletControler extends HttpServlet {
     public static final String ATTRIBUTE_COURSE_LIST = "ATTRIBUTE_COURSE_LIST";
 
     //
-    public static final String ATTRIBUTE_STUDENT = PersonServletControler.ATTRIBUTE_PERSON;
+    public static final String ATTRIBUTE_STUDENT = "ATTRIBUTE_STUDENT";
     public static final String ATTRIBUTE_YEAR = "ATTRIBUTE_YEAR";
     public static final String PARAMETER_EMAIL = "paramEmail";
     //
@@ -124,7 +111,7 @@ public class StudentServletControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(PersonServletControler.ATTRIBUTE_PERSON, listStudent);
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
     }
 
     private void bachClearFioAndEmail(HttpServletRequest request)
@@ -234,7 +221,7 @@ public class StudentServletControler extends HttpServlet {
                 }
             }
             HibernateUtil.closeSession();
-            request.setAttribute(StudentServletControler.ATTRIBUTE_STUDENT, listStudent);
+            request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
         }
     }
 
@@ -286,19 +273,13 @@ public class StudentServletControler extends HttpServlet {
         listStudent = ses.createCriteria(StudentInf.class)
                 .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
-        
-        /*Set<Services> services = new HashSet<Services>(); 
-        services.*/
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
-            Services serv = (Services) ses.get(Services.class, 1);  
-            try { 
-                Set<Services> serv_l = student.getPersonInf().getServices();
-                serv_l.add(serv);
-                student.getPersonInf().setServices(serv_l);
-                ses.saveOrUpdate(listStudent);
+            try {
+                student.getPersonInf().setMsdn(flagMsdn);
+                ses.update(student);
                 tx.commit();
             } catch (Exception exp) {
                 tx.rollback();
@@ -311,22 +292,22 @@ public class StudentServletControler extends HttpServlet {
     }
 
     private void bachSetOffice365(HttpServletRequest request, boolean falgOffice365) throws HibernateException {
-        /* String[] arrayID = request.getParameterValues("check");
+        String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
             return;
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<Student> listStudent = new ArrayList<>();
+        List<StudentInf> listStudent = new ArrayList<>();
 
-        listStudent = ses.createCriteria(Student.class)
-                .add(Restrictions.in(DB_0.Persone.COLUM_ID, StringExt.toInt(arrayID)))
+        listStudent = ses.createCriteria(StudentInf.class)
+                .add(Restrictions.in(DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
 
-        for (Student student : listStudent) {
+        for (StudentInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
-                student.setOffice365(falgOffice365);
+                student.getPersonInf().setOffice(falgOffice365);
                 ses.update(student);
                 tx.commit();
             } catch (Exception exp) {
@@ -336,7 +317,7 @@ public class StudentServletControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);*/
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
     }
 
     private void batchGenerateEmail(HttpServletRequest request) throws HibernateException {
@@ -392,7 +373,6 @@ public class StudentServletControler extends HttpServlet {
                     tx.commit();
                 } catch (Exception exp) {
                     tx.rollback();
-                    //listInvalidEmail.add(student.getPer_id());
                     System.out.println(exp.toString());
                 } finally {
                 }
@@ -419,10 +399,7 @@ public class StudentServletControler extends HttpServlet {
                 .add(Restrictions.isNotNull("person.passCorporate"))
                 .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
                 .list();
-        HibernateUtil.closeSession();
-
-        Date date = new Date();
-        String pathExportDir = ROOT_PATH_SITE + "export/Student/";
+        HibernateUtil.closeSession();        
 
         List<Integer> listID = new ArrayList<>();
         for (StudentInf student : listStudent) {
@@ -436,7 +413,7 @@ public class StudentServletControler extends HttpServlet {
             PDFManager.setResurce(ROOT_PATH_SITE.resolve("res"));
 
             try {
-                PDFManager.createPDF_New(student, pathOfGroup, student.getPersonInf().isMsdnaa(), student.getPersonInf().isOffice365());
+                PDFManager.createPDF_New(student, pathOfGroup, student.getPersonInf().getMsdn(), student.getPersonInf().getOffice());
                 ses = HibernateUtil.currentSession();
                 Transaction tr = ses.beginTransaction();
                 try {
@@ -512,7 +489,6 @@ public class StudentServletControler extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-//        ROOT_PATH_SITE = this.getServletContext().getRealPath(File.separator) + "LiveEdu/";
         ROOT_PATH_SITE = Paths.get(this.getServletContext().getRealPath("/")).resolve("LiveEdu");
     }
 
@@ -604,24 +580,20 @@ public class StudentServletControler extends HttpServlet {
         dispatcher.forward(request, response);
 
     }
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     private void tableFilter(HttpServletRequest request) throws NumberFormatException, HibernateException {
         Session ses = HibernateUtil.currentSession();
         @SuppressWarnings("UnusedAssignment")
         List<StudentInf> listStudent = new ArrayList<>();
         Criteria cr = ses.createCriteria(StudentInf.class, "st")
-                .createAlias("st.specInf", "sp")
-//                .setFetchMode("st.personeInf.services", FetchMode.SELECT)
-//                .setProjection( Projections.projectionList()
-//                        .add( Projections.property("st.") )
-//                )
-                .createAlias("sp.facultyInf", "fc");
+                .createAlias("st.personInf", "pr");
 
         // Creteria restictions
         String str = request.getParameter(PARAMETER_FACULTY);
         if (str != null && !str.equals("")) {
-            cr = cr.add(Restrictions.eq("fc.faculty", str));
+            cr = cr.createAlias("st.specInf", "sp")
+                    .createAlias("sp.facultyInf", "fc")
+                    .add(Restrictions.eq("fc.faculty", str));
         }
 
         String strGroup = request.getParameter(PARAMETER_GROUP);
@@ -640,17 +612,16 @@ public class StudentServletControler extends HttpServlet {
         String paramEmailStr = request.getParameter(PARAMETER_EMAIL);
         if (paramEmailStr != null && !paramEmailStr.equals("")) {
             if (Boolean.parseBoolean(paramEmailStr)) {
-                cr = cr.createAlias("st.personInf", "pr")
-                        .add(Restrictions.isNotNull("pr.emailCorporate"));
+                cr = cr.add(Restrictions.isNotNull("pr.emailCorporate"));
             } else {
-                cr = cr.createAlias("st.personInf", "pr")
-                        .add(Restrictions.isNull("pr.emailCorporate"));
+                cr = cr.add(Restrictions.isNull("pr.emailCorporate"));
             }
         }
         listStudent = cr.list();
 
         HibernateUtil.closeSession();
-        request.setAttribute(PersonServletControler.ATTRIBUTE_PERSON, listStudent);
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+
     }
 
     public enum Action {
@@ -683,7 +654,8 @@ public class StudentServletControler extends HttpServlet {
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
         HibernateUtil.closeSession();
-        request.setAttribute(PersonServletControler.ATTRIBUTE_PERSON, listStudent);
+        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+           
     }
 
 }

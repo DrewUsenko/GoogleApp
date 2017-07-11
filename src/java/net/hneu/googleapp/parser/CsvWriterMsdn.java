@@ -61,7 +61,7 @@ public class CsvWriterMsdn {
     }
     
     public static List<String> readWithCsvBeanReaderStud(List<StudentInf> listStudent) {
-        final String[] fieldMapping = new String[]{"email"};
+        final String[] fieldMapping = new String[]{"emailCorporate"};
         final CellProcessor[] processors = getProcessors();
 
         ICsvBeanWriter beanWriter = null;
@@ -71,7 +71,7 @@ public class CsvWriterMsdn {
 
             // write the beans
             for (final StudentInf student : listStudent) {
-                beanWriter.write(student, fieldMapping, processors);
+                beanWriter.write(student.getPersonInf(), fieldMapping, processors);
             }
             beanWriter.close();
         } catch (IOException ex) {

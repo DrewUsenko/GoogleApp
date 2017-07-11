@@ -36,7 +36,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">LDAP
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Преподаватели</a></li>
+                                    <li><a href="TeacherLDAPController">Преподаватели</a></li>
                                     <li><a href="StudentLDAPControler">Студенты</a></li>
                                 </ul>
                             </li>                                
@@ -96,24 +96,7 @@
                     <span class="glyphicon glyphicon-chevron-right"></span>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
-
-            <div class="row"> 
-
-                <div class="buttons col-md-12">
-                    <button data-toggle="collapse" data-target="#demo1">Collapsible</button>
-                    <button data-toggle="collapse" data-target="#demo2">Collapsible</button>
-                </div>
-                <div class="buttons col-md-12">
-                    <div id="demo1" class="collapse">
-                        Lorem ipsum dolor text....
-                    </div>
-                    <div id="demo2" class="collapse">
-                        Lorem ipsum dolor text....
-                    </div>
-                </div>
-
-            </div>
+            </div>            
         </div>
     </body>
 </html>

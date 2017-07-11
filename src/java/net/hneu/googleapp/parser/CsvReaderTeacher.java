@@ -52,8 +52,6 @@ public class CsvReaderTeacher {
      * @return 
      */
     private CellProcessor[] getProcessors() {
-//        final String emailRegex = "[a-z0-9\\._]+@[a-z0-9\\.]+"; // just an example, not very robust!
-//        StrRegEx.registerMessage(emailRegex, "must be a valid email address");
         final String groupRegex = "\\d(?:\\.\\d\\d){4}";    //   Группа.специальность.код -> Student.spec             
         StrRegEx.registerMessage(groupRegex, "must be a valid format 9.99.99.99.99 (\"\\d(?:\\.\\d\\d){4}\")");
 
@@ -92,17 +90,10 @@ public class CsvReaderTeacher {
         return readWithCsvBeanReader(new File(fileName));
     }
 
-    private List<StuffInf> readWithCsvBeanReader() throws FileNotFoundException {
-        return readWithCsvBeanReader(fileCSV);
-    }
-    
-    //private List<Pair<Teacher, List<CsvError>> readWithCsvBeanReader(Reader readerCSV) {
     private List<StuffInf> readWithCsvBeanReader(Reader readerCSV) {
         errorList.clear();
         List<StuffInf> teacherList = new ArrayList<>();        
         try (ICsvBeanReader beanReader = new CsvBeanReader(readerCSV, CsvPreference.STANDARD_PREFERENCE);) {
-            // ensures that this method is only called when reading the first line (as that's where the header is meant to be)
-            //final String[] header = beanReader.getHeader(true);
             beanReader.getHeader(true);         
             
             final String[] mapPropeties = {"lastname", "firstname", "patronymic",                 
@@ -120,11 +111,6 @@ public class CsvReaderTeacher {
                 if (!SuppressException.SUPPRESSED_EXCEPTIONS.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("Suppressed exceptions for row "
                             + beanReader.getRowNumber() + ":");
-              
-//                    SuppressException.SUPPRESSED_EXCEPTIONS.forEach((e) -> {
-//                        stringBuilder.append(e);
-//                        errorList.add(e);
-//                    });
                     
                     for (SuperCsvCellProcessorException e : SuppressException.SUPPRESSED_EXCEPTIONS){
                         stringBuilder.append(e);

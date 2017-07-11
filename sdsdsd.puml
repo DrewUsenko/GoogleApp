@@ -1,0 +1,640 @@
+@startuml
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+annotation javax.persistence.ManyToOne
+annotation javax.servlet.annotation.WebServlet
+class com.google.api.client.auth.oauth2.Credential
+class com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp
+class com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver
+class com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
+class com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
+class com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+class com.google.api.client.googleapis.json.GoogleJsonResponseException
+class com.google.api.client.http.HttpTransport
+class com.google.api.client.json.JsonFactory
+class com.google.api.client.json.jackson2.JacksonFactory
+class com.google.api.client.util.store.DataStoreFactory
+class com.google.api.client.util.store.FileDataStoreFactory
+class com.google.api.services.admin.directory.Directory
+class com.google.api.services.admin.directory.DirectoryScopes
+class com.google.api.services.admin.directory.model.User
+class com.google.api.services.admin.directory.model.UserName
+class com.lowagie.text.pdf.BaseFont
+class com.lowagie.text.pdf.PdfPCell
+class com.lowagie.text.pdf.PdfPTable
+class com.lowagie.text.pdf.PdfWriter
+class edu.hneu.googleapp.utill.StringExt
+class java.io.BufferedReader
+class java.io.File
+class java.io.FileInputStream
+class java.io.FileNotFoundException
+class java.io.IOException
+class java.io.InputStream
+class java.io.InputStreamReader
+class java.io.Reader
+class java.io.StringWriter
+class java.io.UnsupportedEncodingException
+class java.lang.Boolean
+class java.nio.charset.Charset
+class java.nio.file.Path
+class java.nio.file.Paths
+class java.security.NoSuchAlgorithmException
+class java.security.SecureRandom
+class java.util.ArrayList
+class java.util.Arrays
+class java.util.Collections
+class java.util.Date
+class java.util.Enumeration
+class java.util.HashMap
+class java.util.HashSet
+class java.util.Hashtable
+class java.util.List
+class java.util.ListIterator
+class java.util.Map
+class java.util.Objects
+class java.util.Random
+class java.util.Set
+class java.util.StringTokenizer
+class java.util.logging.Level
+class java.util.logging.Logger
+class java.util.stream.Collectors
+class javax.naming.Context
+class javax.naming.NamingException
+class javax.naming.directory.Attribute
+class javax.naming.directory.Attributes
+class javax.naming.directory.BasicAttribute
+class javax.naming.directory.BasicAttributes
+class javax.naming.directory.DirContext
+class javax.naming.directory.InitialDirContext
+class javax.naming.directory.ModificationItem
+class javax.persistence.CascadeType
+class javax.persistence.OneToMany
+class javax.servlet.RequestDispatcher
+class javax.servlet.ServletContext
+class javax.servlet.ServletException
+class javax.servlet.http.HttpServlet
+class javax.servlet.http.HttpServletRequest
+class javax.servlet.http.HttpServletResponse
+class net.hneu.googleapp.parser.AbstarctCsvReader
+class net.hneu.googleapp.parser.CsvEntity
+class net.hneu.googleapp.parser.CsvReaderStudent
+class net.hneu.googleapp.parser.CsvReaderTeacher
+class net.hneu.googleapp.parser.CsvWriterGmail
+class net.hneu.googleapp.parser.CsvWriterMsdn
+class net.hneu.googleapp.parser.CsvWriterOffice365
+class net.hneu.googleapp.parser.SuppressException
+class org.apache.commons.fileupload.FileItem
+class org.apache.commons.fileupload.FileUploadException
+class org.apache.commons.fileupload.disk.DiskFileItemFactory
+class org.apache.commons.fileupload.servlet.ServletFileUpload
+class org.apache.commons.io.FilenameUtils
+class org.hibernate.Criteria
+class org.hibernate.FetchMode
+class org.hibernate.HibernateException
+class org.hibernate.Query
+class org.hibernate.Session
+class org.hibernate.SessionFactory
+class org.hibernate.Transaction
+class org.hibernate.annotations.LazyCollection
+class org.hibernate.annotations.LazyCollectionOption
+class org.hibernate.cfg.AnnotationConfiguration
+class org.hibernate.cfg.Configuration
+class org.hibernate.criterion.Order
+class org.hibernate.criterion.Projections
+class org.hibernate.criterion.Property
+class org.hibernate.criterion.Restrictions
+class org.supercsv.cellprocessor.CellProcessorAdaptor
+class org.supercsv.cellprocessor.Optional
+class org.supercsv.cellprocessor.ParseBool
+class org.supercsv.cellprocessor.ParseDate
+class org.supercsv.cellprocessor.ParseInt
+class org.supercsv.cellprocessor.Trim
+class org.supercsv.cellprocessor.constraint.NotNull
+class org.supercsv.cellprocessor.constraint.StrRegEx
+class org.supercsv.cellprocessor.ift.CellProcessor
+class org.supercsv.exception.SuperCsvCellProcessorException
+class org.supercsv.io.CsvBeanReader
+class org.supercsv.io.CsvBeanWriter
+class org.supercsv.io.CsvMapWriter
+class org.supercsv.io.ICsvBeanReader
+class org.supercsv.io.ICsvBeanWriter
+class org.supercsv.io.ICsvMapWriter
+class org.supercsv.prefs.CsvPreference
+class org.supercsv.util.CsvContext
+class slGal.LiveEdu.ApiGoogle
+class slGal.LiveEdu.DB.DB.Person
+class slGal.LiveEdu.DB.HibernateUtil
+class slGal.LiveEdu.LDAP
+class slGal.LiveEdu.ORM.DepartmentInf
+class slGal.LiveEdu.ORM.FacultyInf
+class slGal.LiveEdu.ORM.PersonInf
+class slGal.LiveEdu.ORM.Services
+class slGal.LiveEdu.ORM.SpecInf
+class slGal.LiveEdu.ORM.StudentInf
+class slGal.LiveEdu.ORM.StuffInf
+class slGal.LiveEdu.PDFManager
+class slGal.LiveEdu.PasswordGenerator
+class slGal.LiveEdu.PersonServletControler
+class slGal.LiveEdu.StudentLDAPControler
+class slGal.LiveEdu.StudentServletControler
+class slGal.LiveEdu.TeacherConst
+class slGal.LiveEdu.TeacherLDAPController
+class slGal.LiveEdu.TeacherServletControler
+class slGal.LiveEdu.Translate
+class slGal.LiveEdu.TranslateCompHigh
+class slGal.LiveEdu.TranslateSymbols
+class slGal.LiveEdu.UploadServlet
+class slGal.LiveEdu.ZipManager
+class slGal.LiveEdu.bean.CsvStudentBean
+class slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter
+class slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter
+class slGal.LiveEdu.bean.CsvUploadBean
+interface java.io.Serializable
+interface java.util.Comparator
+interface slGal.LiveEdu.DB.DB
+interface slGal.LiveEdu.bean.Converter
+edu.hneu.googleapp.utill.StringExt ..> java.io.UnsupportedEncodingException
+edu.hneu.googleapp.utill.StringExt ..> java.util.ArrayList
+net.hneu.googleapp.parser.AbstarctCsvReader ..> java.io.File
+net.hneu.googleapp.parser.AbstarctCsvReader ..> java.util.ArrayList
+net.hneu.googleapp.parser.AbstarctCsvReader ..> java.util.Arrays
+net.hneu.googleapp.parser.AbstarctCsvReader ..> java.util.Collections
+net.hneu.googleapp.parser.AbstarctCsvReader ..> java.util.List
+net.hneu.googleapp.parser.AbstarctCsvReader ..> org.supercsv.exception.SuperCsvCellProcessorException
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.File
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.FileInputStream
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.FileNotFoundException
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.IOException
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.InputStreamReader
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.Reader
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.io.UnsupportedEncodingException
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.nio.charset.Charset
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.ArrayList
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.Arrays
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.Collections
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.Date
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.List
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.logging.Level
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.logging.Logger
+net.hneu.googleapp.parser.CsvReaderStudent ..> java.util.stream.Collectors
+net.hneu.googleapp.parser.CsvReaderStudent --|> net.hneu.googleapp.parser.AbstarctCsvReader
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.Optional
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.ParseBool
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.ParseDate
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.ParseInt
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.Trim
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.constraint.NotNull
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.constraint.StrRegEx
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.exception.SuperCsvCellProcessorException
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.io.CsvBeanReader
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.io.ICsvBeanReader
+net.hneu.googleapp.parser.CsvReaderStudent ..> org.supercsv.prefs.CsvPreference
+net.hneu.googleapp.parser.CsvReaderStudent ..> slGal.LiveEdu.DB.DB.Person
+net.hneu.googleapp.parser.CsvReaderStudent ..> slGal.LiveEdu.ORM.StudentInf
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.File
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.FileInputStream
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.FileNotFoundException
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.IOException
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.InputStreamReader
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.Reader
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.io.UnsupportedEncodingException
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.nio.charset.Charset
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.util.ArrayList
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.util.List
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.util.logging.Level
+net.hneu.googleapp.parser.CsvReaderTeacher ..> java.util.logging.Logger
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.Optional
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.ParseBool
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.Trim
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.constraint.NotNull
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.constraint.StrRegEx
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.exception.SuperCsvCellProcessorException
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.io.CsvBeanReader
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.io.ICsvBeanReader
+net.hneu.googleapp.parser.CsvReaderTeacher ..> org.supercsv.prefs.CsvPreference
+net.hneu.googleapp.parser.CsvReaderTeacher ..> slGal.LiveEdu.ORM.StuffInf
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.io.IOException
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.io.StringWriter
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.nio.charset.Charset
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.util.ArrayList
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.util.Arrays
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.util.List
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.util.logging.Level
+net.hneu.googleapp.parser.CsvWriterGmail ..> java.util.logging.Logger
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.cellprocessor.Optional
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.cellprocessor.constraint.NotNull
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.io.CsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.io.ICsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterGmail ..> org.supercsv.prefs.CsvPreference
+net.hneu.googleapp.parser.CsvWriterGmail ..> slGal.LiveEdu.ORM.PersonInf
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.io.IOException
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.io.StringWriter
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.nio.charset.Charset
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.util.ArrayList
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.util.Arrays
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.util.List
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.util.logging.Level
+net.hneu.googleapp.parser.CsvWriterMsdn ..> java.util.logging.Logger
+net.hneu.googleapp.parser.CsvWriterMsdn ..> org.supercsv.cellprocessor.constraint.NotNull
+net.hneu.googleapp.parser.CsvWriterMsdn ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.CsvWriterMsdn ..> org.supercsv.io.CsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterMsdn ..> org.supercsv.io.ICsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterMsdn ..> org.supercsv.prefs.CsvPreference
+net.hneu.googleapp.parser.CsvWriterMsdn ..> slGal.LiveEdu.ORM.PersonInf
+net.hneu.googleapp.parser.CsvWriterMsdn ..> slGal.LiveEdu.ORM.StudentInf
+net.hneu.googleapp.parser.CsvWriterMsdn ..> slGal.LiveEdu.ORM.StuffInf
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.io.IOException
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.io.StringWriter
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.nio.charset.Charset
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.ArrayList
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.Arrays
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.HashMap
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.List
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.Map
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.logging.Level
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> java.util.logging.Logger
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.cellprocessor.Optional
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.cellprocessor.constraint.NotNull
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.io.CsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.io.CsvMapWriter
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.io.ICsvBeanWriter
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.io.ICsvMapWriter
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> org.supercsv.prefs.CsvPreference
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> slGal.LiveEdu.ORM.PersonInf
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> slGal.LiveEdu.ORM.StudentInf
+net.hneu.googleapp.parser.CsvWriterOffice365 ..> slGal.LiveEdu.ORM.StuffInf
+net.hneu.googleapp.parser.SuppressException ..> java.lang.Override
+net.hneu.googleapp.parser.SuppressException ..> java.util.ArrayList
+net.hneu.googleapp.parser.SuppressException ..> java.util.List
+net.hneu.googleapp.parser.SuppressException --|> org.supercsv.cellprocessor.CellProcessorAdaptor
+net.hneu.googleapp.parser.SuppressException ..> org.supercsv.cellprocessor.ift.CellProcessor
+net.hneu.googleapp.parser.SuppressException ..> org.supercsv.exception.SuperCsvCellProcessorException
+net.hneu.googleapp.parser.SuppressException ..> org.supercsv.util.CsvContext
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.auth.oauth2.Credential
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.http.HttpTransport
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.json.JsonFactory
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.json.jackson2.JacksonFactory
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.util.store.DataStoreFactory
+slGal.LiveEdu.ApiGoogle ..> com.google.api.client.util.store.FileDataStoreFactory
+slGal.LiveEdu.ApiGoogle ..> com.google.api.services.admin.directory.Directory
+slGal.LiveEdu.ApiGoogle ..> com.google.api.services.admin.directory.DirectoryScopes
+slGal.LiveEdu.ApiGoogle ..> com.google.api.services.admin.directory.model.User
+slGal.LiveEdu.ApiGoogle ..> com.google.api.services.admin.directory.model.UserName
+slGal.LiveEdu.ApiGoogle ..> java.io.File
+slGal.LiveEdu.ApiGoogle ..> java.io.FileInputStream
+slGal.LiveEdu.ApiGoogle ..> java.io.IOException
+slGal.LiveEdu.ApiGoogle ..> java.io.InputStream
+slGal.LiveEdu.ApiGoogle ..> java.io.InputStreamReader
+slGal.LiveEdu.ApiGoogle ..> java.nio.file.Path
+slGal.LiveEdu.ApiGoogle ..> java.util.Arrays
+slGal.LiveEdu.ApiGoogle ..> java.util.List
+slGal.LiveEdu.ApiGoogle ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.DB.HibernateUtil ..> org.hibernate.HibernateException
+slGal.LiveEdu.DB.HibernateUtil ..> org.hibernate.Session
+slGal.LiveEdu.DB.HibernateUtil ..> org.hibernate.SessionFactory
+slGal.LiveEdu.DB.HibernateUtil ..> org.hibernate.cfg.AnnotationConfiguration
+slGal.LiveEdu.DB.HibernateUtil ..> org.hibernate.cfg.Configuration
+slGal.LiveEdu.LDAP ..> java.util.Hashtable
+slGal.LiveEdu.LDAP ..> javax.naming.Context
+slGal.LiveEdu.LDAP ..> javax.naming.NamingException
+slGal.LiveEdu.LDAP ..> javax.naming.directory.Attribute
+slGal.LiveEdu.LDAP ..> javax.naming.directory.Attributes
+slGal.LiveEdu.LDAP ..> javax.naming.directory.BasicAttribute
+slGal.LiveEdu.LDAP ..> javax.naming.directory.BasicAttributes
+slGal.LiveEdu.LDAP ..> javax.naming.directory.DirContext
+slGal.LiveEdu.LDAP ..> javax.naming.directory.InitialDirContext
+slGal.LiveEdu.LDAP ..> javax.naming.directory.ModificationItem
+slGal.LiveEdu.ORM.DepartmentInf ..> java.util.HashSet
+slGal.LiveEdu.ORM.DepartmentInf ..> java.util.Set
+slGal.LiveEdu.ORM.DepartmentInf --|> java.io.Serializable
+slGal.LiveEdu.ORM.FacultyInf ..> java.util.HashSet
+slGal.LiveEdu.ORM.FacultyInf ..> java.util.Set
+slGal.LiveEdu.ORM.FacultyInf --|> java.io.Serializable
+slGal.LiveEdu.ORM.PersonInf ..> javax.persistence.ManyToOne
+slGal.LiveEdu.ORM.PersonInf ..> java.io.FileNotFoundException
+slGal.LiveEdu.ORM.PersonInf ..> java.io.UnsupportedEncodingException
+slGal.LiveEdu.ORM.PersonInf ..> java.nio.file.Path
+slGal.LiveEdu.ORM.PersonInf ..> java.util.HashSet
+slGal.LiveEdu.ORM.PersonInf ..> java.util.Set
+slGal.LiveEdu.ORM.PersonInf ..> java.util.logging.Level
+slGal.LiveEdu.ORM.PersonInf ..> java.util.logging.Logger
+slGal.LiveEdu.ORM.PersonInf ..> javax.persistence.CascadeType
+slGal.LiveEdu.ORM.PersonInf ..> javax.persistence.OneToMany
+slGal.LiveEdu.ORM.PersonInf ..> org.hibernate.annotations.LazyCollection
+slGal.LiveEdu.ORM.PersonInf ..> org.hibernate.annotations.LazyCollectionOption
+slGal.LiveEdu.ORM.PersonInf ..> slGal.LiveEdu.ORM.Services
+slGal.LiveEdu.ORM.PersonInf ..> slGal.LiveEdu.PasswordGenerator
+slGal.LiveEdu.ORM.PersonInf ..> slGal.LiveEdu.Translate
+slGal.LiveEdu.ORM.PersonInf --|> java.io.Serializable
+slGal.LiveEdu.ORM.Services ..> java.lang.Override
+slGal.LiveEdu.ORM.Services ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.ORM.Services ..> java.util.ArrayList
+slGal.LiveEdu.ORM.Services ..> java.util.HashSet
+slGal.LiveEdu.ORM.Services ..> java.util.List
+slGal.LiveEdu.ORM.Services ..> java.util.Objects
+slGal.LiveEdu.ORM.Services ..> java.util.Set
+slGal.LiveEdu.ORM.Services ..> org.hibernate.Criteria
+slGal.LiveEdu.ORM.Services ..> org.hibernate.Session
+slGal.LiveEdu.ORM.Services ..> org.hibernate.criterion.Order
+slGal.LiveEdu.ORM.Services ..> org.hibernate.criterion.Projections
+slGal.LiveEdu.ORM.Services ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.ORM.Services ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.ORM.Services ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.ORM.Services --|> java.io.Serializable
+slGal.LiveEdu.ORM.Services ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.ORM.SpecInf ..> java.util.ArrayList
+slGal.LiveEdu.ORM.SpecInf ..> java.util.HashSet
+slGal.LiveEdu.ORM.SpecInf ..> java.util.List
+slGal.LiveEdu.ORM.SpecInf ..> java.util.Set
+slGal.LiveEdu.ORM.SpecInf ..> org.hibernate.criterion.Order
+slGal.LiveEdu.ORM.SpecInf ..> org.hibernate.criterion.Projections
+slGal.LiveEdu.ORM.SpecInf ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.ORM.SpecInf --|> java.io.Serializable
+slGal.LiveEdu.ORM.StudentInf ..> java.io.FileNotFoundException
+slGal.LiveEdu.ORM.StudentInf ..> java.io.UnsupportedEncodingException
+slGal.LiveEdu.ORM.StudentInf ..> java.util.ArrayList
+slGal.LiveEdu.ORM.StudentInf ..> java.util.Date
+slGal.LiveEdu.ORM.StudentInf ..> java.util.List
+slGal.LiveEdu.ORM.StudentInf ..> java.util.Set
+slGal.LiveEdu.ORM.StudentInf ..> java.util.logging.Level
+slGal.LiveEdu.ORM.StudentInf ..> java.util.logging.Logger
+slGal.LiveEdu.ORM.StudentInf ..> org.hibernate.Criteria
+slGal.LiveEdu.ORM.StudentInf ..> org.hibernate.Session
+slGal.LiveEdu.ORM.StudentInf ..> org.hibernate.criterion.Order
+slGal.LiveEdu.ORM.StudentInf ..> org.hibernate.criterion.Projections
+slGal.LiveEdu.ORM.StudentInf ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.ORM.StudentInf ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.ORM.StudentInf ..> slGal.LiveEdu.Translate
+slGal.LiveEdu.ORM.StudentInf --|> java.io.Serializable
+slGal.LiveEdu.ORM.StudentInf ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.ORM.StuffInf ..> java.util.ArrayList
+slGal.LiveEdu.ORM.StuffInf ..> java.util.Date
+slGal.LiveEdu.ORM.StuffInf ..> java.util.List
+slGal.LiveEdu.ORM.StuffInf ..> org.hibernate.Criteria
+slGal.LiveEdu.ORM.StuffInf ..> org.hibernate.Session
+slGal.LiveEdu.ORM.StuffInf ..> org.hibernate.criterion.Order
+slGal.LiveEdu.ORM.StuffInf ..> org.hibernate.criterion.Projections
+slGal.LiveEdu.ORM.StuffInf ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.ORM.StuffInf --|> java.io.Serializable
+slGal.LiveEdu.PDFManager ..> com.lowagie.text.pdf.BaseFont
+slGal.LiveEdu.PDFManager ..> com.lowagie.text.pdf.PdfPCell
+slGal.LiveEdu.PDFManager ..> com.lowagie.text.pdf.PdfPTable
+slGal.LiveEdu.PDFManager ..> com.lowagie.text.pdf.PdfWriter
+slGal.LiveEdu.PDFManager ..> java.nio.file.Path
+slGal.LiveEdu.PDFManager ..> java.nio.file.Paths
+slGal.LiveEdu.PDFManager ..> java.util.logging.Level
+slGal.LiveEdu.PDFManager ..> java.util.logging.Logger
+slGal.LiveEdu.PDFManager ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.PasswordGenerator ..> java.security.NoSuchAlgorithmException
+slGal.LiveEdu.PasswordGenerator ..> java.security.SecureRandom
+slGal.LiveEdu.PasswordGenerator ..> java.util.ArrayList
+slGal.LiveEdu.PasswordGenerator ..> java.util.HashMap
+slGal.LiveEdu.PasswordGenerator ..> java.util.List
+slGal.LiveEdu.PasswordGenerator ..> java.util.Map
+slGal.LiveEdu.PasswordGenerator ..> java.util.Random
+slGal.LiveEdu.PasswordGenerator ..> java.util.logging.Level
+slGal.LiveEdu.PasswordGenerator ..> java.util.logging.Logger
+slGal.LiveEdu.PasswordGenerator ..> java.util.stream.Collectors
+slGal.LiveEdu.PersonServletControler ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.PersonServletControler ..> java.io.File
+slGal.LiveEdu.PersonServletControler ..> java.io.IOException
+slGal.LiveEdu.PersonServletControler ..> java.nio.file.Path
+slGal.LiveEdu.PersonServletControler ..> java.nio.file.Paths
+slGal.LiveEdu.PersonServletControler ..> java.util.ArrayList
+slGal.LiveEdu.PersonServletControler ..> java.util.Arrays
+slGal.LiveEdu.PersonServletControler ..> java.util.Date
+slGal.LiveEdu.PersonServletControler ..> java.util.Enumeration
+slGal.LiveEdu.PersonServletControler ..> java.util.List
+slGal.LiveEdu.PersonServletControler ..> java.util.logging.Level
+slGal.LiveEdu.PersonServletControler ..> java.util.logging.Logger
+slGal.LiveEdu.PersonServletControler ..> javax.servlet.RequestDispatcher
+slGal.LiveEdu.PersonServletControler ..> javax.servlet.ServletException
+slGal.LiveEdu.PersonServletControler --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.PersonServletControler ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.PersonServletControler ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.PersonServletControler ..> net.hneu.googleapp.parser.CsvWriterGmail
+slGal.LiveEdu.PersonServletControler ..> net.hneu.googleapp.parser.CsvWriterMsdn
+slGal.LiveEdu.PersonServletControler ..> net.hneu.googleapp.parser.CsvWriterOffice365
+slGal.LiveEdu.PersonServletControler ..> org.hibernate.Criteria
+slGal.LiveEdu.PersonServletControler ..> org.hibernate.HibernateException
+slGal.LiveEdu.PersonServletControler ..> org.hibernate.Session
+slGal.LiveEdu.PersonServletControler ..> org.hibernate.Transaction
+slGal.LiveEdu.PersonServletControler ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.StudentLDAPControler ..> java.lang.Override
+slGal.LiveEdu.StudentLDAPControler ..> java.lang.SuppressWarnings
+slGal.LiveEdu.StudentLDAPControler ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.StudentLDAPControler ..> java.io.IOException
+slGal.LiveEdu.StudentLDAPControler ..> java.nio.file.Path
+slGal.LiveEdu.StudentLDAPControler ..> java.nio.file.Paths
+slGal.LiveEdu.StudentLDAPControler ..> java.util.ArrayList
+slGal.LiveEdu.StudentLDAPControler ..> java.util.Arrays
+slGal.LiveEdu.StudentLDAPControler ..> java.util.Enumeration
+slGal.LiveEdu.StudentLDAPControler ..> java.util.List
+slGal.LiveEdu.StudentLDAPControler ..> java.util.logging.Level
+slGal.LiveEdu.StudentLDAPControler ..> java.util.logging.Logger
+slGal.LiveEdu.StudentLDAPControler ..> javax.servlet.RequestDispatcher
+slGal.LiveEdu.StudentLDAPControler ..> javax.servlet.ServletException
+slGal.LiveEdu.StudentLDAPControler --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.StudentLDAPControler ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.StudentLDAPControler ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.StudentLDAPControler ..> org.hibernate.Criteria
+slGal.LiveEdu.StudentLDAPControler ..> org.hibernate.HibernateException
+slGal.LiveEdu.StudentLDAPControler ..> org.hibernate.Session
+slGal.LiveEdu.StudentLDAPControler ..> org.hibernate.Transaction
+slGal.LiveEdu.StudentLDAPControler ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.StudentLDAPControler ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.StudentLDAPControler ..> slGal.LiveEdu.LDAP
+slGal.LiveEdu.StudentLDAPControler ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.StudentLDAPControler ..> slGal.LiveEdu.ORM.StudentInf
+slGal.LiveEdu.StudentLDAPControler ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.StudentServletControler ..> java.lang.Override
+slGal.LiveEdu.StudentServletControler ..> java.lang.SuppressWarnings
+slGal.LiveEdu.StudentServletControler ..> com.google.api.client.googleapis.json.GoogleJsonResponseException
+slGal.LiveEdu.StudentServletControler ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.StudentServletControler ..> java.io.File
+slGal.LiveEdu.StudentServletControler ..> java.io.IOException
+slGal.LiveEdu.StudentServletControler ..> java.lang.Boolean
+slGal.LiveEdu.StudentServletControler ..> java.nio.file.Path
+slGal.LiveEdu.StudentServletControler ..> java.nio.file.Paths
+slGal.LiveEdu.StudentServletControler ..> java.util.ArrayList
+slGal.LiveEdu.StudentServletControler ..> java.util.Arrays
+slGal.LiveEdu.StudentServletControler ..> java.util.Date
+slGal.LiveEdu.StudentServletControler ..> java.util.Enumeration
+slGal.LiveEdu.StudentServletControler ..> java.util.HashSet
+slGal.LiveEdu.StudentServletControler ..> java.util.List
+slGal.LiveEdu.StudentServletControler ..> java.util.Set
+slGal.LiveEdu.StudentServletControler ..> java.util.logging.Level
+slGal.LiveEdu.StudentServletControler ..> java.util.logging.Logger
+slGal.LiveEdu.StudentServletControler ..> javax.servlet.RequestDispatcher
+slGal.LiveEdu.StudentServletControler ..> javax.servlet.ServletException
+slGal.LiveEdu.StudentServletControler --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.StudentServletControler ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.StudentServletControler ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.StudentServletControler ..> net.hneu.googleapp.parser.CsvWriterGmail
+slGal.LiveEdu.StudentServletControler ..> net.hneu.googleapp.parser.CsvWriterMsdn
+slGal.LiveEdu.StudentServletControler ..> net.hneu.googleapp.parser.CsvWriterOffice365
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.Criteria
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.FetchMode
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.HibernateException
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.Session
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.Transaction
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.criterion.Projections
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.criterion.Property
+slGal.LiveEdu.StudentServletControler ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.LDAP
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.ORM.Services
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.ORM.SpecInf
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.ORM.StudentInf
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.ORM.StuffInf
+slGal.LiveEdu.StudentServletControler ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.TeacherLDAPController ..> java.lang.Override
+slGal.LiveEdu.TeacherLDAPController ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.TeacherLDAPController ..> java.io.IOException
+slGal.LiveEdu.TeacherLDAPController ..> java.nio.file.Path
+slGal.LiveEdu.TeacherLDAPController ..> java.nio.file.Paths
+slGal.LiveEdu.TeacherLDAPController ..> java.util.ArrayList
+slGal.LiveEdu.TeacherLDAPController ..> java.util.Arrays
+slGal.LiveEdu.TeacherLDAPController ..> java.util.Enumeration
+slGal.LiveEdu.TeacherLDAPController ..> java.util.List
+slGal.LiveEdu.TeacherLDAPController ..> java.util.logging.Level
+slGal.LiveEdu.TeacherLDAPController ..> java.util.logging.Logger
+slGal.LiveEdu.TeacherLDAPController ..> javax.servlet.RequestDispatcher
+slGal.LiveEdu.TeacherLDAPController ..> javax.servlet.ServletException
+slGal.LiveEdu.TeacherLDAPController --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.TeacherLDAPController ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.TeacherLDAPController ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.TeacherLDAPController ..> net.hneu.googleapp.parser.CsvWriterGmail
+slGal.LiveEdu.TeacherLDAPController ..> net.hneu.googleapp.parser.CsvWriterMsdn
+slGal.LiveEdu.TeacherLDAPController ..> net.hneu.googleapp.parser.CsvWriterOffice365
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.Criteria
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.HibernateException
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.Session
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.Transaction
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.criterion.Order
+slGal.LiveEdu.TeacherLDAPController ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.TeacherLDAPController ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.TeacherLDAPController ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.TeacherLDAPController ..> slGal.LiveEdu.ORM.StuffInf
+slGal.LiveEdu.TeacherLDAPController ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.TeacherServletControler ..> java.lang.Override
+slGal.LiveEdu.TeacherServletControler ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.TeacherServletControler ..> java.io.IOException
+slGal.LiveEdu.TeacherServletControler ..> java.nio.file.Path
+slGal.LiveEdu.TeacherServletControler ..> java.nio.file.Paths
+slGal.LiveEdu.TeacherServletControler ..> java.util.ArrayList
+slGal.LiveEdu.TeacherServletControler ..> java.util.Arrays
+slGal.LiveEdu.TeacherServletControler ..> java.util.Enumeration
+slGal.LiveEdu.TeacherServletControler ..> java.util.List
+slGal.LiveEdu.TeacherServletControler ..> java.util.logging.Level
+slGal.LiveEdu.TeacherServletControler ..> java.util.logging.Logger
+slGal.LiveEdu.TeacherServletControler ..> javax.servlet.RequestDispatcher
+slGal.LiveEdu.TeacherServletControler ..> javax.servlet.ServletException
+slGal.LiveEdu.TeacherServletControler --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.TeacherServletControler ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.TeacherServletControler ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.TeacherServletControler ..> net.hneu.googleapp.parser.CsvWriterGmail
+slGal.LiveEdu.TeacherServletControler ..> net.hneu.googleapp.parser.CsvWriterMsdn
+slGal.LiveEdu.TeacherServletControler ..> net.hneu.googleapp.parser.CsvWriterOffice365
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.Criteria
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.HibernateException
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.Session
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.Transaction
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.criterion.Order
+slGal.LiveEdu.TeacherServletControler ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.TeacherServletControler ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.TeacherServletControler ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.TeacherServletControler ..> slGal.LiveEdu.ORM.StudentInf
+slGal.LiveEdu.TeacherServletControler ..> slGal.LiveEdu.ORM.StuffInf
+slGal.LiveEdu.TeacherServletControler ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.Translate ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.Translate ..> java.util.logging.Level
+slGal.LiveEdu.Translate ..> java.util.logging.Logger
+slGal.LiveEdu.TranslateCompHigh ..> java.lang.Override
+slGal.LiveEdu.TranslateCompHigh --|> java.util.Comparator
+slGal.LiveEdu.TranslateSymbols ..> java.lang.Override
+slGal.LiveEdu.TranslateSymbols ..> java.io.BufferedReader
+slGal.LiveEdu.TranslateSymbols ..> java.io.IOException
+slGal.LiveEdu.TranslateSymbols ..> java.util.StringTokenizer
+slGal.LiveEdu.TranslateSymbols ..> java.util.logging.Level
+slGal.LiveEdu.TranslateSymbols ..> java.util.logging.Logger
+slGal.LiveEdu.UploadServlet ..> java.lang.Override
+slGal.LiveEdu.UploadServlet ..> javax.servlet.annotation.WebServlet
+slGal.LiveEdu.UploadServlet ..> edu.hneu.googleapp.utill.StringExt
+slGal.LiveEdu.UploadServlet ..> java.io.File
+slGal.LiveEdu.UploadServlet ..> java.io.FileNotFoundException
+slGal.LiveEdu.UploadServlet ..> java.io.IOException
+slGal.LiveEdu.UploadServlet ..> java.nio.file.Path
+slGal.LiveEdu.UploadServlet ..> java.nio.file.Paths
+slGal.LiveEdu.UploadServlet ..> java.util.ArrayList
+slGal.LiveEdu.UploadServlet ..> java.util.Enumeration
+slGal.LiveEdu.UploadServlet ..> java.util.HashMap
+slGal.LiveEdu.UploadServlet ..> java.util.List
+slGal.LiveEdu.UploadServlet ..> java.util.ListIterator
+slGal.LiveEdu.UploadServlet ..> java.util.Map
+slGal.LiveEdu.UploadServlet ..> java.util.logging.Level
+slGal.LiveEdu.UploadServlet ..> java.util.logging.Logger
+slGal.LiveEdu.UploadServlet ..> java.util.stream.Collectors
+slGal.LiveEdu.UploadServlet ..> javax.servlet.ServletContext
+slGal.LiveEdu.UploadServlet ..> javax.servlet.ServletException
+slGal.LiveEdu.UploadServlet --|> javax.servlet.http.HttpServlet
+slGal.LiveEdu.UploadServlet ..> javax.servlet.http.HttpServletRequest
+slGal.LiveEdu.UploadServlet ..> javax.servlet.http.HttpServletResponse
+slGal.LiveEdu.UploadServlet ..> net.hneu.googleapp.parser.CsvEntity
+slGal.LiveEdu.UploadServlet ..> net.hneu.googleapp.parser.CsvReaderStudent
+slGal.LiveEdu.UploadServlet ..> net.hneu.googleapp.parser.CsvReaderTeacher
+slGal.LiveEdu.UploadServlet ..> org.apache.commons.fileupload.FileItem
+slGal.LiveEdu.UploadServlet ..> org.apache.commons.fileupload.FileUploadException
+slGal.LiveEdu.UploadServlet ..> org.apache.commons.fileupload.disk.DiskFileItemFactory
+slGal.LiveEdu.UploadServlet ..> org.apache.commons.fileupload.servlet.ServletFileUpload
+slGal.LiveEdu.UploadServlet ..> org.apache.commons.io.FilenameUtils
+slGal.LiveEdu.UploadServlet ..> org.hibernate.HibernateException
+slGal.LiveEdu.UploadServlet ..> org.hibernate.Session
+slGal.LiveEdu.UploadServlet ..> org.hibernate.Transaction
+slGal.LiveEdu.UploadServlet ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.ORM.StudentInf
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.ORM.StuffInf
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.PersonServletControler
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.StudentServletControler
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.bean.CsvStudentBean
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.bean.CsvUploadBean
+slGal.LiveEdu.UploadServlet ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.ZipManager ..> java.util.Enumeration
+slGal.LiveEdu.bean.CsvStudentBean ..> java.util.Date
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> java.lang.Override
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> java.util.ArrayList
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> java.util.HashSet
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> java.util.List
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> java.util.Set
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> net.hneu.googleapp.parser.CsvReaderStudent
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> org.hibernate.Criteria
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> org.hibernate.Query
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> org.hibernate.Session
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> org.hibernate.criterion.Restrictions
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> org.supercsv.io.CsvBeanReader
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.DB.HibernateUtil
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.ORM.FacultyInf
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.ORM.PersonInf
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.ORM.SpecInf
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.ORM.StudentInf
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter ..> slGal.LiveEdu.DB.DB
+slGal.LiveEdu.bean.CsvStudentBeanToStudentEntityConverter --|> slGal.LiveEdu.bean.Converter
+slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter ..> java.lang.Override
+slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter ..> net.hneu.googleapp.parser.CsvReaderStudent
+slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter ..> org.supercsv.io.CsvBeanReader
+slGal.LiveEdu.bean.CsvStudentToCsvStudentBeanConverter --|> slGal.LiveEdu.bean.Converter
+slGal.LiveEdu.bean.CsvUploadBean ..> java.util.List
+@enduml

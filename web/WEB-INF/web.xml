@@ -63,22 +63,23 @@
         <servlet-name>GroupFilter</servlet-name>
         <servlet-class>slGal.LiveEdu.CourceFilter</servlet-class>
     </servlet>
-<!--    <servlet>
-        <servlet-name>PersonServletControler</servlet-name>
-        <servlet-class>slGal.LiveEdu.PersonServletControler</servlet-class>
-    </servlet>-->
+    <servlet>
+        <servlet-name>TeacherLDAPController</servlet-name>
+        <servlet-class>slGal.LiveEdu.TeacherLDAPController</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>TeacherServletControler</servlet-name>
         <servlet-class>slGal.LiveEdu.TeacherServletControler</servlet-class>
     </servlet>
-    <!--<servlet>
+    <servlet>
         <servlet-name>StudentLDAPControler</servlet-name>
         <servlet-class>slGal.LiveEdu.StudentLDAPControler</servlet-class>
-    </servlet>-->
+    </servlet>
     <servlet>
         <servlet-name>StudentServletControler</servlet-name>
         <servlet-class>slGal.LiveEdu.StudentServletControler</servlet-class>
     </servlet>
+    
     
     <servlet-mapping>
         <servlet-name>EditStudent</servlet-name>
@@ -104,10 +105,14 @@
         <servlet-name>StudentServletControler</servlet-name>
         <url-pattern>/StudentServletControler</url-pattern>
     </servlet-mapping>
-    <!--<servlet-mapping>
+    <servlet-mapping>
         <servlet-name>StudentLDAPControler</servlet-name>
         <url-pattern>/StudentLDAPControler</url-pattern>
-    </servlet-mapping>-->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TeacherLDAPController</servlet-name>
+        <url-pattern>/TeacherLDAPController</url-pattern>
+    </servlet-mapping>
     
     <!--    <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -118,7 +123,7 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>-->
-<!--    <servlet-mapping>
+    <!--    <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
         <url-pattern>/UploadServlet</url-pattern>
     </servlet-mapping>-->
@@ -129,7 +134,7 @@
     </session-config>
     <!-- Define a Security Constraint on this Application -->
     <!-- NOTE:  None of these roles are present in the default users file -->
-<!--    <security-constraint>
+    <!--    <security-constraint>
         <web-resource-collection>
             <web-resource-name>HTML Manager interface (for humans)</web-resource-name>
             <description/>
@@ -155,7 +160,7 @@
     </welcome-file-list>-->
 
     //    
-<!--    <security-role>
+    <!--    <security-role>
         <description/>
         <role-name>admin</role-name>
     </security-role>-->

@@ -18,7 +18,7 @@
             <column name="patronymic" length="45" />
         </property>
         <property name="iin" type="string">
-            <column name="iin" length="45" not-null="true" unique="true" />
+            <column name="iin" length="45" not-null="false" unique="false" />
         </property>
         <property name="firstnameEn" type="string">
             <column name="firstname_en" length="45" />
@@ -44,7 +44,25 @@
         <property name="passCorporate" type="string">
             <column name="pass_corporate" length="45" />
         </property>
-        <set name="services" table="service_person" fetch="join" cascade="all">
+        
+        <property name="moodle" type="java.lang.Boolean">
+            <column name="moodle" />
+        </property>
+        <property name="gitlab" type="java.lang.Boolean">
+            <column name="gitlab" />
+        </property>
+        <property name="msdn" type="java.lang.Boolean">
+            <column name="msdn" />
+        </property>
+        <property name="office" type="java.lang.Boolean">
+            <column name="office" />
+        </property>
+        <property name="exist" type="java.lang.Boolean">
+            <column name="exist" />
+        </property>
+        
+        
+        <set name="services" table="service_person" fetch="select" cascade="all">
             <key> 
                 <column name="person_id" /> 
             </key>

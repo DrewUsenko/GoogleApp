@@ -27,6 +27,9 @@ public interface DB {
         public final String COLUM_PATRONYMIC_NAME_EN = "patronymic_en";
         public final String COLUM_EMAIL_PERSONAL = "email_personal";
         public final String COLUM_EMAIL_CORPORATE = "email_corporate";
+        public final String COLUM_LDAP = "gitlab";
+        public final String COLUM_MOODLE = "moodle";
+        public final String COLUM_EXIST = "exist";
         public final String COLUM_EMAIL_PDF = "pdf";
         public final String COLUM_PASS_PERSONAL = "pass_personal";
         public final String COLUM_PASS_CORPORATE = "pass_corporate";
@@ -96,7 +99,7 @@ public interface DB {
         public final String COLUM_UKRAINIAN = "ukrainian";
         public final String COLUM_STUDIES = "studies";
         public final String COLUM_DATE_LIVE_REG = "date_live_reg";
-        public final String COLUM_EDBO = "EDBO";
+        public final String COLUM_EDBO = "edbo";
         public final String COLUM_CARD = "studentCard";
         public final String COLUM_GROUP = "group";
         public final String COLUM_CREATION_TIME = "create_time";

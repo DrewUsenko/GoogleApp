@@ -5,6 +5,20 @@
 package slGal.LiveEdu;
 
 import edu.hneu.googleapp.utill.StringExt;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import slGal.LiveEdu.DB.HibernateUtil;
+import slGal.LiveEdu.ORM.PersonInf;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,30 +28,21 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import slGal.LiveEdu.DB.DB;
-import slGal.LiveEdu.DB.HibernateUtil;
-import slGal.LiveEdu.ORM.StudentInf;
-import slGal.LiveEdu.ORM.PersonInf;
+import slGal.LiveEdu.ORM.StuffInf;
 
 /**
  *
  * @author Andrey
  */
-public class StudentLDAPControler extends HttpServlet {
+public class TeacherLDAPController extends HttpServlet {
 
-    public static final String ACTION_GENERATE_DEFAULT = "ACTION_DEFAULT";
-    public static final String ACTION_FILTER = "ACTION_FILTER";
+    public static enum Action {
 
+        GENERATE_FIO,
+        GENERATE_EMAIL,
+        GENERATE_DEFAULT
+    }
     public static final String ACTION_CREATE_ACCOUNT = "ACTION_CREATE_ACCOUNT";
     public static final String ACTION_SET_MOODLE = "ACTION_SET_MOODLE";
     public static final String ACTION_SET_GITLAB = "ACTION_SET_GITLAB";
@@ -45,34 +50,96 @@ public class StudentLDAPControler extends HttpServlet {
     public static final String ACTION_DELETE_ACCOUNT = "ACTION_DELETE_ACCOUNT";
     public static final String ACTION_DOWN_MOODLE = "ACTION_DOWN_MOODLE";
     public static final String ACTION_DOWN_GITLAB = "ACTION_DOWN_GITLAB";
+    
+    public static final String ACTION_CHANGE = "ACTION_CHANGE";
+    public static final String ACTION_GENERATE_FIO = "GENERATE_FIO";
+    public static final String ACTION_GENERATE_EMAIL = "GENERATE_EMAIL";
+    public static final String ACTION_GENERATE_DEFAULT = "ACTION_DEFAULT";
 
-    public static final String ATTRIBUTE_CSV_IMPORT = "ATTRIBUTE_CSV_IMPORT";
-    //
-    public static final String ATTRIBUTE_FACULTY = "ATTRIBUTE_FACULTY";
-    public static final String ATTRIBUTE_FACULTY_LIST = "ATTRIBUTE_FACULTY_LIST";
-    public static final String ATTRIBUTE_GROUP = "ATTRIBUTE_GROUP";
-    //
-    public static final String ATTRIBUTE_GROUP_LIST = "ATTRIBUTE_GROUP_LIST";
-    public static final String ATTRIBUTE_SPECIALITY = "ATTRIBUTE_SPECIALITY";
-    public static final String ATTRIBUTE_SPECIALITY_LIST = "ATTRIBUTE_SPECIALITY_LIST";
-    public static final String ATTRIBUTE_COURSE_LIST = "ATTRIBUTE_COURSE_LIST";
+    public static final String ACTION_GENERATE_PDF = "ACTION_DEFAULT_GENERATE_PDF";
+    public static final String ACTION_GENERATE_PASSWORD = "ACTION_GENERATE_PASSWORD";
 
-    //
-    public static final String ATTRIBUTE_STUDENT = "ATTRIBUTE_STUDENT";
-    public static final String ATTRIBUTE_YEAR = "ATTRIBUTE_YEAR";
-    public static final String PARAMETER_EMAIL = "paramEmail";
-    //
-    public static final String PARAMETER_FACULTY = "paramFaculty";
-    public static final String PARAMETER_COURSE_START = "paramCourseStart";
-    public static final String PARAMETER_COURSE_END = "paramCourseEnd";
-    public static final String PARAMETER_GROUP = "paramGroup";
-    public static final String PARAMETER_SPESIALITY = "paramSpeciality";
-    public static final String PARAMETER_UKRAINIAN = "paramUkranianian";
-    public static final String PARAMETER_LDAP = "paramLDAP";
-    public static final String PARAMETER_YEAR = "year";
+    public static final String ACTION_CLEAR_MSDN = "ACTION_CLEAR_MSDN";
+    public static final String ACTION_SET_MSDN = "ACTION_SET_MSDN";
+
+    public static final String ACTION_CLEAR_OFFICE365 = "ACTION_CLEAR_OFFICE365";
+    public static final String ACTION_SET_OFFICE365 = "ACTION_SET_OFFICE365";
+
+    public static final String ACTION_GENERATE_MSDN_IMPORT = "ACTION_GENERATE_MSDN_IMPORT";
+    public static final String ACTION_GENERATE_GMAIL_IMPORT = "ACTION_GENERATE_GMAIL_IMPORT";
+    public static final String ACTION_GENERATE_OFFICE365_IMPORT = "ACTION_GENERATE_OFFICE365_IMPORT";
+
+    public static final String ACTION_ADD_NEW_TEACHER = "ACTION_ADD_NEW_TEACHER";
+    public static final String ACTION_ADD_CSV_TEACHER = "ACTION_ADD_CSV_TEACHER";
+
+    public static final String ACTION_CLEAR_FIO_AND_EMAIL = "CLEAR_FIO_AND_EMAIL";
+    public static final String ACTION_CLEAR_EMAIL = "CLEAR_EMAIL";
+
+    public static final String ACTION_SET_DISMISS = "ACTION_SET_DISMISS";
+    public static final String ACTION_CLEAR_DISMISS = "ACTION_CLEAR_DISMISS";
 
     private static Path ROOT_PATH_SITE;
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        Path strRootPathSite = Paths.get(request.getSession().getServletContext().getRealPath("/")).resolve("LiveEdu");
+        Enumeration<String> paramEnum = request.getParameterNames();
+        String action = (request.getParameter("action") != null) ? request.getParameter("action") : ACTION_GENERATE_DEFAULT;
+
+        String forwardPage = "/TeacherLDAP.html";
+        switch (action) {
+            case ACTION_CREATE_ACCOUNT:
+                bachCreateAccount(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case ACTION_DELETE_ACCOUNT:
+                bachDeleteAccount(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case ACTION_SET_MOODLE:
+                bachSetMoodle(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case ACTION_SET_GITLAB:
+                bachSetGit(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case ACTION_DOWN_GITLAB:
+                bachDownGit(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case ACTION_DOWN_MOODLE:
+                bachDownMoodle(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            case TeacherConst.ACTION_FILTER:
+                teacherFilter(request);
+                forwardPage = "/TeacherLDAP.jsp";
+                break;
+            default:
+                forwardPage = "/TeacherLDAP.jsp";
+        }
+        List<String> listFaculty = StuffInf.getAllFaculty();
+        request.setAttribute(TeacherConst.ATTRIBUTE_FACULTY_LIST, listFaculty);
+
+        List<String> listDepartment = StuffInf.getAllDepartment();
+        request.setAttribute(TeacherConst.ATTRIBUTE_DEPARTMENT_LIST, listDepartment);
+
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwardPage);
+        dispatcher.forward(request, response);
+    }
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     private void bachCreateAccount(HttpServletRequest request) throws HibernateException {
         String[] arrayID = request.getParameterValues("check");
         if (arrayID == null) {
@@ -80,27 +147,27 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStuff = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
-        crStudent.createAlias("st.personInf", "person");
-        crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
+        Criteria crStuff = ses.createCriteria(StuffInf.class, "st");
+        crStuff.createAlias("st.personInf", "person");
+        crStuff.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
-        System.out.println(crStudent);
-        listStudent = crStudent.list();
+        System.out.println(crStuff);
+        listStuff = crStuff.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf stuff : listStuff) {
             Transaction tx = ses.beginTransaction();
             try {
-                if (!student.getPersonInf().getExist()) {
-                    LDAP.addUser(student.getPersonInf().getEmailCorporate(), student.getPersonInf().getFirstnameEn(),
-                            student.getPersonInf().getLastnameEn());
-                    student.getPersonInf().setExist(Boolean.TRUE);
-                    ses.update(student);
+                if (!stuff.getPersonInf().getExist()) {
+                    LDAP.addUser(stuff.getPersonInf().getEmailCorporate(), stuff.getPersonInf().getFirstnameEn(),
+                            stuff.getPersonInf().getLastnameEn());
+                    stuff.getPersonInf().setExist(Boolean.TRUE);
+                    ses.update(stuff);
                     tx.commit();
                 }
             } catch (Exception exp) {
@@ -110,7 +177,7 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStuff);
     }
 
     private void bachDeleteAccount(HttpServletRequest request) throws HibernateException {
@@ -120,20 +187,20 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStudent = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        Criteria crStudent = ses.createCriteria(StuffInf.class, "st");
         crStudent.createAlias("st.personInf", "person");
         crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
         System.out.println(crStudent);
         listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 if (student.getPersonInf().getExist()) {
@@ -151,7 +218,7 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
     }
 
     private void bachSetMoodle(HttpServletRequest request) throws HibernateException {
@@ -161,20 +228,20 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStudent = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        Criteria crStudent = ses.createCriteria(StuffInf.class, "st");
         crStudent.createAlias("st.personInf", "person");
         crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
         System.out.println(crStudent);
         listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 if ((student.getPersonInf().getExist() && student.getPersonInf().getGitlab())) {
@@ -195,7 +262,7 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
     }
 
     private void bachSetGit(HttpServletRequest request) throws HibernateException {
@@ -205,20 +272,20 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStudent = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        Criteria crStudent = ses.createCriteria(StuffInf.class, "st");
         crStudent.createAlias("st.personInf", "person");
         crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
         System.out.println(crStudent);
         listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 if ((student.getPersonInf().getExist() && student.getPersonInf().getMoodle())) {
@@ -239,7 +306,7 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
     }
 
     private void bachDownGit(HttpServletRequest request) throws HibernateException {
@@ -249,20 +316,20 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStudent = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        Criteria crStudent = ses.createCriteria(StuffInf.class, "st");
         crStudent.createAlias("st.personInf", "person");
         crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
         System.out.println(crStudent);
         listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 if ((student.getPersonInf().getExist() && student.getPersonInf().getMoodle() && student.getPersonInf().getGitlab())) {
@@ -283,7 +350,7 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
     }
 
     private void bachDownMoodle(HttpServletRequest request) throws HibernateException {
@@ -293,20 +360,20 @@ public class StudentLDAPControler extends HttpServlet {
         }
         System.out.println(Arrays.toString(arrayID));
         Session ses = HibernateUtil.currentSession();
-        List<StudentInf> listStudent = new ArrayList<>();
+        List<StuffInf> listStudent = new ArrayList<>();
 
-        Criteria crStudent = ses.createCriteria(StudentInf.class, "st");
+        Criteria crStudent = ses.createCriteria(StuffInf.class, "st");
         crStudent.createAlias("st.personInf", "person");
         crStudent.add(Restrictions.isNotNull("person.firstnameEn"))
                 .add(Restrictions.isNotNull("person.lastnameEn"))
                 .add(Restrictions.isNotNull("person.emailCorporate"))
-                .add(Restrictions.in("st." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)));
+                .add(Restrictions.in("st." + DB.Stuff.COLUM_ID, StringExt.toInt(arrayID)));
 
         System.out.println(crStudent);
         listStudent = crStudent.list();
 
         PersonInf.setNameOfAlphabeticFile(ROOT_PATH_SITE);
-        for (StudentInf student : listStudent) {
+        for (StuffInf student : listStudent) {
             Transaction tx = ses.beginTransaction();
             try {
                 if ((student.getPersonInf().getExist() && student.getPersonInf().getMoodle() && student.getPersonInf().getGitlab())) {
@@ -327,7 +394,35 @@ public class StudentLDAPControler extends HttpServlet {
             }
         }
         HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
+    }
+
+    private void teacherFilter(HttpServletRequest request) throws NumberFormatException, HibernateException {
+        Session ses = HibernateUtil.currentSession();
+        List listTteacher = new ArrayList<StuffInf>();
+        Criteria cr = ses.createCriteria(StuffInf.class, "sf");
+        cr.createAlias("sf.departmentInf", "dep");
+        cr.createAlias("dep.facultyInf", "fac");
+        cr.createAlias("sf.personInf", "pr");
+
+        // restictions
+        String faculty = request.getParameter(TeacherConst.PARAMETER_FACULTY);
+        if (faculty != null && !faculty.equals("")) {
+            cr = cr.add(Restrictions.eq("fac.faculty", faculty));
+        }
+
+        String department = request.getParameter(TeacherConst.PARAMETER_DEPARTMENT);
+        if (department != null && !department.equals("")) {
+            cr = cr.add(Restrictions.eq("dep.department", department));
+        }
+
+        boolean paramDismiss = Boolean.parseBoolean(request.getParameter(TeacherConst.PARAMETER_DISMISS));
+        cr = cr.add(Restrictions.eq(DB.Stuff.COLUM_DISMISS, paramDismiss));
+
+        cr = cr.addOrder(Order.asc("pr.lastname"));
+        listTteacher = cr.list();
+        HibernateUtil.closeSession();
+        request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listTteacher);
     }
 
     /**
@@ -339,7 +434,8 @@ public class StudentLDAPControler extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -352,8 +448,15 @@ public class StudentLDAPControler extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         processRequest(request, response);
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        ROOT_PATH_SITE = Paths.get(this.getServletContext().getRealPath("/")).resolve("LiveEdu");
     }
 
     /**
@@ -364,162 +467,5 @@ public class StudentLDAPControler extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    } // </editor-fold>
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-//        ROOT_PATH_SITE = this.getServletContext().getRealPath(File.separator) + "LiveEdu/";
-        ROOT_PATH_SITE = Paths.get(this.getServletContext().getRealPath("/")).resolve("LiveEdu");
-    }
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        //String str = request.getAttribute("updata");
-        Path strRootPathSite = Paths.get(request.getSession().getServletContext().getRealPath("/")).resolve("LiveEdu");
-        Enumeration<String> paramEnum = request.getParameterNames();
-        String action = (request.getParameter("action") != null) ? request.getParameter("action") : ACTION_GENERATE_DEFAULT;
-        String forwardPage = "/StudentLDAP.jsp";
-        switch (action) {
-            case ACTION_CREATE_ACCOUNT:
-                bachCreateAccount(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_DELETE_ACCOUNT:
-                bachDeleteAccount(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_SET_MOODLE:
-                bachSetMoodle(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_SET_GITLAB:
-                bachSetGit(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_DOWN_GITLAB:
-                bachDownGit(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_DOWN_MOODLE:
-                bachDownMoodle(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_MAKE_PDF:
-                generatePDF(strRootPathSite, request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            case ACTION_FILTER:
-                tableFilter(request);
-                forwardPage = "/StudentLDAP.jsp";
-                break;
-            default:
-                forwardPage = "/StudentLDAP.jsp";
-        }
-
-        List<String> listSpeciality = StudentInf.getAllSpecs();
-        request.setAttribute(ATTRIBUTE_SPECIALITY_LIST, listSpeciality);
-
-        List<String> listGroup = StudentInf.getAllGroups();
-        request.setAttribute(ATTRIBUTE_GROUP_LIST, listGroup);
-
-        List<String> listFaculty = StudentInf.getAllFaculty();
-        request.setAttribute(ATTRIBUTE_FACULTY_LIST, listFaculty);
-
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwardPage);
-        dispatcher.forward(request, response);
-
-    }
-
-    private void tableFilter(HttpServletRequest request) throws NumberFormatException, HibernateException {
-        Session ses = HibernateUtil.currentSession();
-        @SuppressWarnings("UnusedAssignment")
-        List<StudentInf> listStudent = new ArrayList<>();
-        Criteria cr = ses.createCriteria(StudentInf.class, "st")
-                .createAlias("st.personInf", "pr");
-
-        // Creteria restictions
-        String str = request.getParameter(PARAMETER_FACULTY);
-        if (str != null && !str.equals("")) {
-            cr = cr.createAlias("st.specInf", "sp")
-                    .createAlias("sp.facultyInf", "fc")
-                    .add(Restrictions.eq("fc.faculty", str));
-        }
-
-        String strGroup = request.getParameter(PARAMETER_GROUP);
-        if (strGroup != null && !strGroup.equals("")) {
-            cr = cr.add(Restrictions.eq(DB.Student.COLUM_GROUP, strGroup));
-        }
-
-        str = request.getParameter(PARAMETER_SPESIALITY);
-        if (str != null && !str.equals("")) {
-            cr = cr.add(Restrictions.eq("sp.spec", str));
-        }
-
-        boolean paramUkr = Boolean.parseBoolean(request.getParameter(PARAMETER_UKRAINIAN));
-        cr = cr.add(Restrictions.eq(DB.Student.COLUM_UKRAINIAN, paramUkr));
-
-        String paramEmailStr = request.getParameter(PARAMETER_EMAIL);
-        if (paramEmailStr != null && !paramEmailStr.equals("")) {
-            if (Boolean.parseBoolean(paramEmailStr)) {
-                cr = cr.add(Restrictions.isNotNull("pr.emailCorporate"));
-            } else {
-                cr = cr.add(Restrictions.isNull("pr.emailCorporate"));
-            }
-        }
-        listStudent = cr.list();
-
-        HibernateUtil.closeSession();
-        request.setAttribute(ATTRIBUTE_STUDENT, listStudent);
-    }
-
-    public enum Action {
-        GENERATE_DEFAULT
-    }
-    
-    private void generatePDF(Path strRootPathSite, HttpServletRequest request) throws IOException, HibernateException {
-        String[] arrayID = request.getParameterValues("check");
-        if (arrayID != null) {
-            Logger.getLogger(TeacherServletControler.class.getName()).log(Level.INFO, "check : {0}", Arrays.toString(arrayID));
-
-            Session ses = HibernateUtil.currentSession();
-
-            List<StudentInf> listStudent = ses.createCriteria(StudentInf.class, "sf")
-                    .createAlias("sf.personInf", "person")
-                    .add(Restrictions.isNotNull("person.firstnameEn"))
-                    .add(Restrictions.isNotNull("person.lastnameEn"))
-                    .add(Restrictions.isNotNull("person.emailCorporate"))
-                    .add(Restrictions.isNotNull("person.passCorporate"))
-                    .add(Restrictions.in("sf." + DB.Student.COLUM_ID, StringExt.toInt(arrayID)))
-                    .list();
-            HibernateUtil.closeSession();
-
-            for (StudentInf student : listStudent) {
-                Path root = ROOT_PATH_SITE
-                    .resolve("export/Student")
-                    .resolve(student.getSpecInf().getFacultyInf().getFaculty())
-                    .resolve(student.getSpecInf().getSpec())
-                    .resolve(student.getGroup());
-                root.toFile().mkdirs();
-
-                PDFManager.setResurce(strRootPathSite.resolve("res"));
-                try {
-                    PDFManager.createPDF_LDAP(student, root);
-                } catch (Exception ex) {
-                    Logger.getLogger(TeacherServletControler.class.getName()).log(Level.SEVERE, "message", ex);
-                }
-            }
-            request.setAttribute(TeacherConst.ATTRIBUTE_TEACHERS, listStudent);
-        }
-    }
-
+    }// </editor-fold>
 }

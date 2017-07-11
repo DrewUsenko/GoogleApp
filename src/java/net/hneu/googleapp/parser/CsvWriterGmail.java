@@ -59,8 +59,6 @@ public class CsvWriterGmail {
     }
    
     public static List<String> readWithCsvBeanReader(List<PersonInf> personList) {
-        //The first 4 columns: first name, last name, email address, password are mandatory
-        //First Name,Last Name,Email Address,Password,Secondary Email,Work Phone 1,Home Phone 1,Mobile Phone 1,Work address 1,Home address 1,Employee Id,Employee Type,Employee Title,Manager,Department,Cost Center
         final String[] header = new String[] { "First Name","Last Name","Email Address","Password",
             "Secondary Email","Work Phone 1","Home Phone 1","Mobile Phone 1",
             "Work address 1","Home address 1",

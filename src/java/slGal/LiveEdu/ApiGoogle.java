@@ -69,7 +69,6 @@ public class ApiGoogle {
         File clientSecret = path.resolve("../WEB-INF/resources/client_secrets/client_secrets.json").toFile();
         clientSecrets =
                 GoogleClientSecrets.load(JSON_FACTORY,
-                        //new InputStreamReader(ApiGoogle.class.getResourceAsStream("/client_secrets.json")));
                         new InputStreamReader(new FileInputStream(clientSecret)));
         if (clientSecrets.getDetails().getClientId().startsWith("Enter")
                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
@@ -104,8 +103,6 @@ public class ApiGoogle {
             user.setName(name);
             user.setPassword(person.getPassCorporate());
             user.setPrimaryEmail(person.getEmailCorporate());
-
-            // requires DirectoryScopes.ADMIN_DIRECTORY_USER scope
             
             user = directory.users().insert(user).execute();
         }

@@ -24,7 +24,8 @@ public class PDFManager {
 //    private static Path ROOT = Paths.get(".");
     private static Path RESOURCE = Paths.get("res");
     private static final String FONT_LOCATION = "Liberation Sans.ttf";
-    private static final String FONT_LOCATION_BOLD = "LiberationSans-Bold.ttf";
+    private static final String FONT_LOCATION_BOLD = "LiberationSans-Bold.ttf";    
+    private static final String PAGE_LDAP_LOCATION = "pageLDAP.txt";
     private static final String PAGE1_LOCATION = "page1new.txt";
     private static final String PAGE2_LOCATION = "page2.txt";
     private static final String PAGE3_LOCATION = "page3.txt";
@@ -74,8 +75,7 @@ public class PDFManager {
             if (msdnFlag && office365Flag) {
                 table.addCell(empty(stuff));
             }
-
-//            table.setWidthPercentage((msdnFlag || office365Flag) ? 100F : 50F);
+            
             table.setWidthPercentage(100F);
             document.add(table);
         } catch (DocumentException | IOException ex) {
@@ -344,48 +344,6 @@ public class PDFManager {
         PdfPTable tableOffice365 = new PdfPTable(1);
         tableOffice365.setWidthPercentage(100F);
         tableOffice365.getDefaultCell().setBorder(0);
-
-//        tableOffice365.addCell(loadPicture(RESOURCE.resolve("office-apps.png").toString()));
-//        FileInputStream fstream = new FileInputStream(RESOURCE.resolve(PAGE3_LOCATION).toFile());
-//        BufferedReader br = new BufferedReader(new InputStreamReader(fstream, "utf-8"));
-//
-//        PdfPCell cell2 = new PdfPCell(new Paragraph(br.readLine(), font));
-//        cell2.setHorizontalAlignment(3);
-//        cell2.setBorder(0);
-//        cell2.setLeading(15F, 0.0F);
-//        tableOffice365.addCell(cell2);
-//
-//        String line3 = String.format(br.readLine(), new Object[]{person.getEmail().replaceAll(Person.EMAIL_DOMEN, "")});
-//        PdfPCell cell3 = new PdfPCell(new Paragraph(line3, font2));
-//        cell3.setBorder(0);
-//        cell3.setHorizontalAlignment(1);
-////        cell3.setLeading(15F, 0.0F);
-//        tableOffice365.addCell(cell3);
-//
-//        String line4 = String.format(br.readLine(), new Object[]{person.getPassword()});
-//        PdfPCell cell4 = new PdfPCell(new Paragraph(line4, font2));
-////        PdfPCell cell4 = new PdfPCell(new Paragraph(person.getEmail(), font2));
-//        cell4.setBorder(0);
-//        cell4.setHorizontalAlignment(1);
-//        tableOffice365.addCell(cell4);
-//
-//        PdfPCell cell5 = new PdfPCell(new Paragraph(br.readLine(), font));
-//        cell5.setBorder(0);
-//        cell5.setHorizontalAlignment(3);
-//        cell5.setLeading(15F, 0.0F);
-//        tableOffice365.addCell(cell5);
-//
-//        PdfPCell cell6 = new PdfPCell(new Paragraph(br.readLine(), font2));
-//        cell6.setBorder(0);
-//        cell6.setHorizontalAlignment(1);
-//        tableOffice365.addCell(cell6);
-//
-//        PdfPCell cell7 = new PdfPCell(new Paragraph(br.readLine(), font2));        
-//        cell7.setBorder(0);
-//        cell7.setHorizontalAlignment(1);
-//        tableOffice365.addCell(cell7);
-//
-//        br.close();
         return tableOffice365;
     }
 
@@ -453,8 +411,7 @@ public class PDFManager {
             if (msdnFlag && office365Flag) {
                 table.addCell(empty(student));
             }
-
-//            table.setWidthPercentage((msdnFlag || office365Flag) ? 100F : 50F);
+            
             table.setWidthPercentage(100F);
             document.add(table);
         } catch (DocumentException | IOException ex) {
@@ -463,8 +420,7 @@ public class PDFManager {
             document.close();
         }
     }
-    
-    
+
     private static PdfPTable liveEdu(StudentInf student) throws BadElementException, IOException, DocumentException {
         BaseFont fontNormal = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION).toString(), "Identity-H", false);
         BaseFont fontBold = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION_BOLD).toString(), "Identity-H", false);
@@ -725,5 +681,113 @@ public class PDFManager {
         tableOffice365.setWidthPercentage(100F);
         tableOffice365.getDefaultCell().setBorder(0);
         return tableOffice365;
+    }
+
+    public static void createPDF_LDAP(StudentInf stuff, Path pathDir) {
+        Document document;
+        document = new Document(PageSize.A6, 15F, 15F, 15F, 15F);
+
+        try {
+            String fileName = (new StringBuilder())
+                    .append(stuff.getPersonInf().getLastname())
+                    .append("_")
+                    .append(stuff.getPersonInf().getFirstname())
+                    .append("_LDAP")
+                    .append(".pdf")
+                    .toString();
+
+            PdfWriter.getInstance(document, new FileOutputStream(pathDir.resolve(fileName).toFile()));
+            document.open();
+
+            PdfPTable table = new PdfPTable(1);
+
+            table.getDefaultCell().setBorder(0);
+            table.addCell(liveEduLDAP(stuff));
+
+//            table.setWidthPercentage((msdnFlag || office365Flag) ? 100F : 50F);
+            table.setWidthPercentage(100F);
+            document.add(table);
+        } catch (DocumentException | IOException ex) {
+            Logger.getLogger(PDFManager.class.getName()).log(Level.SEVERE, "message", ex);
+        } finally {
+            document.close();
+        }
+    }
+
+    private static PdfPTable liveEduLDAP(StudentInf student) throws BadElementException, IOException, DocumentException {
+        BaseFont fontNormal = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION).toString(), "Identity-H", false);
+        BaseFont fontBold = BaseFont.createFont(RESOURCE.resolve(FONT_LOCATION_BOLD).toString(), "Identity-H", false);        
+        
+        Font fontNormal12 = new Font(fontNormal, 12F, 0);
+        Font fontBold12 = new Font(fontBold, 12F, 0);
+
+        PdfPTable tableLiveEdu = new PdfPTable(1);
+
+        tableLiveEdu.setWidthPercentage(100F);
+        tableLiveEdu.getDefaultCell().setBorder(0);
+        tableLiveEdu.addCell(loadPicture(RESOURCE.resolve("logo1.JPG").toString()));
+
+        FileInputStream fstream = new FileInputStream(RESOURCE.resolve(PAGE_LDAP_LOCATION).toFile());
+        BufferedReader br = new BufferedReader(new InputStreamReader(fstream, "utf-8"));
+
+        // tableLiveEdu.addCell(new Paragraph(br.readLine(), font));
+        // line 1
+        String line1 = String.format(br.readLine());
+        PdfPCell cell = new PdfPCell(new Paragraph(line1, fontNormal12));
+        //cell.setLeading(15F, 0.0F);
+        cell.setHorizontalAlignment(3);
+        cell.setBorder(0);
+        tableLiveEdu.addCell(cell);
+
+        // line 2
+        String line2 = String.format(br.readLine(), new Object[]{student.getPersonInf().getFirstname(), student.getPersonInf().getPatronymic(), student.getPersonInf().getLastname()});
+        PdfPCell cell2 = new PdfPCell(new Paragraph(line2, fontBold12));
+        cell2.setHorizontalAlignment(1);
+        cell2.setBorder(0);
+        //cell2.setLeading(15F, 0.0F);
+        tableLiveEdu.addCell(cell2);
+
+        // line 3
+        String line3 = String.format(br.readLine());
+        PdfPCell cell3 = new PdfPCell(new Paragraph(line3, fontNormal12));
+        //cell.setLeading(15F, 0.0F);
+        cell3.setHorizontalAlignment(3);
+        cell3.setBorder(0);
+        tableLiveEdu.addCell(cell3);
+
+        // line 4
+        String line4 = String.format(br.readLine());
+        PdfPCell cell4 = new PdfPCell(new Paragraph(line4, fontNormal12));
+        //cell.setLeading(15F, 0.0F);
+        cell4.setHorizontalAlignment(3);
+        cell4.setBorder(0);
+        tableLiveEdu.addCell(cell4);
+
+//        tableLiveEdu.addCell(new Paragraph(br.readLine(), fontNormal12));
+        // line 5
+        String line5 = String.format(br.readLine(), new Object[]{student.getPersonInf().getEmailCorporate()});
+        PdfPCell cell5 = new PdfPCell(new Paragraph(line5, fontBold12));
+        //cell.setLeading(15F, 0.0F);
+        cell5.setHorizontalAlignment(1);
+        cell5.setBorder(0);
+        tableLiveEdu.addCell(cell5);
+
+
+        // line 6
+        String line10 = String.format(br.readLine());
+        PdfPCell cell10 = new PdfPCell(new Paragraph(line10, fontNormal12));
+        cell10.setBorder(0);
+        cell10.setHorizontalAlignment(3);
+        tableLiveEdu.addCell(cell10);
+
+        //line 7
+        String line11 = String.format(br.readLine(), new Object[]{student.getPersonInf().getPassCorporate()});
+        PdfPCell cell11 = new PdfPCell(new Paragraph(line11, fontBold12));
+        cell11.setBorder(0);
+        cell11.setHorizontalAlignment(1);
+        tableLiveEdu.addCell(cell11);
+
+        br.close();
+        return tableLiveEdu;
     }
 }
